@@ -1,0 +1,950 @@
+#%RAML 1.0
+---
+title: eZ Platform (Test)
+baseUri: http://localhost/
+version: 2.4
+
+/content:
+    /trash:
+        get:
+            description: Returns a list of all items in Trash
+            queryParameters:
+                limit:
+                    description: Only &lt;limit&gt; items will be returned, starting with the offset
+                offset:
+                    description: Offset of the result set
+            headers:
+                Accept:
+                    description: application/vnd.ez.api.Trash+xml or application/vnd.ez.api.Trash+json
+            responses:
+                200:
+                    description: OK
+                401:
+                    description: Error - The user has no permission to read the trash
+        delete:
+            description: Empties the trash
+            responses:
+                204:
+                    description: No Content
+                401:
+                    description: Error - The user is not authorized to empty all items from Trash
+        /{trashItemid}:
+            get:
+                description: Returns the item in Trash with the provided ID
+                headers:
+                    Accept:
+                        description: application/vnd.ez.api.TrashItem+xml or application/vnd.ez.api.TrashItem+json
+                responses:
+                    200:
+                        description: OK
+                    401:
+                        description: Error - The user has no permission to read the item in Trash
+                    404:
+                        description: Error - An item in Trash with the provided ID does not exist
+            # Does not work with POST?
+            move:
+                description: MOVE or POST with header X-HTTP-Method-Override MOVE. Restores an item from Trash.
+                headers:
+                    # No route matched?
+                    Destination:
+                        description: If this is provided, the item from Trash is restored under this Location, otherwise under its original parent Location
+                responses:
+                    201:
+                        description: Item restored
+                    401:
+                        description: Error - The user is not authorized to restore this item from Trash
+                    403:
+                        description: Error - The provided parent Location does not exist
+                    404:
+                        description: Error - The provided item does not exist in Trash
+            # This endpoint does not seem to exist, deleting works through DELETE /content/trash/{trashItemID}
+            /items:
+                /{id}:
+                    delete:
+                        description: Deletes the provided item from Trash
+                        responses:
+                            204:
+                                description: No Content
+                            401:
+                                description: Error - The user is not authorized to delete the provided item
+                            404:
+                                description: Error - The provided item does not exist in Trash
+    /objectstategroups:
+        get:
+            description: Returns a list of all Object State Groups
+            headers:
+                Accept:
+                    description: application/vnd.ez.api.ObjectStateGroupList+xml or application/vnd.ez.api.ObjectStateGroupList+json
+                If-None-Match:
+                    description: ETag
+            responses:
+                200:
+                    description: OK
+                401:
+                    description: Error - The user has no permission to read Object State Groups
+        post:
+            description: Creates a new Object State Group
+            headers:
+                Accept:
+                    description: application/vnd.ez.api.ObjectStateGroup+xml or application/vnd.ez.api.ObjectStateGroup+json
+                Content-Type:
+                    description: application/vnd.ez.api.ObjectStateGroupCreate+json or application/vnd.ez.api.ObjectStateGroupCreate+xml
+            responses:
+                201:
+                    description: Object State Group created
+                400:
+                    description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
+                401:
+                    description: Error - The user is not authorized to create an Object State Group
+                403:
+                    description: Error - An Object State Group with same identifier already exists
+        /{objectStateGroupId}:
+            get:
+                description: Returns the Object State Group with the provided ID
+                headers:
+                    Accept:
+                        description: application/vnd.ez.api.ObjectStateGroup+xml or application/vnd.ez.api.ObjectStateGroup+json
+                    If-None-Match:
+                        description: ETag
+                responses:
+                    200:
+                        description: OK
+                    401:
+                        description: Error - The user is not authorized to read Object State Groups
+                    404:
+                        description: Error - The Object State Group does not exist
+            patch:
+                description: PATCH or POST with header X-HTTP-Method-Override PATCH. Updates an Object State Group.
+                headers:
+                    Accept:
+                        description: application/vnd.ez.api.ObjectStateGroup+xml or application/vnd.ez.api.ObjectStateGroup+json
+                    Content-Type:
+                        description: application/vnd.ez.api.ObjectStateGroupUpdate+json or application/vnd.ez.api.ObjectStateGroupUpdate+xml
+                    If-Match:
+                        description: ETag
+                responses:
+                    200:
+                        description: OK
+                    400:
+                        description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
+                    401:
+                        description: Error - The user is not authorized to update an Object State Group
+                    403:
+                        description: Error - An Object State Group with the provided new identifier already exists
+                    412:
+                        description: Error - The current ETag does not match the one provided in the If-Match header
+            delete:
+                description: Deleted the given Object State Group including Object States
+                responses:
+                    204:
+                        description: No Content
+                    401:
+                        description: Error - The user is not authorized to delete an Object State Group
+                    404:
+                        description: Error - The Object State Group does not exist
+            /objectstates:
+                get:
+                    description: Returns a list of all Object States of the given group
+                    headers:
+                        Accept:
+                            description: application/vnd.ez.api.ObjectStateList+xml or application/vnd.ez.api.ObjectStateList+json
+                        If-None-Match:
+                            description: ETag
+                    responses:
+                        200:
+                            description: OK
+                        401:
+                            description: Error - The user has no permission to read Object States
+                post:
+                    description: Creates a new Object State
+                    headers:
+                        Accept:
+                            description: application/vnd.ez.api.ObjectState+xml or application/vnd.ez.api.ObjectState+json
+                        Content-Type:
+                            description: application/vnd.ez.api.ObjectStateGroupCreate+json or application/vnd.ez.api.ObjectStateGroupCreate+xml
+                    responses:
+                        201:
+                            description: Created
+                        400:
+                            description: Error - The input does not match the input schema definition, In this case the response contains an ErrorMessage
+                        401:
+                            description: Error - The user is not authorized to create an Object State
+                        403:
+                            description: Error - An Object State with the same identifier already exists in the given group
+                /{objectStateId}:
+                    get:
+                        description: Returns the Object State
+                        headers:
+                            Accept:
+                                description: application/vnd.ez.api.ObjectState+xml or application/vnd.ez.api.ObjectState+json
+                            If-None-Match:
+                                description: ETag
+                        responses:
+                            200:
+                                description: OK
+                            401:
+                                description: Error - The user is not authorized to read Object State Groups
+                            404:
+                                description: Error - The Object State Group does not exist
+                    patch:
+                        description: PATCH or POST with header X-HTTP-Method-Override PATCH. Updates an Object State.
+                        headers:
+                            Accept:
+                                description: application/vnd.ez.api.ObjectState+xml or application/vnd.ez.api.ObjectState+json
+                            Content-Type:
+                                description: application/vnd.ez.api.ObjectStateUpdate+json or application/vnd.ez.api.ObjectStateUpdate+xml
+                            If-Match:
+                                description: ETag
+                        responses:
+                            200:
+                                description: OK
+                            400:
+                                description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
+                            401:
+                                description: Error - The user is not authorized to update the Object State
+                            403:
+                                description: Error - An Object State with the given new identifier already exists in this group
+                            412:
+                                description: Error - The current ETag does not match the one provided in the If-Match header
+                    delete:
+                        description: Deletes provided Object State
+                        responses:
+                            204:
+                                description: No Content
+                            401:
+                                description: Error - The user is not authorized to delete an Object State Group
+                            404:
+                                description: Error - The Object State does not exist
+    /objects:
+        /{contentId}:
+            /objectstates:
+                get:
+                    description: Returns the Object States of a Content item
+                    headers:
+                        Accept:
+                            description: application/vnd.ez.api.ContentObjectStates+xml or application/vnd.ez.api.ContentObjectStates+json
+                        If-None-Match:
+                            description: ETag
+                    responses:
+                        200:
+                            description: OK
+                        404:
+                            description: Error - The Content item does not exist
+                patch:
+                    description: PATCH or POST with header X-HTTP-Method-Override PATCH. Updates Object States of content. An Object State in the input overrides the state of the Object State Group.
+                    headers:
+                        Accept:
+                            description: application/vnd.ez.api.ContentObjectStates+xml or application/vnd.ez.api.ContentObjectStates+json
+                        Content-Type:
+                            description: application/vnd.ez.api.ContentObjectStates+xml or application/vnd.ez.api.ContentObjectStates+json
+                        If-Match:
+                            description: ETag
+                    responses:
+                        204:
+                            description: OK
+                        400:
+                            description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
+                        401:
+                            description: Error - The user is not authorized to set an Object State
+                        403:
+                            description: Error - The input contains multiple Object States of the same Object State Group
+                        412:
+                            description: Error - The current ETag does not match the one provided in the If-Match header
+    /urlaliases:
+        get:
+            description: Returns the list of global URL aliases
+            headers:
+                Accept:
+                    description: application/vnd.ez.api.UrlAliasRefList+xml or application/vnd.ez.api.UrlAliasRefList+json
+            responses:
+                200:
+                    description: OK
+                401:
+                    description: Error - The user has no permission to read URL aliases
+        post:
+            description: Creates a new URL alias
+            headers:
+                Accept:
+                    description: application/vnd.ez.api.UrlAlias+xml or application/vnd.ez.api.UrlAlias+json
+                Content-Type:
+                    description: application/vnd.ez.api.UrlAliasCreate+xml or application/vnd.ez.api.UrlAliasCreate+json
+            responses:
+                201:
+                    description: Created
+                400:
+                    description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
+                401:
+                    description: Error - The user is not authorized to create a URL alias
+                403:
+                    description: Error - A URL alias with the same identifier already exists
+        /{urlAliasId}:
+            get:
+                description: Returns the URL alias with the given ID
+                headers:
+                    Accept:
+                        description: application/vnd.ez.api.UrlAlias+xml or application/vnd.ez.api.UrlAlias+json
+                responses:
+                    200:
+                        description: OK
+                    401:
+                        description: Error - The user is not authorized to read URL aliases
+                    404:
+                        description: Error - The URL alias does not exist
+            delete:
+                description: Deleted the provided URL alias
+                responses:
+                    204:
+                        description: No Content
+                    401:
+                        description: Error - The user is not authorized to delete a URL alias
+                    404:
+                        description: Error - The URL alias does not exist
+    /urlwildcards:
+        get:
+            description: Returns a list of URL wildcards
+            headers:
+                Accept:
+                    description: application/vnd.ez.api.UrlWildcardList+xml or application/vnd.ez.api.UrlWildcardList+json
+            responses:
+                200:
+                    description: OK
+                401:
+                    description: Error - The user has no permission to read URL wildcards
+        post:
+            description: Creates a new URL wildcard
+            headers:
+                Accept:
+                    description: application/vnd.ez.api.UrlWildcard+xml or application/vnd.ez.api.UrlWildcard+json
+                Content-Type:
+                    description: application/vnd.ez.api.UrlWildcardCreate+xml or application/vnd.ez.api.UrlWildcardCreate+json
+            responses:
+                201:
+                    description: Created
+                400:
+                    description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
+                401:
+                    description: Error - The user is not authorized to create a URL wildcard
+                403:
+                    description: Error - A URL wildcard with the same identifier already exists
+        /{wildcardId}:
+            get:
+                description: Returns the urlwildcard with the given id
+                headers:
+                    Accept:
+                        description: application/vnd.ez.api.UrlWildcard+xml or application/vnd.ez.api.UrlWildcard+json
+                responses:
+                    200:
+                        description: OK
+                    401:
+                        description: Error - The user is not authorized to read URL wildcards
+                    404:
+                        description: Error - The URL wildcard does not exist
+            delete:
+                description: Deletes the given URL wildcard
+                responses:
+                    204:
+                        description: No Content
+                    401:
+                        description: Error - The user is not authorized to delete a URL wildcard
+                    404:
+                        description: Error - The URL wildcard does not exist
+    /locations:
+        /{path}:
+            /urlaliases:
+                get:
+                    description: Returns the list of URL aliases for a Location
+                    queryParameters:
+                        custom:
+                            description: Indicates whether autogenerated (false) or manual URL aliases (true) should be returned (default true).
+                            type: boolean
+                    headers:
+                        Accept:
+                            description: application/vnd.ez.api.UrlAliasRefList+xml or application/vnd.ez.api.UrlAliasRefList+json
+                    responses:
+                        200:
+                            description: OK
+                        400:
+                            description: Error - The user has no permission to read URL aliases
+                        401:
+                            description: Error - The Location was not found
+    /typegroups:
+        get:
+            description: Returns a list of all Content Type Groups. If an identifier is provided, loads the Content Type Group for this identifier
+            queryParameters:
+                identifier:
+                    description: The identifier of the Content Type Group. If present, the Content Type Group with this identifier is returned.
+                    required: false
+            headers:
+                Accept:
+                    description: application/vnd.ez.api.ContentTypeGroupList+xml or application/vnd.ez.api.ContentTypeGroupList+json
+            responses:
+                200:
+                    body:
+                        application/vnd.ez.api.ContentTypeGroupList+xml:
+                            example: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <ContentTypeGroupList href="/content/typegroups" media-type="application/vnd.ez.api.ContentTypeGroupList+xml">
+                                    <ContentTypeGroup href="/content/typegroups/1" media-type="application/vnd.ez.api.ContentTypeGroup+xml">
+                                        <id>1</id>
+                                        <identifier>Content</identifier>
+                                        <created>2010-06-31T12:00:00</created>
+                                        <modified>2010-07-31T12:00:00</modified>
+                                        <Creator href="/user/users/13" media-type="application/vnd.ez.api.User+xml"/>
+                                        <Modifier href="/user/users/6" media-type="application/vnd.ez.api.User+xml"/>
+                                        <ContentTypes href="/content/typegroups/1/types" media-type="application/vnd.ez.api.ContentTypeList+xml"/>
+                                    </ContentTypeGroup>
+                                    <ContentTypeGroup href="/content/typegroups/2" media-type="application/vnd.ez.api.ContentTypeGroup+xml">
+                                        <id>2</id>
+                                        <identifier>Media</identifier>
+                                        <created>2010-06-31T14:00:00</created>
+                                        <modified>2010-09-31T12:00:00</modified>
+                                        <Creator href="/user/users/13" media-type="application/vnd.ez.api.User+xml"/>
+                                        <Modifier href="/user/users/9" media-type="application/vnd.ez.api.User+xml"/>
+                                        <ContentTypes href="/content/typegroups/2/types" media-type="application/vnd.ez.api.ContentTypeList+xml"/>
+                                    </ContentTypeGroup>
+                                </ContentTypeGroupList>
+                307:
+                    description: Temporary Redirect
+                401:
+                    description: Error - The user has no permission to read Content Types
+                404:
+                    description: Error - The Content Type Group with the given identifier does not exist
+        post:
+            description: Creates a new Content Type Group
+            headers:
+                Accept:
+                    description: application/vnd.ez.api.ContentTypeGroup+xml or application/vnd.ez.api.ContentTypeGroup+json
+                Content-Type:
+                    description: application/vnd.ez.api.ContentTypeGroupInput+xml or application/vnd.ez.api.ContentTypeGroupInput+json
+            body:
+                application/vnd.ez.api.ContentTypeGroup+xml:
+                    schema: |
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <ContentTypeGroupInput>
+                            <identifier>newContentTypeGroup</identifier>
+                        </ContentTypeGroupInput>
+            responses:
+                201:
+                    description: Content Type Group created
+                    body:
+                        application/vnd.ez.api.ContentTypeGroup+xml:
+                            example: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <ContentTypeGroup href="/content/typesgroups/7" media-type="application/vnd.ez.api.ContentTypeGroup+xml">
+                                    <id>7</id>
+                                    <identifier>newContentTypeGroup</identifier>
+                                    <created>2012-02-31T12:45:00</created>
+                                    <modified>2012-02-31T12:45:00</modified>
+                                    <Creator href="/user/users/13" media-type="application/vnd.ez.api.User+xml"/>
+                                    <Modifier href="/user/users/13" media-type="application/vnd.ez.api.User+xml"/>
+                                    <ContentTypes href="/content/typegroups/7/types" media-type="application/vnd.ez.api.ContentTypeList+xml"/>
+                                </ContentTypeGroup>
+                400:
+                    description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
+                401:
+                    description: Error - The user is not authorized to create this Content Type Group
+                403:
+                    description: Error - A Content Type Group with the same identifier already exists
+        /{contentTypeGroupId}:
+            get:
+                description: Returns the Content Type Group with the provided ID
+                headers:
+                    Accept:
+                        description: application/vnd.ez.api.ContentTypeGroup+xml or application/vnd.ez.api.ContentTypeGroup+json
+                    If-None-Match:
+                        description: ETag
+                responses:
+                    200:
+                        description: OK
+                    401:
+                        description: Error - The user is not authorized to read this Content Type Group
+                    404:
+                        description: Error - The Content Type Group does not exist
+            patch:
+                description: PATCH or POST with header X-HTTP-Method-Override PATCH. Updates a Content Type Group.
+                headers:
+                    Accept:
+                        description: application/vnd.ez.api.ContentTypeGroup+xml or application/vnd.ez.api.ContentTypeGroup+json
+                    Content-Type:
+                        description: application/vnd.ez.api.ContentTypeGroupInput+xml or application/vnd.ez.api.ContentTypeGroupInput+json
+                    If-Match:
+                        description: ETag causes patching only if the specified ETag is the current one. Otherwise a 412 is returned.
+                body:
+                    application/vnd.ez.api.ContentTypeGroup+xml:
+                        schema: |
+                        example: |
+                            <?xml version="1.0" encoding="UTF-8"?>
+                            <ContentTypeGroupInput>
+                                <identifier>updatedIdentifer</identifier>
+                            </ContentTypeGroupInput>
+                responses:
+                    200:
+                        body:
+                            application/vnd.ez.api.ContentTypeGroup+xml:
+                                example: |
+                                    <?xml version="1.0" encoding="UTF-8"?>
+                                    <ContentTypeGroup href="/content/typesgroups/7" media-type="application/vnd.ez.api.ContentTypeGroup+xml">
+                                        <id>7</id>
+                                        <identifier>updatedIdentifer</identifier>
+                                        <created>2012-02-31T12:45:00</created>
+                                        <modified>2012-04-13T12:45:00</modified>
+                                        <Creator href="/user/users/13" media-type="application/vnd.ez.api.User+xml"/>
+                                        <Modifier href="/user/users/8" media-type="application/vnd.ez.api.User+xml"/>
+                                        <ContentTypes href="/content/typegroups/7/types" media-type="application/vnd.ez.api.ContentTypeList+xml"/>
+                                    </ContentTypeGroup>
+                    400:
+                        description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
+                    401:
+                        description: Error - The user is not authorized to create this Content Type group
+                    403:
+                        description: Error - A Content Type Group with the given identifier already exists
+                    412:
+                        description: Error - The current ETag does not match the one provided in the If-Match header
+            delete:
+                description: Deletes the provided Content Type Group
+                responses:
+                    204:
+                        description: No Content
+                    401:
+                        description: Error - The user is not authorized to delete this Content Type Group
+                    403:
+                        description: Error - The Content Type Group is not empty
+                    404:
+                        description: Error - The Content Type Group does not exist
+            /types:
+                get:
+                    description: Returns a list of Content Types in the provided group
+                    headers:
+                        Accept:
+                            description: application/vnd.ez.api.ContentTypeInfoList+xml or application/vnd.ez.api.ContentTypeInfoList+json or application/vnd.ez.api.ContentTypeList+xml or application/vnd.ez.api.ContentTypeList+json
+                    responses:
+                        200:
+                            description: OK
+                        401:
+                            description: Error - The user has no permission to read the Content Types
+                post:
+                    description: Creates a new Content Type draft in the given Content Type Group
+                    queryParameters:
+                        publish:
+                            description: If true, the Content Type is published after creating (default false)
+                            type: boolean
+                    headers:
+                        Accept:
+                            description: application/vnd.ez.api.ContentType+xml or application/vnd.ez.api.ContentType+json
+                        Content-Type:
+                            description: application/vnd.ez.api.ContentTypeCreate+xml or application/vnd.ez.api.ContentTypeCreate+json
+                    body:
+                        application/vnd.ez.api.ContentType:
+                            schema: |
+                            example: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <ContentTypeCreate>
+                                    <identifier>newContentType</identifier>
+                                    <names>
+                                        <value languageCode="eng-US">New Content Type</value>
+                                    </names>
+                                    <descriptions>
+                                        <value languageCode="eng-US">This is a description</value>
+                                    </descriptions>
+                                    <remoteId>remoteId-qwert548</remoteId>
+                                    <urlAliasSchema>&lt;title&gt;</urlAliasSchema>
+                                    <nameSchema>&lt;title&gt;</nameSchema>
+                                    <isContainer>true</isContainer>
+                                    <mainLanguageCode>eng-US</mainLanguageCode>
+                                    <defaultAlwaysAvailable>true</defaultAlwaysAvailable>
+                                    <defaultSortField>PATH</defaultSortField>
+                                    <defaultSortOrder>ASC</defaultSortOrder>
+                                    <FieldDefinitions>
+                                    <FieldDefinition>
+                                        <identifier>title</identifier>
+                                        <fieldType>ezstring</fieldType>
+                                        <fieldGroup>content</fieldGroup>
+                                        <position>1</position>
+                                        <isTranslatable>true</isTranslatable>
+                                        <isRequired>true</isRequired>
+                                        <isInfoCollector>false</isInfoCollector>
+                                        <defaultValue>New Title</defaultValue>
+                                        <isSearchable>true</isSearchable>
+                                        <names>
+                                            <value languageCode="eng-US">Title</value>
+                                        </names>
+                                        <descriptions>
+                                            <value languageCode="eng-US">This is the title</value>
+                                        </descriptions>
+                                    </FieldDefinition>
+                                    <FieldDefinition>
+                                        <identifier>summary</identifier>
+                                        <fieldType>ezxmltext</fieldType>
+                                        <fieldGroup>content</fieldGroup>
+                                        <position>2</position>
+                                        <isTranslatable>true</isTranslatable>
+                                        <isRequired>false</isRequired>
+                                        <isInfoCollector>false</isInfoCollector>
+                                        <defaultValue>
+                                            <value key="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;section/&gt;</value>
+                                        </defaultValue>
+                                        <isSearchable>true</isSearchable>
+                                        <names>
+                                            <value languageCode="eng-US">Summary</value>
+                                        </names>
+                                        <descriptions>
+                                            <value languageCode="eng-US">This is the summary</value>
+                                        </descriptions>
+                                    </FieldDefinition>
+                                    </FieldDefinitions>
+                                </ContentTypeCreate>
+                    responses:
+                        201:
+                            description: Content Type created
+                            body:
+                                application/vnd.ez.api.ContentType+xml:
+                                    example: |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <ContentType href="/content/types/32/draft" media-type="application/vnd.ez.api.ContentType+xml">
+                                            <id>32</id>
+                                            <status>DRAFT</status>
+                                            <identifier>newContentType</identifier>
+                                            <names>
+                                                <value languageCode="eng-US">New Content Type</value>
+                                            </names>
+                                            <descriptions>
+                                                <value languageCode="eng-US">This is a description</value>
+                                            </descriptions>
+                                            <creationDate>2001-01-01T16:37:00</creationDate>
+                                            <modificationDate>2001-01-01T16:37:00</modificationDate>
+                                            <Creator href="/user/users/13" media-type="application/vnd.ez.api.User+xml"/>
+                                            <Modifier href="/user/users/13" media-type="application/vnd.ez.api.User+xml"/>
+                                            <remoteId>remoteId-qwert548</remoteId>
+                                            <urlAliasSchema>&lt;title&gt;</urlAliasSchema>
+                                            <nameSchema>&lt;title&gt;</nameSchema>
+                                            <isContainer>true</isContainer>
+                                            <mainLanguageCode>eng-US</mainLanguageCode>
+                                            <defaultAlwaysAvailable>true</defaultAlwaysAvailable>
+                                            <defaultSortField>PATH</defaultSortField>
+                                            <defaultSortOrder>ASC</defaultSortOrder>
+                                            <FieldDefinitions href="/content/types/32/draft/fielddefinitions" media-type="application/vnd.ez.api.FieldDefinitionList+xml">
+                                                <FieldDefinition href="/content/types/32/draft/fielddefinitions/34" media-type="application/vnd.ez.api.FieldDefinition+xml">
+                                                    <id>34</id>
+                                                    <identifier>title</identifier>
+                                                    <fieldType>ezstring</fieldType>
+                                                    <fieldGroup>content</fieldGroup>
+                                                    <position>1</position>
+                                                    <isTranslatable>true</isTranslatable>
+                                                    <isRequired>true</isRequired>
+                                                    <isInfoCollector>false</isInfoCollector>
+                                                    <defaultValue>New Title</defaultValue>
+                                                    <isSearchable>true</isSearchable>
+                                                    <names>
+                                                        <value languageCode="eng-US">Title</value>
+                                                    </names>
+                                                    <descriptions>
+                                                        <value languageCode="eng-US">This is the title</value>
+                                                    </descriptions>
+                                                </FieldDefinition>
+                                                <FieldDefinition href="/content/types/32/draft/fielddefinitions/36" media-type="application/vnd.ez.api.FieldDefinition+xml">
+                                                    <id>36</id>
+                                                    <identifier>summary</identifier>
+                                                    <fieldType>ezxmltext</fieldType>
+                                                    <fieldGroup>content</fieldGroup>
+                                                    <position>2</position>
+                                                    <isTranslatable>true</isTranslatable>
+                                                    <isRequired>false</isRequired>
+                                                    <isInfoCollector>false</isInfoCollector>
+                                                    <defaultValue>
+                                                        <value key="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;section/&gt;</value>
+                                                    </defaultValue>
+                                                    <isSearchable>true</isSearchable>
+                                                    <names>
+                                                        <value languageCode="eng-US">Summary</value>
+                                                    </names>
+                                                    <descriptions>
+                                                        <value languageCode="eng-US">This is the summary</value>
+                                                    </descriptions>
+                                                </FieldDefinition>
+                                            </FieldDefinitions>
+                                        </ContentType>
+                        400:
+                            description: Error - The input does not match the input schema definition. Validation on a field definition fails. Validation of the Content Type fails, e.g. multiple Fields of a same singular Field Type are provided. publish is set to true and the input is not complete e.g. no field definitions are provided.
+                        401:
+                            description: Error - The user is not authorized to create this Content Type
+                        403:
+                            description: Error - A Content Type with same identifier already exists
+    /types:
+        get:
+            description: Returns a list of Content Types
+            queryParameters:
+                identifier:
+                    description: Retrieves the Content Type for the given identifer
+                remoteId:
+                    description: Retrieves the Content Type for the given remoteId
+                limit:
+                    description: Only &lt;limit&gt; items will be returned, starting with the offset
+                offset:
+                    description: Offset of the result set
+                orderby:
+                    description: One of (name|lastmodified)
+                sort:
+                    description: One of (asc|desc)
+            headers:
+                Accept:
+                    description: application/vnd.ez.api.ContentTypeInfoList+xml or application/vnd.ez.api.ContentTypeInfoList+json or application/vnd.ez.api.ContentTypeList+xml or application/vnd.ez.api.ContentTypeList+json
+            responses:
+                200:
+                    description: OK
+                401:
+                    description: Error - The user has no permission to read the Content Types
+        /{contentTypeId}:
+            get:
+                description: Returns the Content Type with the provided ID
+                headers:
+                    Accept:
+                        description: application/vnd.ez.api.ContentType+xml or application/vnd.ez.api.ContentType+json
+                    If-None-Match:
+                        description: ETag
+                responses:
+                    200:
+                        description: OK
+                    401:
+                        description: Error - The user is not authorized to read this Content Type
+                    404:
+                        description: Error - The Content Type does not exist
+            # No result?
+            copy:
+                description: COPY or POST with header X-HTTP-Method-Override COPY. Copies a Content Type. A new remoteId is generated, and the identifier of the copy is set to copy_of_%lt;originalBaseIdentifier&gt;_&lt;newTypeId&gt; (or another random string).
+                responses:
+                    201:
+                        description: Copy of the Content Type created
+                    401:
+                        description: Error - The user is not authorized to copy this Content Type
+            post:
+                description: Creates a draft and updates it with the given data
+                headers:
+                    Accept:
+                        description: application/vnd.ez.api.ContentTypeInfo+xml or application/vnd.ez.api.ContentTypeInfo+json
+                    Content-Type:
+                        description: application/vnd.ez.api.ContentTypeUpdate+xml or application/vnd.ez.api.ContentTypeUpdate+json
+                responses:
+                    201:
+                        description: Created
+                    400:
+                        description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
+                    401:
+                        description: Error - The user is not authorized to create the draft
+                    403:
+                        # Clarify message
+                        description: Error - A Content Type with the given new identifier already exists. If there exists already a draft.
+            delete:
+                description: Deletes the provided Content Type
+                responses:
+                    204:
+                        description: No Content
+                    401:
+                        description: Error - The user is not authorized to delete this Content Type
+                    403:
+                        description: Error - There are object instances of this Content Type. The response should contain an ErrorMessage.
+                    404:
+                        description: Error - The Content Type does not exist
+            /draft:
+                patch:
+                    description: PATCH or POST with header X-HTTP-Method-Override PATCH. Updates metadata of a draft. This method does not handle Field definitions.
+                    headers:
+                        Accept:
+                            description: application/vnd.ez.api.ContentTypeInfo+xml or application/vnd.ez.api.ContentTypeInfo+json
+                        Content-Type:
+                            description: application/vnd.ez.api.ContentTypeUpdate+xml or application/vnd.ez.api.ContentTypeUpdate+json
+                    body:
+                        application/vnd.ez.api.ContentTypeInfo+xml:
+                            schema: |
+                            example: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <ContentTypeUpdate>
+                                    <names>
+                                        <value languageCode="ger-DE">Neuer Content Typ</value>
+                                    </names>
+                                    <descriptions>
+                                        <value languageCode="ger-DE">Das ist ein neuer Content Typ</value>
+                                    </descriptions>
+                                </ContentTypeUpdate>
+                    responses:
+                        200:
+                            body:
+                                application/vnd.ez.api.ContentType+xml:
+                                    example: |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <ContentType href="/content/types/32/draft" media-type="application/vnd.ez.api.ContentType+xml">
+                                            <id>32</id>
+                                            <status>DRAFT</status>
+                                            <identifier>newContentType</identifier>
+                                            <names>
+                                                <value languageCode="eng-US">New Content Type</value>
+                                                <value languageCode="ger-DE">Neuer Content Typ</value>
+                                            </names>
+                                            <descriptions>
+                                                <value languageCode="eng-US">This is a description</value>
+                                                <value languageCode="ger-DE">Das ist ein neuer Content Typ</value>
+                                            </descriptions>
+                                            <creationDate>2001-01-01T16:37:00</creationDate>
+                                            <modificationDate>2001-01-01T16:37:00</modificationDate>
+                                            <Creator href="/user/users/13" media-type="application/vnd.ez.api.User+xml"/>
+                                            <Modifier href="/user/users/13" media-type="application/vnd.ez.api.User+xml"/>
+                                            <remoteId>remoteId-qwert548</remoteId>
+                                            <urlAliasSchema>&lt;title&gt;</urlAliasSchema>
+                                            <nameSchema>&lt;title&gt;</nameSchema>
+                                            <isContainer>true</isContainer>
+                                            <mainLanguageCode>eng-US</mainLanguageCode>
+                                            <defaultAlwaysAvailable>true</defaultAlwaysAvailable>
+                                            <defaultSortField>PATH</defaultSortField>
+                                            <defaultSortOrder>ASC</defaultSortOrder>
+                                        </ContentType>
+                        400:
+                            description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
+                        401:
+                            description: Error - The user is not authorized to update the draft
+                        403:
+                            description: Error - A Content Type with the given new identifier already exists
+                        404:
+                            description: Error - There is no draft for this Content Type
+                publish:
+                    description: PUBLISH or POST with header X-HTTP-Method-Override PUBLISH. Publishes a Content Type draft.
+                    responses:
+                        200:
+                            description: OK
+                        401:
+                            description: Error - The user is not authorized to publish this Content Type draft
+                        403:
+                            description: Error - The Content Type draft is not complete, e.g. there is no Field definition provided
+                        404:
+                            description: Error - If there is no draft or Content Type with the given ID
+                delete:
+                    description: Deletes the provided Content Type draft
+                    responses:
+                        204:
+                            description: No Content
+                        401:
+                            description: Error - The user is not authorized to delete this Content Type draft
+                        404:
+                            description: Error - The Content Type/draft does not exist
+                /fielddefinitions:
+                    post:
+                        description: Creates a new Field definition for the given Content Type
+                        headers:
+                            Accept:
+                                description: application/vnd.ez.api.FieldDefinition+xml or application/vnd.ez.api.FieldDefinition+json
+                            Content-Type:
+                                description: application/vnd.ez.api.FieldDefinitionCreate+xml or application/vnd.ez.api.FieldDefinitionCreate+json
+                        responses:
+                            201:
+                                description: Created
+                            400:
+                                description: Error - The input does not match the input schema definition or validation on the field definition fails. In this case the response contains an ErrorMessage
+                            401:
+                                description: Error - The user is not authorized to add a Field definition
+                            403:
+                                description: Error - A Field definition with same identifier already exists in the given Content Type. The Field definition is of singular type, already existing in the given Content Type. The Field definition ti add is of a type that can't be added to a Content Type that already has content instances
+                    /{fieldDefinitionId}:
+                        get:
+                            description: Returns the Field definition given by ID
+                            headers:
+                                Accept:
+                                    description: application/vnd.ez.api.FieldDefinition+xml or application/vnd.ez.api.FieldDefinition+json
+                            responses:
+                                200:
+                                    description: OK
+                                401:
+                                    description: Error - The user is not authorized to read the Content Type draft
+                                404:
+                                    description: Error - The Content Type or draft does not exist
+                        put:
+                            description: Updates the attributes of a Field definition
+                            headers:
+                                Accept:
+                                    description: application/vnd.ez.api.FieldDefinition+xml or application/vnd.ez.api.FieldDefinition+json
+                                Content-Type:
+                                    description: application/vnd.ez.api.FieldDefinitionUpdate+xml or application/vnd.ez.api.FieldDefinitionUpdate+json
+                            responses:
+                                200:
+                                    description: OK
+                                400:
+                                    description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
+                                401:
+                                    description: Error - The user is not authorized to update the Field definition
+                                403:
+                                    description: Error - A Field definition with the given new identifier already exists in the given Content Type.
+                        delete:
+                            description: Deletes the provided Field definition
+                            responses:
+                                204:
+                                    description: No Content
+                                401:
+                                    description: Error - The user is not authorized to delete this Content Type
+                                403:
+                                    description: Error - There is no draft of the Content Type assigned to the authenticated user
+            # Source file states "/content/type/<ID>/groups", presumably a typo
+            /groups:
+                get:
+                    description: Returns the Content Type Group the Content Type belongs to.
+                    headers:
+                        Accept:
+                            description: application/vnd.ez.api.ContentTypeGroupRefList+xml or application/vnd.ez.api.ContentTypeGroupRefList+json
+                    responses:
+                        200:
+                            body:
+                                application/vnd.ez.api.ContentTypeGroup+xml:
+                                    example: |
+                                        <ContentTypeGroupRefList>
+                                            <ContentTypeGroupRef href="/content/typegroups/7" media-type="application/vnd.ez.api.ContentTypeGroup+xml"/>
+                                        </ContentTypeGroupRefList>
+                        401:
+                            description: Error - The user is not authorized to read this Content Type
+                        404:
+                            description: Error - The Content Type does not exist
+                post:
+                    description: Links a Content Type Group to the Content Type and returns the updated group list
+                    queryParameters:
+                        group:
+                            description: The uri of the group to which the Content Type should be linked
+                            type: uri
+                    headers:
+                        Accept:
+                            description: application/vnd.ez.api.ContentTypeGroupRefList+xml or application/vnd.ez.api.ContentTypeGroupRefList+json
+                    responses:
+                        200:
+                            body:
+                                application/vnd.ez.api.ContentTypeGroupRefList+xml:
+                                    example: |
+                                        <ContentTypeGroupRefList>
+                                          <ContentTypeGroupRef href="/content/typegroups/7" media-type="application/vnd.ez.api.ContentTypeGroup+xml">
+                                              <unlink href="/content/type/32/groups/7" method="DELETE"/>
+                                          </ContentTypeGroupRefList>
+                                          <ContentTypeGroupRef href="/content/typegroups/10" media-type="application/vnd.ez.api.ContentTypeGroup+xml">
+                                              <unlink href="/content/type/32/groups/10" method="DELETE"/>
+                                          </ContentTypeGroupRefList>
+                                        </ContentTypeGroupRefList>
+                        400:
+                            description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
+                        401:
+                            description: Error - The user is not authorized to add a group
+                        403:
+                            description: Error - The Content Type is already assigned to the group
+                /{Id}:
+                    delete:
+                        description: Removes the given group from the Content Type and returns the updated group list
+                        headers:
+                            Accept:
+                                description: application/vnd.ez.api.ContentTypeGroupRefList+xml or application/vnd.ez.api.ContentTypeGroupRefList+json
+                        responses:
+                            200:
+                                body:
+                                    application/vnd.ez.api.ContentTypeGroup+xml:
+                                        example: |
+                                            <ContentTypeGroupRefList>
+                                                <ContentTypeGroupRef href="/content/typegroups/10" media-type="application/vnd.ez.api.ContentTypeGroup+xml"/>
+                                            </ContentTypeGroupRefList>
+                            401:
+                                description: Error - The user is not authorized to delete this Content Type
+                            403:
+                                # Verify
+                                description: Error - The given group is the last one
+                            404:
+                                description: Error - The resource does not exist
