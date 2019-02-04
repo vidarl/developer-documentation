@@ -739,6 +739,19 @@ version: 2.4
                     description: Temporary redirect
                 404:
                     description: Error - if the resource does not exist
+        copy:
+            description: COPY or POST with header X-HTTP-Method-Override: COPY. The system creates a new draft version as a copy from the current version
+            headers:
+              Accept: application/vnd.ez.api.Version+xml or application/vnd.ez.api.Version+json
+            responses:
+                201:
+                    description: Created
+                401:
+                    description: Error - if the user is not authorized to update this object
+                403:
+                    description: Error - if the current version is already a draft
+                404:
+                    description: Error - if the content object was not found
     /objects/{contentId}/versions:
         get:
             description: Returns a list of all versions of the content. This method does not include fields and relations in the Version elements of the response.
@@ -1000,8 +1013,7 @@ version: 2.4
                     description: Error - if the content id or version id does not exist
                 412:
                     description: Error - if the current ETag does not match with the provided one in the If-Match header
-    /objects/{contentId}/versions/{no}:
-        post:
+        copy:
             description: COPY or POST with header X-HTTP-Method-Override COPY. The system creates a new draft version as a copy from the given version
             headers:
                 Accept: application/vnd.ez.api.Version+xml or application/vnd.ez.api.Version+json
@@ -1012,20 +1024,406 @@ version: 2.4
                     description: Error - if the user is not authorized to update this object
                 404:
                     description: Error - if the content object was not found
-    /objects/{contentId}/currentversion:
-        post:
-            description: COPY or POST with header X-HTTP-Method-Override: COPY. The system creates a new draft version as a copy from the current version
-            headers:
-              Accept: application/vnd.ez.api.Version+xml or application/vnd.ez.api.Version+json
+        delete:
+            description: The version is deleted
             responses:
-                201:
-                    description: Created
+                204:
+                    description: No Content - the version is deleted
+                404:
+                    description: Error - if the content object or version nr was not found
                 401:
-                    description: Error - if the user is not authorized to update this object
+                    description: Error - if the user is not authorized to delete this version
                 403:
-                    description: Error - if the current version is already a draft
+                    description: Error - if the version is in state published
+        publish:
+            description: The content version is published. PUBLISH or POST with header X-HTTP-Method-Override PUBLISH
+            responses:
+                204:
+                    description: No Content - the content version is published
+                401:
+                    description: Error - if the user is not authorized to publish this version
+                403:
+                    description: Error - if the version is not a draft
+                404:
+                    description: Error - if the content object or version nr was not found
+    /objects/{contentId}/versions/{versionNo}/translations/{languageCode}:
+        delete:
+            description: Removes a translation from a version draft
+            responses:
+                204:
+                    description: No Content - removes a translation from a version draft
+                401:
+                    description: Error - if the user is not authorized to delete this translation
+                403:
+                    description: Error - if the version is in not draft state
+                404:
+                    description: Error - if the content item or version number were not found
+                406:
+                    description: Error - if the given translation does not exist for the version
+                409:
+                    description: Error - if the specified translation is the only one the Version has or is the main translation
+    /objects/{contentId}/relations:
+        get:
+            description: Redirects to the relations of the current version
+            responses:
+              307:
+                  description: Temporary redirect
+              401:
+                  description: Error - if the user is not authorized to read this object
+              404:
+                  description: Error - if the content object was not found
+    /objects/{contentId}/versions/{no}/relations:
+        get:
+            description: Loads the relations of the given version
+            queryParameters:
+                offset:
+                    description: the offset of the result set
+                    type: integer
+                limit:
+                    description: the number of bookmarks returned
+                    type: integer
+            headers:
+                Accept: application/vnd.ez.api.RelationList+xml or application/vnd.ez.api.RelationList+json
+            responses:
+                200:
+                    body:
+                        application/vnd.ez.api.RelationList+xml:
+                            example:  |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <Relations href="/content/object/32/versions/2/relations" media-type="application/vnd.ez.api.RelationList+xml">
+                                    <Relation href="/content/object/32/versions/2/relations/43" media-type="application/vnd.ez.api.Relation+xml">
+                                      <SourceContent href="/content/objects/23"
+                                        media-type="application/vnd.ez.api.ContentInfo+xml" />
+                                      <DestinationContent href="/content/objects/45"
+                                        media-type="application/vnd.ez.api.ContentInfo+xml" />
+                                      <RelationType>COMMON</RelationType>
+                                    </Relation>
+                                    <Relation href="/content/object/32/versions/2/relations/98" media-type="application/vnd.ez.api.Relation+xml">
+                                      <SourceContent href="/content/objects/23"
+                                        media-type="application/vnd.ez.api.ContentInfo+xml" />
+                                      <DestinationContent href="/content/objects/87"
+                                        media-type="application/vnd.ez.api.ContentInfo+xml" />
+                                      <sourceFieldDefinitionIdentifier>body</sourceFieldDefinitionIdentifier>
+                                      <RelationType>EMBED</RelationType>
+                                    </Relation>
+                                </Relations>
+                401:
+                    description: Error - if the user is not authorized to read this object
                 404:
                     description: Error - if the content object was not found
+        post:
+            description: Creates a new relation of type COMMON for the given draft.
+            headers:
+                Accept:
+                    description: application/vnd.ez.api.Relation+xml or application/vnd.ez.api.Relation+json
+                Content-Type:
+                    description: application/vnd.ez.api.RelationCreate+xml or application/vnd.ez.api.RelationCreate+json
+            body:
+                application/vnd.ez.api.Relation+xml:
+                    schema:
+                    example:  |
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <RelationCreate>
+                          <Destination href="/content/objects/66"/>
+                        </RelationCreate>
+            responses:
+                201:
+                    body:
+                        application/vnd.ez.api.Relation+xml:
+                            example:  |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <Relation href="/content/object/32/versions/2/relations/66" media-type="application/vnd.ez.api.Relation+xml">
+                                  <SourceContent href="/content/objects/23"
+                                    media-type="application/vnd.ez.api.ContentInfo+xml" />
+                                  <DestinationContent href="/content/objects/66"
+                                    media-type="application/vnd.ez.api.ContentInfo+xml" />
+                                  <RelationType>COMMON</RelationType>
+                                </Relation>
+    /objects/{contentId}/versions/{versionNo}/relations/{id}:
+        get:
+            description: loads a relation for the given content object
+            headers:
+                Accept: application/vnd.ez.api.Relation+xml or application/vnd.ez.api.Relation+json
+            responses:
+                200:
+                    description: OK - loads a relation for the given content object
+                401:
+                    description: Error - if the user is not authorized to read this object
+                404:
+                    description: Error - if the object with the given id or the relation does not exist
+        delete:
+            description: Deletes a relation of the given draft.
+            responses:
+                204:
+                    description: No Content - deleted a relation of the given draft.
+                401:
+                    description: Error - if the user is not authorized to delete this relation
+                403:
+                    description: Error - if the relation is not of type COMMON or the given version is not a draft
+                404:
+                    description: Error - content object was not found or the relation was not found in the given version
+    /binary/images/{imageId}/variations/{variationIdentifier}:
+        get:
+            description: Loads an image variation
+            headers:
+                Accept: application/vnd.ez.api.ImageVariation+xml or application/vnd.ez.api.ImageVariation+json
+            responses:
+                200:
+                    body:
+                         application/vnd.ez.api.ImageVariation+xml:
+                            example:  |
+                                <ImageVariation href="/content/binary/images/123-12345/variations/large" media-type="application/vnd.ez.api.ImageVariation+xml">
+                                    <uri>/var/ezdemo_site/storage/images/media/images/challenge-accepted/35804-1-eng-GB/Challenge-accepted.jpg</uri>
+                                    <contentType>image/jpg</contentType>
+                                    <width>640</width>
+                                    <height>400</height>
+                                    <fileSize>90387</fileSize>
+                                </ImageVariation>
+                401:
+                    description: Error - if the user is not authorized to read this object
+                404:
+                    description: Error - if imageId doesn't match any image
+                404:
+                    description: Error - if variationIdentifier doesn't match any known variation
+    /objects/{contentId}/locations:
+        post:
+            description: Creates a new location for the given content object
+            headers:
+                Accept: application/vnd.ez.api.Location+xml or application/vnd.ez.api.Location+json
+            body:
+                application/vnd.ez.api.Location+xml:
+                    schema:
+                    example:  |
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <LocationCreate>
+                          <ParentLocation href="/content/locations/1/5/73" />
+                          <priority>0</priority>
+                          <hidden>false</hidden>
+                          <sortField>PATH</sortField>
+                          <sortOrder>ASC</sortOrder>
+                        </LocationCreate>
+            responses:
+                201:
+                    body:
+                        application/vnd.ez.api.Location+xml:
+                            example:  |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <Location href="/content/locations/1/5/73/133" media-type="application/vnd.ez.api.Location+xml">
+                                  <id>133</id>
+                                  <priority>0</priority>
+                                  <hidden>false</hidden>
+                                  <invisible>false</invisible>
+                                  <ParentLocation href="/content/locations/1/5/73" media-type="application/vnd.ez.api.Location+xml"/>
+                                  <pathString>/1/5/73/133</pathString>
+                                  <depth>4</depth>
+                                  <childCount>0</childCount>
+                                  <remoteId>remoteId-qwert567</remoteId>
+                                  <Children href="/content/locations/1/5/73/133/children" media-type="application/vnd.ez.api.LocationList+xml"/>
+                                  <Content href="/content/objects/23" media-type="application/vnd.ez.api.Content+xml"/>
+                                  <sortField>PATH</sortField>
+                                  <sortOrder>ASC</sortOrder>
+                                </Location>
+                400:
+                    description: Error - if the Input does not match the input schema definition, In this case the response contains an ErrorMessage
+                401:
+                    description: Error - if the user is not authorized to create this location
+                403:
+                    description: Error - if a location under the given parent id already exists
+        get:
+            description: loads all locations for the given content object
+            headers:
+                Accept: application/vnd.ez.api.LocationList+xml or application/vnd.ez.api.LocationList+json
+                If-None-Match: <etag>
+            responses:
+                200:
+                    body:
+                        application/vnd.ez.api.LocationList+xml:
+                            example:  |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <LocationList href="/content/objects/23/locations" media-type="application/vnd.ez.api.LocationList+xml">
+                                  <Location href="/content/locations/1/2/56" media-type="application/vnd.ez.api.Location+xml"/>
+                                  <Location href="/content/locations/1/4/73/133" media-type="application/vnd.ez.api.Location+xml"/>
+                                </LocationList>
+                401:
+                    description: Error - if the user is not authorized to read this object
+                404:
+                    description: Error - if the object with the given ID does not exist
+    /locations:
+        get:
+            description: loads the location for a given ID (x), remote ID or URL alias
+            queryParameters:
+                id:
+                    description: the id of the location. If present the location is with the given id is returned.
+                remoteId:
+                    description: the remoteId of the location. If present the location with the given remoteId is returned
+                urlAlias:
+                    description: one of the url Aliases of the location. If present the location with given url Alias is returned
+            responses:
+                307:
+                    description: Temporary redirect
+                404:
+                    description: Error - if the location with the given id (remoteId or urlAlias) does not exist
+    /locations/{path}:
+        get:
+            description: loads the location for the given path
+            headers:
+                Accept: application/vnd.ez.api.Location+xml or application/vnd.ez.api.Location+json
+                If-None-Match: <etag>
+            responses:
+                200:
+                    body:
+                        application/vnd.ez.api.Location+xml:
+                            example:
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <Location href="/content/locations/1/5/73/133" media-type="application/vnd.ez.api.Location+xml">
+                                  <id>133</id>
+                                  <priority>0</priority>
+                                  <hidden>false</hidden>
+                                  <invisible>false</invisible>
+                                  <ParentLocation href="/content/locations/1/5/73" media-type="application/vnd.ez.api.Location+xml"/>
+                                  <pathString>/1/5/73/133</pathString>
+                                  <depth>4</depth>
+                                  <childCount>0</childCount>
+                                  <remoteId>remoteId-qwert567</remoteId>
+                                  <Children href="/content/locations/1/5/73/133/children" media-type="application/vnd.ez.api.LocationList+xml"/>
+                                  <Content href="/content/objects/23" media-type="application/vnd.ez.api.Content+xml"/>
+                                  <sortField>PATH</sortField>
+                                  <sortOrder>ASC</sortOrder>
+                                  <UrlAliases media-type="application/vnd.ez.api.UrlAliasRefList+xml" href="/api/ezp/v2/content/locations/1/4/73/133/urlaliases"/>
+                                </Location>
+                401:
+                    description: Error - if the user is not authorized to read this location
+                404:
+                    description: Error - if the location with the given path does not exist
+        move:
+            description: moves the location to another parent. The destination can also be /content/trash where the location is put into the trash. (NOTE - Be aware that the user might not have access to the item any longer after it has been moved, for example when read access is limited by subtree). MOVE or POST with header X-HTTP-Method-Override MOVE
+            headers:
+                Destination:
+                    description: A parent location resource to which the location is moved
+            responses:
+                201:
+                    description: Created. If destination is /content/trash and content only has one location (NOTE Like on normal subtree moves, be aware that the user might not have access to the item any longer after it has been moved to trash)
+                204:
+                    description: No Content. If destination is /content/trash and content still has other locations (no trash item is created).
+                401:
+                    description: Error - if the user is not authorized to move this location
+                404:
+                    description: Error - if the location with the given id does not exist
+        post:
+            description: Copies the subtree to another parent. COPY or POST with header X-HTTP-Method-Override COPY
+            headers:
+                Destination:
+                    description: A parent location resource to which the location is moved
+            responses:
+                201:
+                    description: Created. Copied the subtree to another parent.
+                401:
+                    description: Error - if the user is not authorized to move this location
+                404:
+                    description: Error - if the location with the given id does not exist
+        delete:
+            description: Deletes the complete subtree for the given path. Every content object is deleted which does not have any other location. Otherwise the deleted location is removed from the content object. The children a recursively deleted.
+            responses:
+                204:
+                    description: No Content - deleted.
+                401:
+                    description: Error - if the user is not authorized to delete this subtree
+                404:
+                    description: Error - if the location with the given id does not exist
+    /locations/{path}/children:
+        get:
+            description: loads all child locations for the given parent location
+            queryParameters:
+                offset:
+                    description: the offset of the result set
+                    type: integer
+                limit:
+                    description: the number of bookmarks returned
+                    type: integer
+            headers:
+                Accept: application/vnd.ez.api.LocationList+xml or application/vnd.ez.api.LocationList+json
+            responses:
+                200:
+                    body:
+                        application/vnd.ez.api.LocationList+xml:
+                            example:  |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <LocationList href="/content/locations/1/2/54" media-type="application/vnd.ez.api.LocationList+xml">
+                                  <Location href="/content/locations/1/2/54/134" media-type="application/vnd.ez.api.Location+xml"/>
+                                  <Location href="/content/locations/1/4/54/143" media-type="application/vnd.ez.api.Location+xml"/>
+                                </LocationList>
+                401:
+                    description: Error - if the user is not authorized to read this object
+                404:
+                    description: Error - if the object with the given id does not exist
+    /locations/{contentId}:
+        patch:
+            description: updates the location, this method can also be used to hide/unhide a location via the hidden field in the LocationUpdate. PATCH or POST with header X-HTTP-Method-Override PATCH
+            headers:
+                Accept: application/vnd.ez.api.Location+xml or application/vnd.ez.api.Location+json:
+                Content-Type: application/vnd.ez.api.LocationUpdate+json or application/vnd.ez.api.LocationUpdate+xml
+                If-Match: <etag>
+            body:
+                application/vnd.ez.api.Location+xml:
+                    schema:
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <LocationUpdate>
+                          <priority>3</priority>
+                          <hidden>true</hidden>
+                          <remoteId>remoteId-qwert999</remoteId>
+                          <sortField>CLASS</sortField>
+                          <sortOrder>DESC</sortOrder>
+                        </LocationUpdate>
+            responses:
+                200:
+                    body:
+                        application/vnd.ez.api.Location+xml:
+                            example:  |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <Location href="/content/locations/1/5/73/133" media-type="application/vnd.ez.api.Location+xml">
+                                  <id>133</id>
+                                  <priority>3</priority>
+                                  <hidden>true</hidden>
+                                  <invisible>true</invisible>
+                                  <ParentLocation href="/content/locations/1/5/73" media-type="application/vnd.ez.api.Location+xml"/>
+                                  <pathString>/1/5/73/133</pathString>
+                                  <depth>4</depth>
+                                  <childCount>0</childCount>
+                                  <remoteId>remoteId-qwert999</remoteId>
+                                  <Children href="/content/locations/1/5/73/133/children" media-type="application/vnd.ez.api.LocationList+xml"/>
+                                  <Content href="/content/objects/23" media-type="application/vnd.ez.api.Content+xml"/>
+                                  <sortField>CLASS</sortField>
+                                  <sortOrder>ASC</sortOrder>
+                                </Location>
+                401:
+                    description: Error - if the user is not authorized to update this location
+                404:
+                    description: Error - if the location with the given id does not exist
+        post:
+            description: Swaps the content of the location with the content of the given location. SWAP or POST with header X-HTTP-Method-Override SWAP
+            headers:
+                Destination:
+                    description: A parent location resource to which the location is moved
+            responses:
+                204:
+                    description: No Content. Swapped the content of the location with the content of the given location
+                401:
+                    description: Error - if the user is not authorized to swap this location
+                404:
+                    description: Error - if the location with the given id does not exist
+/views:
+    post:
+        description: executes a query and returns view including the results The View input reflects the criteria model of the public API
+        headers:
+            Accept: application/vnd.ez.api.View+xml or application/vnd.ez.api.View+json or application/vnd.ez.api.View+xml; version=1.1 or application/vnd.ez.api.View+json; version=1.1
+            Content-Type: application/vnd.ez.api.ViewInput+xml or application/vnd.ez.api.ViewInput+json or application/vnd.ez.api.ViewInput+xml; version=1.1 or application/vnd.ez.api.ViewInput+json; version=1.1
+        responses:
+            200:
+                body:
+
+             400:
+                description: If the Input does not match the input schema definition, In this case the response contains an ErrorMessage
 /user:
     /groups:
         get:
