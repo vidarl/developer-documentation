@@ -1475,15 +1475,16 @@ version: 2.4
                           <name>Restricted</name>
                         </SectionInput>
             responses:
-                body:
-                    application/vnd.ez.api.Section+xml:
-                        example:  |
-                            <?xml version="1.0" encoding="UTF-8"?>
-                            <Section href="/content/sections/5" media-type="application/vnd.ez.api.Section+xml">
-                              <sectionId>5</sectionId>
-                              <identifier>restricted</identifier>
-                              <name>Restricted</name>
-                            </Section>
+                201:
+                    body:
+                        application/vnd.ez.api.Section+xml:
+                            example:  |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <Section href="/content/sections/5" media-type="application/vnd.ez.api.Section+xml">
+                                  <sectionId>5</sectionId>
+                                  <identifier>restricted</identifier>
+                                  <name>Restricted</name>
+                                </Section>
         get:
             description: Returns a list of all sections
             queryParameters:
@@ -2052,9 +2053,29 @@ version: 2.4
                     Accept: application/vnd.ez.api.User+xml or application/vnd.ez.api.User+json
                     Content-Type: application/vnd.ez.api.UserUpdate+json or application/vnd.ez.api.UserUpdate+xml
                     If-Match: ETag Causes to patch only if the specified etag is the current one. Otherwise a 412 is returned.
-                responses: TOTU
-
-            /{id}/groups:
+                responses:
+                    200:
+                        description: OK
+                    400:
+                        description: Error - the Input does not match the input schema definition, In this case the response contains an ErrorMessage
+                    401:
+                        description: Error - the user is not authorized to update the user
+                    404:
+                        description: Error - the user does not exist
+                    412:
+                        description: Error - the current ETag does not match with the provided one in the If-Match header
+            delete:
+                description: the given user is deleted
+                responses:
+                    204:
+                        description: No Content
+                    401:
+                        description: Error - the user is not authorized to delete this user
+                    403:
+                        description: Error - the user is the same as the authenticated user
+                    404:
+                        description: Error - the user does not exist
+            /groups:
                 get:
                     description: Returns a list of user groups the user belongs to. The returned list includes the resources for unassigning a user group if the user is in multiple groups.
                     queryParameters:
@@ -2062,7 +2083,7 @@ version: 2.4
                             description: the offset of the result set
                             type: integer
                        limit:
-                            description: the number of bookmarks returned
+                            description: the number of locations returned
                             type: integer
                     headers:
                         Accept:
@@ -2087,7 +2108,7 @@ version: 2.4
                         404:
                           description: Error - the user does not exist
                 post:
-                    description: Returns a list of user groups the user belongs to. The returned list includes the resources for unassigning a user group if the user is in multiple groups.
+                    description: Assigns the user to a user group
                     queryParameters:
                         group:
                             description: the new parent group resource of the user
@@ -2123,3 +2144,213 @@ version: 2.4
                             description: Error - the new user group does not exist or the user is already in this group
                         404:
                             description: Error - the user does not exist
+                delete:
+                    description: Unassigns the user from a user group
+                    headers:
+                        Accept:
+                            description: if set the link list of user groups is returned in xml or json format
+                            example: |
+                                application/vnd.ez.api.UserGroupRefList+xml
+                                application/vnd.ez.api.UserGroupRefList+json
+                    responses:
+                        200:
+                            body:
+                                application/vnd.ez.api.UserGroupRefList:
+                                    example:  |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <UserGroupRefList href="/user/users/45/groups"
+                                          media-type="application/vnd.ez.api.UserGroupRefList">
+                                          <UserGroup href="/user/groups/1/5/34" media-type="application/vnd.ez.api.UserGroup">
+                                            <unassign href="/user/users/45/groups/34" method="DELETE" />
+                                          </UserGroup>
+                                          <UserGroup href="/user/groups/1/5/88" media-type="application/vnd.ez.api.UserGroup">
+                                            <unassign href="/user/users/45/groups/88" method="DELETE" />
+                                          </UserGroup>
+                                        </UserGroupRefList>
+                        401:
+                            description: Error - the user is not authorized to unassign user groups
+                        403:
+                            description: Error - the user is not in the given group
+                        404:
+                            description: Error - the user does not exist
+    /roles:
+        get:
+            description: Returns a list of all roles
+            queryParameters:
+                identifier:
+                    description: Restricts the result to a list containing the role with the given identifier. If the role is not found an empty list is returned.
+                offset:
+                    description: the offset of the result set
+                    type: integer
+                limit:
+                    description: only limit items will be returned started by offset
+                    type: integer
+            headers:
+                Accept:
+                    description: if set the user list returned in xml or json format (see Role)
+                    example:  |
+                        application/vnd.ez.api.RoleList+xml
+                        application/vnd.ez.api.RoleList+json
+            responses:
+                200:
+                    description: OK
+                401:
+                    description: Error - the user has no permission to read roles
+        post:
+            description: Creates a new role or role draft
+            headers:
+                Accept:
+                    description: if set the new user is returned in xml or json format
+                    example:  |
+                        application/vnd.ez.api.Role+xml
+                        application/vnd.ez.api.Role+json
+                        application/vnd.ez.api.RoleDraft+xml
+                        application/vnd.ez.api.RoleDraft+json
+                Content-Type:
+                    description: the RoleInput schema encoded in xml or json
+                    example:  |
+                        application/vnd.ez.api.RoleInput+json
+                        application/vnd.ez.api.RoleInput+xml
+            body:
+                 application/vnd.ez.api.Role+xml:
+                    schema:
+                 application/vnd.ez.api.Role+xml:
+                    example:  |
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <RoleInput>
+                          <identifier>NewRole</identifier>
+                        </RoleInput>
+            responses:
+                201:
+                    body:
+                        application/vnd.ez.api.Role+xml:
+                            example:  |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <Role href="/user/roles/11" media-type="application/vnd.ez.api.Role+xml">
+                                  <identifier>NewRole</identifier>
+                                  <Policies href="/user/roles/11/policies" media-type="application/vnd.ez.api.PolicyList+xml"/>
+                                </Role>
+                400:
+                    description: Error - the Input does not match the input schema definition, In this case the response contains an ErrorMessage
+                401:
+                    description: Error - the user is not authorized to create this role / role draft
+        /{id}:
+            get:
+                description: loads a role for the given ID
+                headers:
+                    Accept:
+                        description: if set the user list returned in xml or json format (see Role)
+                        example:  |
+                            application/vnd.ez.api.Role+xml
+                            application/vnd.ez.api.Role+json
+                    If-None-Match:
+                        description: ETag
+                responses:
+                    200:
+                        description: OK
+                    401:
+                        description: Error - the user has no permission to read roles
+                    404:
+                        description: Error - the role does not exist
+            post:
+                description: Creates a new role draft from an existing role.
+                headers:
+                    Accept:
+                        description: if set the new user is returned in xml or json format
+                        example:  |
+                            application/vnd.ez.api.Role+xml
+                            application/vnd.ez.api.Role+json
+                    Content-Type:
+                        description: the RoleInput schema encoded in xml or json
+                        example:  |
+                            application/vnd.ez.api.RoleInput+json
+                            application/vnd.ez.api.RoleInput+xml
+                body:
+                    application/vnd.ez.api.Role+xml:
+                        schema:
+                    application/vnd.ez.api.RoleDraft+xml:
+                        example:  |
+                            <?xml version="1.0" encoding="UTF-8"?>
+                            <RoleInput>
+                              <identifier>MyRole</identifier>
+                            </RoleInput>
+                responses:
+                    201:
+                        body:
+                            application/vnd.ez.api.RoleDraft+xml:
+                                example:  |
+                                    <?xml version="1.0" encoding="UTF-8"?>
+                                    <Role href="/user/roles/11" media-type="application/vnd.ez.api.RoleDraft+xml">
+                                      <identifier>MyRole</identifier>
+                                      <Policies href="/user/roles/11/policies" media-type="application/vnd.ez.api.PolicyList+xml"/>
+                                    </Role>
+                    401:
+                        description: Error - the user is not authorized to create this role / role draft
+            patch:
+                description: Updates a role. PATCH or POST with header X-HTTP-Method-Override PATCH
+                headers:
+                    Accept:
+                        description: if set the new user is returned in xml or json format
+                        example:  |
+                            application/vnd.ez.api.Role+xml
+                            application/vnd.ez.api.Role+json
+                    Content-Type:
+                        description: the RoleInput schema encoded in xml or json
+                        example:  |
+                            application/vnd.ez.api.RoleInput+json
+                            application/vnd.ez.api.RoleInput+xml
+                    If-Match:
+                        description: ETag Causes to patch only if the specified etag is the current one. Otherwise a 412 is returned.
+                    responses:
+                        200:
+                            description: OK
+                        400:
+                            description: Error - the Input does not match the input schema definition, In this case the response contains an ErrorMessage
+                        401:
+                            description: Error - the user is not authorized to update the role
+                        412:
+                            description: Error - the current ETag does not match with the provided one in the If-Match header
+            /draft:
+                get:
+                    description: loads a role draft by original role ID
+                    headers:
+                        Accept:
+                            description: if set the user list returned in xml or json format
+                            example:  |
+                                application/vnd.ez.api.Role+xml
+                                application/vnd.ez.api.Role+json
+                        If-None-Match:
+                            description: ETag
+                    responses:
+                        200:
+                            description: OK
+                        401:
+                            description: Error - the user has no permission to read roles
+                        404:
+                            description: Error - there is no draft or role with the given ID
+                patch:
+                    description: Updates a role draft. PATCH or POST with header X-HTTP-Method-Override PATCH
+                    headers:
+                        Accept:
+                            description: if set the updated role is returned in xml or json format
+                            example:  |
+                                application/vnd.ez.api.Role+xml
+                                application/vnd.ez.api.Role+json
+                        Content-Type:
+                            description: the RoleInput schema encoded in xml or json
+                            example:  |
+                                application/vnd.ez.api.RoleInput+json
+                                application/vnd.ez.api.RoleInput+xml
+                        If-Match:
+                            description: ETag Causes to patch only if the specified etag is the current one. Otherwise a 412 is returned.
+                    responses:
+                        200:
+                            description: OK
+                        400:
+                            description: Error - the Input does not match the input schema definition, In this case the response contains an ErrorMessage
+                        401:
+                            description: Error - the user is not authorized to update the role
+                        404:
+                            description: Error - there is no draft or role with the given ID
+                        412:
+                            description: Error - the current ETag does not match with the provided one in the If-Match header
