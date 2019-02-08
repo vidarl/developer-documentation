@@ -5,6 +5,7 @@ baseUri: http://localhost/
 version: 2.4
 
 /content:
+    displayName: Content
     /trash:
         get:
             description: Returns a list of all items in Trash
@@ -15,10 +16,122 @@ version: 2.4
                     description: Offset of the result set
             headers:
                 Accept:
-                    description: application/vnd.ez.api.Trash+xml or application/vnd.ez.api.Trash+json
+                    description: Response format, either application/vnd.ez.api.ContentInfo+xml or application/vnd.ez.api.ContentInfo+json
+                    example: |
+                        application/vnd.ez.api.Trash+xml
+                        application/vnd.ez.api.Trash+json
             responses:
                 200:
                     description: OK
+                    # Divide into Trash and Trashitem
+                    body:
+                        application/vnd.ez.api.Trash+xml:
+                            schema: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                  xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                                  <xsd:include schemaLocation="CommonDefinitions.xsd" />
+                                  <xsd:include schemaLocation="Location.xsd" />
+
+                                  <xsd:complexType name="vnd.ez.api.TrashItem">
+                                    <xsd:complexContent>
+                                      <xsd:extension base="ref">
+                                        <xsd:all>
+                                          <xsd:element name="id" type="xsd:string">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                Location ID.
+                                                          </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="priority" type="xsd:int">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                Location priority
+                                                Position of the
+                                                Location among its siblings when sorted using priority
+                                                sort order.
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="hidden" type="xsd:boolean">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                Indicates that the Location entity has
+                                                been explicitly marked as hidden.
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="invisible" type="xsd:boolean">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                Indicates that the Location is
+                                                implicitly marked as hidden by a parent
+                                                location.
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="ParentLocation" type="ref">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                The parent location
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="pathString" type="xsd:string">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                The materialized path of the location
+                                                entry, eg: /1/2/
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="depth" type="xsd:int">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                Depth location has in the location
+                                                tree.
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="childCount" type="xsd:int">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                the number of children visible to the
+                                                authenticated user which has
+                                                loaded this instance.
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="remoteId" type="xsd:string"
+                                            minOccurs="0" />
+                                          <xsd:element name="Content" type="ref" />
+                                          <xsd:element name="sortField" type="sortFieldType" />
+                                          <xsd:element name="sortOrder" type="sortOrderType" />
+                                          <xsd:element name="ContentInfo" type="vnd.ez.api.ContentInfo">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                ContentInfo related to the Content
+                                                this TrashItem is part of.
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                        </xsd:all>
+                                      </xsd:extension>
+                                    </xsd:complexContent>
+                                  </xsd:complexType>
+
+                                  <xsd:complexType name="vnd.ez.api.Trash">
+                                    <xsd:complexContent>
+                                      <xsd:extension base="ref">
+                                        <xsd:sequence>
+                                          <xsd:element name="trashItem" type="vnd.ez.api.TrashItem"></xsd:element>
+                                        </xsd:sequence>
+                                      </xsd:extension>
+                                    </xsd:complexContent>
+                                  </xsd:complexType>
+                                  <xsd:element name="trash" type="vnd.ez.api.Trash" />
+                                </xsd:schema>
                 401:
                     description: Error - The user has no permission to read the trash
         delete:
@@ -33,7 +146,10 @@ version: 2.4
                 description: Returns the item in Trash with the provided ID
                 headers:
                     Accept:
-                        description: application/vnd.ez.api.TrashItem+xml or application/vnd.ez.api.TrashItem+json
+                        description: Response format, either application/vnd.ez.api.TrashItem+xml or application/vnd.ez.api.TrashItem+json
+                        example: |
+                            application/vnd.ez.api.TrashItem+xml
+                            application/vnd.ez.api.TrashItem+json
                 responses:
                     200:
                         description: OK
@@ -41,13 +157,11 @@ version: 2.4
                         description: Error - The user has no permission to read the item in Trash
                     404:
                         description: Error - An item in Trash with the provided ID does not exist
-            # Does not work with POST?
             move:
                 description: MOVE or POST with header X-HTTP-Method-Override MOVE. Restores an item from Trash.
                 headers:
-                    # No route matched?
                     Destination:
-                        description: If this is provided, the item from Trash is restored under this Location, otherwise under its original parent Location
+                        description: If the destination Location uri is provided, the item from Trash is restored under this Location, otherwise under its original parent Location
                 responses:
                     201:
                         description: Item restored
@@ -74,7 +188,10 @@ version: 2.4
             description: Returns a list of all Object State Groups
             headers:
                 Accept:
-                    description: application/vnd.ez.api.ObjectStateGroupList+xml or application/vnd.ez.api.ObjectStateGroupList+json
+                    description: Response format, either application/vnd.ez.api.ObjectStateGroupList+xml or application/vnd.ez.api.ObjectStateGroupList+json
+                    example: |
+                        application/vnd.ez.api.ObjectStateGroupList+xml
+                        application/vnd.ez.api.ObjectStateGroupList+json
                 If-None-Match:
                     description: ETag
             responses:
@@ -86,9 +203,44 @@ version: 2.4
             description: Creates a new Object State Group
             headers:
                 Accept:
-                    description: application/vnd.ez.api.ObjectStateGroup+xml or application/vnd.ez.api.ObjectStateGroup+json
+                    description: Response format, either application/vnd.ez.api.ObjectStateGroup+xml or application/vnd.ez.api.ObjectStateGroup+json
+                    example: |
+                        application/vnd.ez.api.ObjectStateGroup+xml
+                        application/vnd.ez.api.ObjectStateGroup+json
                 Content-Type:
-                    description: application/vnd.ez.api.ObjectStateGroupCreate+json or application/vnd.ez.api.ObjectStateGroupCreate+xml
+                    description: Media type, either application/vnd.ez.api.ObjectStateGroupCreate+json or application/vnd.ez.api.ObjectStateGroupCreate+xml
+                    example: |
+                        application/vnd.ez.api.ObjectStateGroupCreate+json
+                        application/vnd.ez.api.ObjectStateGroupCreate+xml
+            body:
+                application/vnd.ez.api.ObjectStateGroup+xml:
+                    schema: |
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                          xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                          <xsd:include schemaLocation="CommonDefinitions.xsd" />
+                          <xsd:complexType name="vnd.ez.api.ObjectStateGroupCreate">
+                            <xsd:all>
+                              <xsd:element name="identifier" type="xsd:string">
+                                <xsd:annotation>
+                                  <xsd:documentation>
+                                    Readable string identifier of a group
+                                  </xsd:documentation>
+                                </xsd:annotation>
+                              </xsd:element>
+                              <xsd:element name="defaultLanguageCode" type="xsd:string">
+                                <xsd:annotation>
+                                  <xsd:documentation>
+                                    the default language code
+                                  </xsd:documentation>
+                                </xsd:annotation>
+                              </xsd:element>
+                              <xsd:element name="names" type="multiLanguageValuesType" />
+                              <xsd:element name="descriptions" type="multiLanguageValuesType" minOccurs="0"/>
+                            </xsd:all>
+                          </xsd:complexType>
+                          <xsd:element name="ObjectStateGroupCreate" type="vnd.ez.api.ObjectStateGroupCreate" />
+                        </xsd:schema>
             responses:
                 201:
                     description: Object State Group created
@@ -103,7 +255,10 @@ version: 2.4
                 description: Returns the Object State Group with the provided ID
                 headers:
                     Accept:
-                        description: application/vnd.ez.api.ObjectStateGroup+xml or application/vnd.ez.api.ObjectStateGroup+json
+                        description: Response format, either application/vnd.ez.api.ObjectStateGroup+xml or application/vnd.ez.api.ObjectStateGroup+json
+                        example: |
+                            application/vnd.ez.api.ObjectStateGroup+xml
+                            application/vnd.ez.api.ObjectStateGroup+json
                     If-None-Match:
                         description: ETag
                 responses:
@@ -117,11 +272,49 @@ version: 2.4
                 description: PATCH or POST with header X-HTTP-Method-Override PATCH. Updates an Object State Group.
                 headers:
                     Accept:
-                        description: application/vnd.ez.api.ObjectStateGroup+xml or application/vnd.ez.api.ObjectStateGroup+json
+                        description: Response format, either application/vnd.ez.api.ObjectStateGroup+xml or application/vnd.ez.api.ObjectStateGroup+json
+                        example: |
+                            application/vnd.ez.api.ObjectStateGroup+xml
+                            application/vnd.ez.api.ObjectStateGroup+json
                     Content-Type:
-                        description: application/vnd.ez.api.ObjectStateGroupUpdate+json or application/vnd.ez.api.ObjectStateGroupUpdate+xml
+                        description: Media type, either application/vnd.ez.api.ObjectStateGroupUpdate+json or application/vnd.ez.api.ObjectStateGroupUpdate+xml
+                        example: |
+                            application/vnd.ez.api.ObjectStateGroupUpdate+json
+                            application/vnd.ez.api.ObjectStateGroupUpdate+xml
                     If-Match:
                         description: ETag
+                body:
+                    application/vnd.ez.api.ObjectStateGroup+xml:
+                        schema: |
+                            <?xml version="1.0" encoding="UTF-8"?>
+                            <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                              xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                              <xsd:include schemaLocation="CommonDefinitions.xsd" />
+                              <xsd:complexType name="vnd.ez.api.ObjectStateGroupUpdate">
+                                <xsd:all>
+                                  <xsd:element name="identifier" type="xsd:string" minOccurs="0">
+                                    <xsd:annotation>
+                                      <xsd:documentation>
+                                        Readable string identifier of a group
+                                      </xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element name="defaultLanguageCode" type="xsd:string" minOccurs="0">
+                                    <xsd:annotation>
+                                      <xsd:documentation>
+                                        the default language code
+                                      </xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element name="names" type="multiLanguageValuesType" minOccurs="0"/>
+                                  <xsd:element name="descriptions" type="multiLanguageValuesType" minOccurs="0" />
+                                </xsd:all>
+                              </xsd:complexType>
+                              <xsd:element name="ObjectStateGroupCreate" type="vnd.ez.api.ObjectStateGroupCreate" />
+                              <xsd:element name="ObjectStateGroupUpdate" type="vnd.ez.api.ObjectStateGroupUpdate" />
+                              <xsd:element name="ObjectStateGroup" type="vnd.ez.api.ObjectStateGroup" />
+                              <xsd:element name="ObjectStateGroupList" type="vnd.ez.api.ObjectStateGroupList" />
+                            </xsd:schema>
                 responses:
                     200:
                         description: OK
@@ -134,7 +327,7 @@ version: 2.4
                     412:
                         description: Error - The current ETag does not match the one provided in the If-Match header
             delete:
-                description: Deleted the given Object State Group including Object States
+                description: Deletes the given Object State Group including Object States
                 responses:
                     204:
                         description: No Content
@@ -147,7 +340,10 @@ version: 2.4
                     description: Returns a list of all Object States of the given group
                     headers:
                         Accept:
-                            description: application/vnd.ez.api.ObjectStateList+xml or application/vnd.ez.api.ObjectStateList+json
+                            description: Response format, either application/vnd.ez.api.ObjectStateList+xml or application/vnd.ez.api.ObjectStateList+json
+                            example: |
+                                application/vnd.ez.api.ObjectStateList+xml
+                                application/vnd.ez.api.ObjectStateList+json
                         If-None-Match:
                             description: ETag
                     responses:
@@ -159,9 +355,46 @@ version: 2.4
                     description: Creates a new Object State
                     headers:
                         Accept:
-                            description: application/vnd.ez.api.ObjectState+xml or application/vnd.ez.api.ObjectState+json
+                            description: Response format, either application/vnd.ez.api.ObjectState+xml or application/vnd.ez.api.ObjectState+json
+                            example:
+                                application/vnd.ez.api.ObjectState+xml
+                                application/vnd.ez.api.ObjectState+json
                         Content-Type:
-                            description: application/vnd.ez.api.ObjectStateGroupCreate+json or application/vnd.ez.api.ObjectStateGroupCreate+xml
+                            description: Media type, either application/vnd.ez.api.ObjectStateGroupCreate+json or application/vnd.ez.api.ObjectStateGroupCreate+xml
+                            example: |
+                                application/vnd.ez.api.ObjectStateGroupCreate+json
+                                application/vnd.ez.api.ObjectStateGroupCreate+xml
+                    body:
+                        application/vnd.ez.api.ObjectState+xml:
+                            schema: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                  xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                                  <xsd:include schemaLocation="CommonDefinitions.xsd" />
+                                    <xsd:complexType name="vnd.ez.api.ObjectStateCreate">
+                                      <xsd:all>
+                                        <xsd:element name="identifier" type="xsd:string">
+                                          <xsd:annotation>
+                                            <xsd:documentation>
+                                              Readable string identifier of an object state
+                                                </xsd:documentation>
+                                          </xsd:annotation>
+                                        </xsd:element>
+                                        <xsd:element name="priority" type="xsd:int">
+                                        </xsd:element>
+                                        <xsd:element name="defaultLanguageCode" type="xsd:string">
+                                          <xsd:annotation>
+                                            <xsd:documentation>
+                                              the default language code
+                                                </xsd:documentation>
+                                          </xsd:annotation>
+                                        </xsd:element>
+                                        <xsd:element name="names" type="multiLanguageValuesType" />
+                                        <xsd:element name="descriptions" type="multiLanguageValuesType" />
+                                      </xsd:all>
+                                    </xsd:complexType>
+                                  <xsd:element name="ObjectStateCreate" type="vnd.ez.api.ObjectStateCreate" />
+                                </xsd:schema>
                     responses:
                         201:
                             description: Created
@@ -176,7 +409,10 @@ version: 2.4
                         description: Returns the Object State
                         headers:
                             Accept:
-                                description: application/vnd.ez.api.ObjectState+xml or application/vnd.ez.api.ObjectState+json
+                                description: Response format, either application/vnd.ez.api.ObjectState+xml or application/vnd.ez.api.ObjectState+json
+                                example: |
+                                    application/vnd.ez.api.ObjectState+xml
+                                    application/vnd.ez.api.ObjectState+json
                             If-None-Match:
                                 description: ETag
                         responses:
@@ -190,11 +426,48 @@ version: 2.4
                         description: PATCH or POST with header X-HTTP-Method-Override PATCH. Updates an Object State.
                         headers:
                             Accept:
-                                description: application/vnd.ez.api.ObjectState+xml or application/vnd.ez.api.ObjectState+json
+                                description: Response format, either application/vnd.ez.api.ObjectState+xml or application/vnd.ez.api.ObjectState+json
+                                example: |
+                                    application/vnd.ez.api.ObjectState+xml
+                                    application/vnd.ez.api.ObjectState+json
                             Content-Type:
-                                description: application/vnd.ez.api.ObjectStateUpdate+json or application/vnd.ez.api.ObjectStateUpdate+xml
+                                description: Media type, either application/vnd.ez.api.ObjectStateUpdate+json or application/vnd.ez.api.ObjectStateUpdate+xml
+                                example: |
+                                    application/vnd.ez.api.ObjectStateUpdate+json
+                                    application/vnd.ez.api.ObjectStateUpdate+xml
                             If-Match:
                                 description: ETag
+                        body:
+                            application/vnd.ez.api.ObjectState+xml:
+                                schema: |
+                                    <?xml version="1.0" encoding="UTF-8"?>
+                                    <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                      xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                                      <xsd:include schemaLocation="CommonDefinitions.xsd" />
+                                      <xsd:complexType name="vnd.ez.api.ObjectStateUpdate">
+                                        <xsd:all>
+                                          <xsd:element name="identifier" type="xsd:string" minOccurs="0">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                Readable string identifier of an object state
+                                                  </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="priority" type="xsd:int"  minOccurs="0">
+                                          </xsd:element>
+                                          <xsd:element name="defaultLanguageCode" type="xsd:string" minOccurs="0">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                the default language code
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="names" type="multiLanguageValuesType"  minOccurs="0"/>
+                                          <xsd:element name="descriptions" type="multiLanguageValuesType"  minOccurs="0"/>
+                                        </xsd:all>
+                                      </xsd:complexType>
+                                      <xsd:element name="ObjectStateUpdate" type="vnd.ez.api.ObjectStateUpdate" />
+                                    </xsd:schema>
                         responses:
                             200:
                                 description: OK
@@ -222,7 +495,10 @@ version: 2.4
                     description: Returns the Object States of a Content item
                     headers:
                         Accept:
-                            description: application/vnd.ez.api.ContentObjectStates+xml or application/vnd.ez.api.ContentObjectStates+json
+                            description: Response format, either application/vnd.ez.api.ContentObjectStates+xml or application/vnd.ez.api.ContentObjectStates+json
+                            example: |
+                                application/vnd.ez.api.ContentObjectStates+xml
+                                application/vnd.ez.api.ContentObjectStates+json
                         If-None-Match:
                             description: ETag
                     responses:
@@ -234,11 +510,30 @@ version: 2.4
                     description: PATCH or POST with header X-HTTP-Method-Override PATCH. Updates Object States of content. An Object State in the input overrides the state of the Object State Group.
                     headers:
                         Accept:
-                            description: application/vnd.ez.api.ContentObjectStates+xml or application/vnd.ez.api.ContentObjectStates+json
+                            description: Response format, either application/vnd.ez.api.ContentObjectStates+xml or application/vnd.ez.api.ContentObjectStates+json
+                            example: |
+                                application/vnd.ez.api.ContentObjectStates+xml
+                                application/vnd.ez.api.ContentObjectStates+json
                         Content-Type:
-                            description: application/vnd.ez.api.ContentObjectStates+xml or application/vnd.ez.api.ContentObjectStates+json
+                            description: Media type, either application/vnd.ez.api.ContentObjectStates+xml or application/vnd.ez.api.ContentObjectStates+json
+                            example: |
+                                application/vnd.ez.api.ContentObjectStates+xml
+                                application/vnd.ez.api.ContentObjectStates+json
                         If-Match:
                             description: ETag
+                    body:
+                        application/vnd.ez.api.ContentObjectStates+xml:
+                            schema: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                  xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                                  <xsd:include schemaLocation="CommonDefinitions.xsd" />
+                                  <xsd:complexType name="vnd.ez.api.ContentObjectStates">
+                                    <xsd:sequence>
+                                      <xsd:element name="ObjectState" type="ref" minOccurs="0" maxOccurs="unbounded"></xsd:element>
+                                    </xsd:sequence>
+                                  </xsd:complexType>
+                                </xsd:schema>
                     responses:
                         204:
                             description: OK
@@ -255,7 +550,10 @@ version: 2.4
             description: Returns the list of global URL aliases
             headers:
                 Accept:
-                    description: application/vnd.ez.api.UrlAliasRefList+xml or application/vnd.ez.api.UrlAliasRefList+json
+                    description: Response format, either application/vnd.ez.api.UrlAliasRefList+xml or application/vnd.ez.api.UrlAliasRefList+json
+                    example: |
+                        application/vnd.ez.api.UrlAliasRefList+xml
+                        application/vnd.ez.api.UrlAliasRefList+json
             responses:
                 200:
                     description: OK
@@ -265,9 +563,39 @@ version: 2.4
             description: Creates a new URL alias
             headers:
                 Accept:
-                    description: application/vnd.ez.api.UrlAlias+xml or application/vnd.ez.api.UrlAlias+json
+                    description: Response format, either application/vnd.ez.api.UrlAlias+xml or application/vnd.ez.api.UrlAlias+json
+                    example: |
+                        application/vnd.ez.api.UrlAlias+xml
+                        application/vnd.ez.api.UrlAlias+json
                 Content-Type:
-                    description: application/vnd.ez.api.UrlAliasCreate+xml or application/vnd.ez.api.UrlAliasCreate+json
+                    description: Media type, either application/vnd.ez.api.UrlAliasCreate+xml or application/vnd.ez.api.UrlAliasCreate+json
+                    example: |
+                        application/vnd.ez.api.UrlAliasCreate+xml
+                        application/vnd.ez.api.UrlAliasCreate+json
+            body:
+                application/vnd.ez.api.UrlAlias+xml:
+                    schema: |
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                          xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                          <xsd:include schemaLocation="CommonDefinitions.xsd" />
+                          <xsd:complexType name="vnd.ez.api.UrlAliasCreate">
+                            <xsd:sequence>
+                              <xsd:choice>
+                                <xsd:element name="location" type="ref" />
+                                <xsd:element name="url" type="xsd:string" />
+                              </xsd:choice>
+                              <xsd:element name="resource" type="xsd:string" />
+                              <xsd:element name="path" type="xsd:string" />
+                              <xsd:element name="languageCode" type="xsd:string" />
+                              <xsd:element name="alwaysAvailable" type="xsd:boolean"
+                                default="false" />
+                              <xsd:element name="forward" type="xsd:boolean"
+                                default="false" />
+                            </xsd:sequence>
+                            <xsd:attribute name="type" type="urlAliasType" />
+                          </xsd:complexType>
+                        </xsd:schema>
             responses:
                 201:
                     description: Created
@@ -282,7 +610,10 @@ version: 2.4
                 description: Returns the URL alias with the given ID
                 headers:
                     Accept:
-                        description: application/vnd.ez.api.UrlAlias+xml or application/vnd.ez.api.UrlAlias+json
+                        description: Response format, either application/vnd.ez.api.UrlAlias+xml or application/vnd.ez.api.UrlAlias+json
+                        example: |
+                            application/vnd.ez.api.UrlAlias+xml
+                            application/vnd.ez.api.UrlAlias+json
                 responses:
                     200:
                         description: OK
@@ -304,7 +635,10 @@ version: 2.4
             description: Returns a list of URL wildcards
             headers:
                 Accept:
-                    description: application/vnd.ez.api.UrlWildcardList+xml or application/vnd.ez.api.UrlWildcardList+json
+                    description: Response format, either application/vnd.ez.api.UrlWildcardList+xml or application/vnd.ez.api.UrlWildcardList+json
+                    example: |
+                        application/vnd.ez.api.UrlWildcardList+xml
+                        application/vnd.ez.api.UrlWildcardList+json
             responses:
                 200:
                     description: OK
@@ -314,9 +648,30 @@ version: 2.4
             description: Creates a new URL wildcard
             headers:
                 Accept:
-                    description: application/vnd.ez.api.UrlWildcard+xml or application/vnd.ez.api.UrlWildcard+json
+                    description: Response format, either application/vnd.ez.api.UrlWildcard+xml or application/vnd.ez.api.UrlWildcard+json
+                    example: |
+                        application/vnd.ez.api.UrlWildcard+xml
+                        application/vnd.ez.api.UrlWildcard+json
                 Content-Type:
-                    description: application/vnd.ez.api.UrlWildcardCreate+xml or application/vnd.ez.api.UrlWildcardCreate+json
+                    description: Media type, either application/vnd.ez.api.UrlWildcardCreate+xml or application/vnd.ez.api.UrlWildcardCreate+json
+                    example: |
+                        application/vnd.ez.api.UrlWildcardCreate+xml
+                        application/vnd.ez.api.UrlWildcardCreate+json
+            body:
+                application/vnd.ez.api.UrlWildcard.xml:
+                    schema: |
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                          xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                          <xsd:include schemaLocation="CommonDefinitions.xsd" />
+                          <xsd:complexType name="vnd.ez.api.UrlWildcardCreate">
+                            <xsd:all>
+                              <xsd:element name="sourceUrl" type="xsd:string" />
+                              <xsd:element name="destinationUrl" type="xsd:string" />
+                              <xsd:element name="forward" type="xsd:boolean" />
+                            </xsd:all>
+                          </xsd:complexType>
+                        </xsd:schema>
             responses:
                 201:
                     description: Created
@@ -331,7 +686,10 @@ version: 2.4
                 description: Returns the urlwildcard with the given id
                 headers:
                     Accept:
-                        description: application/vnd.ez.api.UrlWildcard+xml or application/vnd.ez.api.UrlWildcard+json
+                        description: Response format, either application/vnd.ez.api.UrlWildcard+xml or application/vnd.ez.api.UrlWildcard+json
+                        example: |
+                            application/vnd.ez.api.UrlWildcard+xml
+                            application/vnd.ez.api.UrlWildcard+json
                 responses:
                     200:
                         description: OK
@@ -359,7 +717,10 @@ version: 2.4
                             type: boolean
                     headers:
                         Accept:
-                            description: application/vnd.ez.api.UrlAliasRefList+xml or application/vnd.ez.api.UrlAliasRefList+json
+                            description: Response format, either application/vnd.ez.api.UrlAliasRefList+xml or application/vnd.ez.api.UrlAliasRefList+json
+                            example: |
+                                application/vnd.ez.api.UrlAliasRefList+xml
+                                application/vnd.ez.api.UrlAliasRefList+json
                     responses:
                         200:
                             description: OK
@@ -376,7 +737,10 @@ version: 2.4
                     required: false
             headers:
                 Accept:
-                    description: application/vnd.ez.api.ContentTypeGroupList+xml or application/vnd.ez.api.ContentTypeGroupList+json
+                    description: Response format, either application/vnd.ez.api.ContentTypeGroupList+xml or application/vnd.ez.api.ContentTypeGroupList+json
+                    example: |
+                        application/vnd.ez.api.ContentTypeGroupList+xml
+                        application/vnd.ez.api.ContentTypeGroupList+json
             responses:
                 200:
                     body:
@@ -413,12 +777,33 @@ version: 2.4
             description: Creates a new Content Type Group
             headers:
                 Accept:
-                    description: application/vnd.ez.api.ContentTypeGroup+xml or application/vnd.ez.api.ContentTypeGroup+json
+                    description: Response format, either application/vnd.ez.api.ContentTypeGroup+xml or application/vnd.ez.api.ContentTypeGroup+json
+                    example: |
+                        application/vnd.ez.api.ContentTypeGroup+xml
+                        application/vnd.ez.api.ContentTypeGroup+json
                 Content-Type:
-                    description: application/vnd.ez.api.ContentTypeGroupInput+xml or application/vnd.ez.api.ContentTypeGroupInput+json
+                    description: Media type, either application/vnd.ez.api.ContentTypeGroupInput+xml or application/vnd.ez.api.ContentTypeGroupInput+json
+                    example: |
+                        application/vnd.ez.api.ContentTypeGroupInput+xml
+                        application/vnd.ez.api.ContentTypeGroupInput+json
             body:
                 application/vnd.ez.api.ContentTypeGroup+xml:
                     schema: |
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                    xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                            <xsd:include schemaLocation="CommonDefinitions.xsd" />
+                            <xsd:include schemaLocation="ContentType.xsd" />
+                            <xsd:complexType name="vnd.ez.api.ContentTypeGroupInput">
+                                <xsd:all>
+                                    <xsd:element name="identifier" type="xsd:string" />
+                                    <xsd:element name="User" type="ref" minOccurs="0" />
+                                    <xsd:element name="modificationDate" type="xsd:dateTime"
+                                                 minOccurs="0" />
+                                </xsd:all>
+                            </xsd:complexType>
+                            <xsd:element name="ContentTypeGroupInput" type="vnd.ez.api.ContentTypeGroupInput" />
+                        </xsd:schema>
                     example: |
                         <?xml version="1.0" encoding="UTF-8"?>
                         <ContentTypeGroupInput>
@@ -451,7 +836,10 @@ version: 2.4
                 description: Returns the Content Type Group with the provided ID
                 headers:
                     Accept:
-                        description: application/vnd.ez.api.ContentTypeGroup+xml or application/vnd.ez.api.ContentTypeGroup+json
+                        description: Response format, either application/vnd.ez.api.ContentTypeGroup+xml or application/vnd.ez.api.ContentTypeGroup+json
+                        example: |
+                            application/vnd.ez.api.ContentTypeGroup+xml
+                            application/vnd.ez.api.ContentTypeGroup+json
                     If-None-Match:
                         description: ETag
                 responses:
@@ -465,9 +853,15 @@ version: 2.4
                 description: PATCH or POST with header X-HTTP-Method-Override PATCH. Updates a Content Type Group.
                 headers:
                     Accept:
-                        description: application/vnd.ez.api.ContentTypeGroup+xml or application/vnd.ez.api.ContentTypeGroup+json
+                        description: Response format, either application/vnd.ez.api.ContentTypeGroup+xml or application/vnd.ez.api.ContentTypeGroup+json
+                        example: |
+                            application/vnd.ez.api.ContentTypeGroup+xml
+                            application/vnd.ez.api.ContentTypeGroup+json
                     Content-Type:
-                        description: application/vnd.ez.api.ContentTypeGroupInput+xml or application/vnd.ez.api.ContentTypeGroupInput+json
+                        description: Media type, either application/vnd.ez.api.ContentTypeGroupInput+xml or application/vnd.ez.api.ContentTypeGroupInput+json
+                        example: |
+                            application/vnd.ez.api.ContentTypeGroupInput+xml
+                            application/vnd.ez.api.ContentTypeGroupInput+json
                     If-Match:
                         description: ETag causes patching only if the specified ETag is the current one. Otherwise a 412 is returned.
                 body:
@@ -517,7 +911,12 @@ version: 2.4
                     description: Returns a list of Content Types in the provided group
                     headers:
                         Accept:
-                            description: application/vnd.ez.api.ContentTypeInfoList+xml or application/vnd.ez.api.ContentTypeInfoList+json or application/vnd.ez.api.ContentTypeList+xml or application/vnd.ez.api.ContentTypeList+json
+                            description: Response format, one of application/vnd.ez.api.ContentTypeInfoList+xml or application/vnd.ez.api.ContentTypeInfoList+json or application/vnd.ez.api.ContentTypeList+xml or application/vnd.ez.api.ContentTypeList+json
+                            example: |
+                                application/vnd.ez.api.ContentTypeInfoList+xml
+                                application/vnd.ez.api.ContentTypeInfoList+json
+                                application/vnd.ez.api.ContentTypeList+xml
+                                application/vnd.ez.api.ContentTypeList+json
                     responses:
                         200:
                             description: OK
@@ -531,12 +930,148 @@ version: 2.4
                             type: boolean
                     headers:
                         Accept:
-                            description: application/vnd.ez.api.ContentType+xml or application/vnd.ez.api.ContentType+json
+                            description: Response format, either application/vnd.ez.api.ContentType+xml or application/vnd.ez.api.ContentType+json
+                            example: |
+                                application/vnd.ez.api.ContentType+xml
+                                application/vnd.ez.api.ContentType+json
                         Content-Type:
-                            description: application/vnd.ez.api.ContentTypeCreate+xml or application/vnd.ez.api.ContentTypeCreate+json
+                            description: Media type, either application/vnd.ez.api.ContentTypeCreate+xml or application/vnd.ez.api.ContentTypeCreate+json
+                            example: |
+                                application/vnd.ez.api.ContentTypeCreate+xml
+                                application/vnd.ez.api.ContentTypeCreate+json
                     body:
-                        application/vnd.ez.api.ContentType:
+                        application/vnd.ez.api.ContentType.xml:
                             schema: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                  xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                                  <xsd:include schemaLocation="CommonDefinitions.xsd" />
+                                  <xsd:include schemaLocation="FieldDefinitionCreate.xsd" />
+
+                                  <xsd:complexType name="vnd.ez.api.ContentTypeCreate">
+                                    <xsd:all>
+                                      <xsd:element name="identifier" type="xsd:string">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            String identifier of a content type
+                                          </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="names" type="multiLanguageValuesType" />
+                                      <xsd:element name="descriptions" type="multiLanguageValuesType" />
+                                      <xsd:element name="modificationDate" type="xsd:dateTime">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            If set this date is used as modification
+                                            date
+                                          </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="User" type="ref">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            The user under which this creation should
+                                            be done
+                                          </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="remoteId" type="xsd:string"
+                                        minOccurs="0">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            Unique remote ID of the content type
+                                          </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="urlAliasSchema" type="xsd:string"
+                                        minOccurs="0">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            URL alias schema
+                                            If nothing is provided,
+                                            nameSchema will be used
+                                            instead.
+                                          </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="nameSchema" type="xsd:string">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            Name schema.
+                                            Can be composed of
+                                            FieldDefinition identifier place
+                                            holders.These place
+                                            holders
+                                            must comply this pattern :
+                                            &lt;field_definition_identifier&gt;.
+                                            An OR condition can
+                                            be
+                                            used :
+                                            &lt;field_def|other_field_def&gt;
+                                            In this
+                                            example,
+                                            field_def will be used if available. If not,
+                                            other_field_def
+                                            will be used for content name generation
+                                          </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="isContainer" type="xsd:boolean">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            Determines if the type is a container
+                                          </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="mainLanguageCode" type="xsd:string">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            Main language
+                                          </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="defaultAlwaysAvailable" type="xsd:boolean"
+                                        default="true">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            if an instance of acontent type is
+                                            created
+                                            the always available
+                                            flag is set by default this
+                                            this value.
+                                          </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="defaultSortField" type="sortFieldType">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            Specifies which property the child
+                                            locations should be sorted on by
+                                            default when created
+                                          </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="defaultSortOrder" type="sortOrderType">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            Specifies whether the sort order should
+                                            be
+                                            ascending or descending by
+                                            default when created
+                                          </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="FieldDefinitions">
+                                        <xsd:complexType>
+                                          <xsd:sequence>
+                                            <xsd:element name="FieldDefinition" type="vnd.ez.api.FieldDefinitionCreate"></xsd:element>
+                                          </xsd:sequence>
+                                        </xsd:complexType>
+                                      </xsd:element>
+                                    </xsd:all>
+                                  </xsd:complexType>
+                                  <xsd:element name="ContentTypeCreate" type="vnd.ez.api.ContentTypeCreate"></xsd:element>
+                                </xsd:schema>
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <ContentTypeCreate>
@@ -688,7 +1223,12 @@ version: 2.4
                     description: One of (asc|desc)
             headers:
                 Accept:
-                    description: application/vnd.ez.api.ContentTypeInfoList+xml or application/vnd.ez.api.ContentTypeInfoList+json or application/vnd.ez.api.ContentTypeList+xml or application/vnd.ez.api.ContentTypeList+json
+                    description: Response format, one of application/vnd.ez.api.ContentTypeInfoList+xml or application/vnd.ez.api.ContentTypeInfoList+json or application/vnd.ez.api.ContentTypeList+xml or application/vnd.ez.api.ContentTypeList+json
+                    example: |
+                        application/vnd.ez.api.ContentTypeInfoList+xml
+                        application/vnd.ez.api.ContentTypeInfoList+json
+                        application/vnd.ez.api.ContentTypeList+xml
+                        application/vnd.ez.api.ContentTypeList+json
             responses:
                 200:
                     description: OK
@@ -699,7 +1239,10 @@ version: 2.4
                 description: Returns the Content Type with the provided ID
                 headers:
                     Accept:
-                        description: application/vnd.ez.api.ContentType+xml or application/vnd.ez.api.ContentType+json
+                        description: Response format, either application/vnd.ez.api.ContentType+xml or application/vnd.ez.api.ContentType+json
+                        example: |
+                            application/vnd.ez.api.ContentType+xml
+                            application/vnd.ez.api.ContentType+json
                     If-None-Match:
                         description: ETag
                 responses:
@@ -709,7 +1252,6 @@ version: 2.4
                         description: Error - The user is not authorized to read this Content Type
                     404:
                         description: Error - The Content Type does not exist
-            # No result?
             copy:
                 description: COPY or POST with header X-HTTP-Method-Override COPY. Copies a Content Type. A new remoteId is generated, and the identifier of the copy is set to copy_of_%lt;originalBaseIdentifier&gt;_&lt;newTypeId&gt; (or another random string).
                 responses:
@@ -721,9 +1263,149 @@ version: 2.4
                 description: Creates a draft and updates it with the given data
                 headers:
                     Accept:
-                        description: application/vnd.ez.api.ContentTypeInfo+xml or application/vnd.ez.api.ContentTypeInfo+json
+                        description: Response format, either application/vnd.ez.api.ContentTypeInfo+xml or application/vnd.ez.api.ContentTypeInfo+json
+                        example: |
+                            application/vnd.ez.api.ContentTypeInfo+xml
+                            application/vnd.ez.api.ContentTypeInfo+json
                     Content-Type:
-                        description: application/vnd.ez.api.ContentTypeUpdate+xml or application/vnd.ez.api.ContentTypeUpdate+json
+                        description: Media type, either application/vnd.ez.api.ContentTypeUpdate+xml or application/vnd.ez.api.ContentTypeUpdate+json
+                        example: |
+                            application/vnd.ez.api.ContentTypeUpdate+xml
+                            application/vnd.ez.api.ContentTypeUpdate+json
+                body:
+                    application/vnd.ez.api.ContentTypeInfo+xml:
+                        schema: |
+                            <?xml version="1.0" encoding="UTF-8"?>
+                            <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                              xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                              <xsd:include schemaLocation="CommonDefinitions.xsd" />
+
+                              <xsd:complexType name="vnd.ez.api.ContentTypeUpdate">
+                                <xsd:all>
+                                  <xsd:element name="identifier" type="xsd:string"
+                                    minOccurs="0">
+                                    <xsd:annotation>
+                                      <xsd:documentation>
+                                        String identifier of a content type
+                                      </xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element name="names" type="multiLanguageValuesType"
+                                    minOccurs="0" />
+                                  <xsd:element name="descriptions" type="multiLanguageValuesType"
+                                    minOccurs="0" />
+                                  <xsd:element name="modificationDate" type="xsd:dateTime"
+                                    minOccurs="0">
+                                    <xsd:annotation>
+                                      <xsd:documentation>
+                                        If set this date is used as modification
+                                        date
+                                      </xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element name="User" type="ref" minOccurs="0">
+                                    <xsd:annotation>
+                                      <xsd:documentation>
+                                        The user under which this update should be
+                                        done
+                                          </xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element name="remoteId" type="xsd:string"
+                                    minOccurs="0">
+                                    <xsd:annotation>
+                                      <xsd:documentation>
+                                        Unique remote ID of the content type
+                                      </xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element name="urlAliasSchema" type="xsd:string"
+                                    minOccurs="0">
+                                    <xsd:annotation>
+                                      <xsd:documentation>
+                                        URL alias schema
+                                        If nothing is provided,
+                                        nameSchema will be used
+                                        instead.
+                                          </xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element name="nameSchema" type="xsd:string"
+                                    minOccurs="0">
+                                    <xsd:annotation>
+                                      <xsd:documentation>
+                                        Name schema.
+                                        Can be composed of
+                                        FieldDefinition identifier place
+                                        holders.These place
+                                        holders
+                                        must comply this pattern :
+                                        &lt;field_definition_identifier&gt;.
+                                        An OR condition can
+                                        be
+                                        used :
+                                        &lt;field_def|other_field_def&gt;
+                                        In this
+                                        example,
+                                        field_def will be used if available. If not,
+                                        other_field_def
+                                        will be used for content name generation
+                                          </xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element name="isContainer" type="xsd:boolean"
+                                    minOccurs="0">
+                                    <xsd:annotation>
+                                      <xsd:documentation>
+                                        Determines if the type is a container
+                                      </xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element name="mainLanguageCode" type="xsd:string"
+                                    minOccurs="0">
+                                    <xsd:annotation>
+                                      <xsd:documentation>
+                                        Main language
+                                          </xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element name="defaultAlwaysAvailable" type="xsd:boolean"
+                                    minOccurs="0">
+                                    <xsd:annotation>
+                                      <xsd:documentation>
+                                        if an instance of a content type is
+                                        created
+                                        the always available
+                                        flag is set by default this
+                                        this value.
+                                      </xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element name="defaultSortField" type="sortFieldType"
+                                    minOccurs="0">
+                                    <xsd:annotation>
+                                      <xsd:documentation>
+                                        Specifies which property the child
+                                        locations should be sorted on by
+                                        default when created
+                                      </xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element name="defaultSortOrder" type="sortOrderType"
+                                    minOccurs="0">
+                                    <xsd:annotation>
+                                      <xsd:documentation>
+                                        Specifies whether the sort order should
+                                        be
+                                        ascending or descending by
+                                        default when created
+                                      </xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                </xsd:all>
+                              </xsd:complexType>
+                              <xsd:element name="ContentTypeUpdate" type="vnd.ez.api.ContentTypeUpdate"></xsd:element>
+                            </xsd:schema>
                 responses:
                     201:
                         description: Created
@@ -732,8 +1414,7 @@ version: 2.4
                     401:
                         description: Error - The user is not authorized to create the draft
                     403:
-                        # Clarify message
-                        description: Error - A Content Type with the given new identifier already exists. If there exists already a draft.
+                        description: Error - A Content Type with the given new identifier already exists. A draft already exists.
             delete:
                 description: Deletes the provided Content Type
                 responses:
@@ -750,12 +1431,149 @@ version: 2.4
                     description: PATCH or POST with header X-HTTP-Method-Override PATCH. Updates metadata of a draft. This method does not handle Field definitions.
                     headers:
                         Accept:
-                            description: application/vnd.ez.api.ContentTypeInfo+xml or application/vnd.ez.api.ContentTypeInfo+json
+                            description: Response format, either application/vnd.ez.api.ContentTypeInfo+xml or application/vnd.ez.api.ContentTypeInfo+json
+                            example: |
+                                application/vnd.ez.api.ContentTypeInfo+xml
+                                application/vnd.ez.api.ContentTypeInfo+json
                         Content-Type:
-                            description: application/vnd.ez.api.ContentTypeUpdate+xml or application/vnd.ez.api.ContentTypeUpdate+json
+                            description: Mediat type, either application/vnd.ez.api.ContentTypeUpdate+xml or application/vnd.ez.api.ContentTypeUpdate+json
+                            example: |
+                                application/vnd.ez.api.ContentTypeUpdate+xml
+                                application/vnd.ez.api.ContentTypeUpdate+json
                     body:
                         application/vnd.ez.api.ContentTypeInfo+xml:
                             schema: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                  xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                                  <xsd:include schemaLocation="CommonDefinitions.xsd" />
+
+                                  <xsd:complexType name="vnd.ez.api.ContentTypeUpdate">
+                                    <xsd:all>
+                                      <xsd:element name="identifier" type="xsd:string"
+                                        minOccurs="0">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            String identifier of a content type
+                                          </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="names" type="multiLanguageValuesType"
+                                        minOccurs="0" />
+                                      <xsd:element name="descriptions" type="multiLanguageValuesType"
+                                        minOccurs="0" />
+                                      <xsd:element name="modificationDate" type="xsd:dateTime"
+                                        minOccurs="0">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            If set this date is used as modification
+                                            date
+                                          </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="User" type="ref" minOccurs="0">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            The user under which this update should be
+                                            done
+                                              </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="remoteId" type="xsd:string"
+                                        minOccurs="0">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            Unique remote ID of the content type
+                                          </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="urlAliasSchema" type="xsd:string"
+                                        minOccurs="0">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            URL alias schema
+                                            If nothing is provided,
+                                            nameSchema will be used
+                                            instead.
+                                              </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="nameSchema" type="xsd:string"
+                                        minOccurs="0">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            Name schema.
+                                            Can be composed of
+                                            FieldDefinition identifier place
+                                            holders.These place
+                                            holders
+                                            must comply this pattern :
+                                            &lt;field_definition_identifier&gt;.
+                                            An OR condition can
+                                            be
+                                            used :
+                                            &lt;field_def|other_field_def&gt;
+                                            In this
+                                            example,
+                                            field_def will be used if available. If not,
+                                            other_field_def
+                                            will be used for content name generation
+                                              </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="isContainer" type="xsd:boolean"
+                                        minOccurs="0">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            Determines if the type is a container
+                                          </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="mainLanguageCode" type="xsd:string"
+                                        minOccurs="0">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            Main language
+                                              </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="defaultAlwaysAvailable" type="xsd:boolean"
+                                        minOccurs="0">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            if an instance of a content type is
+                                            created
+                                            the always available
+                                            flag is set by default this
+                                            this value.
+                                          </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="defaultSortField" type="sortFieldType"
+                                        minOccurs="0">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            Specifies which property the child
+                                            locations should be sorted on by
+                                            default when created
+                                          </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                      <xsd:element name="defaultSortOrder" type="sortOrderType"
+                                        minOccurs="0">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            Specifies whether the sort order should
+                                            be
+                                            ascending or descending by
+                                            default when created
+                                          </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                    </xsd:all>
+                                  </xsd:complexType>
+                                  <xsd:element name="ContentTypeUpdate" type="vnd.ez.api.ContentTypeUpdate"></xsd:element>
+                                </xsd:schema>
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <ContentTypeUpdate>
@@ -830,9 +1648,114 @@ version: 2.4
                         description: Creates a new Field definition for the given Content Type
                         headers:
                             Accept:
-                                description: application/vnd.ez.api.FieldDefinition+xml or application/vnd.ez.api.FieldDefinition+json
+                                description: Response format, either application/vnd.ez.api.FieldDefinition+xml or application/vnd.ez.api.FieldDefinition+json
+                                example: |
+                                    application/vnd.ez.api.FieldDefinition+xml
+                                    application/vnd.ez.api.FieldDefinition+json
                             Content-Type:
-                                description: application/vnd.ez.api.FieldDefinitionCreate+xml or application/vnd.ez.api.FieldDefinitionCreate+json
+                                description: Media type, either application/vnd.ez.api.FieldDefinitionCreate+xml or application/vnd.ez.api.FieldDefinitionCreate+json
+                                example: |
+                                    application/vnd.ez.api.FieldDefinitionCreate+xml
+                                    application/vnd.ez.api.FieldDefinitionCreate+json
+                        body:
+                            application/vnd.ez.api.FieldDefinition+xml:
+                                schema: |
+                                    <?xml version="1.0" encoding="UTF-8"?>
+
+                                    <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                      xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                                      <xsd:include schemaLocation="CommonDefinitions.xsd" />
+
+                                      <xsd:complexType name="vnd.ez.api.FieldDefinitionCreate">
+                                        <xsd:all>
+                                          <xsd:element name="identifier" type="xsd:string">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                Readable string identifier of a field
+                                                definition
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="fieldType" type="xsd:string">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                the field type for this definition
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="fieldGroup" type="xsd:string">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                Field group name
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="position" type="xsd:int">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                the position of the field definition in
+                                                the content typr
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="isTranslatable" type="xsd:boolean">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                If the field type is translatable
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="isRequired" type="xsd:boolean">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                Is the field required
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="isInfoCollector" type="xsd:boolean">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                the flag if this attribute is used for
+                                                information collection
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="defaultValue" type="fieldValueType">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                Default value of the field
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="fieldSettings" type="fieldSettingsType">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                Settings of the field
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="validatorConfiguration" type="validatorConfigurationType">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                Validator configuration of the field
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="isSearchable" type="xsd:boolean">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                Indicates if th the content is
+                                                searchable by this attribute
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="names" type="multiLanguageValuesType" />
+                                          <xsd:element name="descriptions" type="multiLanguageValuesType" />
+                                        </xsd:all>
+                                      </xsd:complexType>
+
+                                      <xsd:element name="FieldDefinitionInput" type="vnd.ez.api.FieldDefinitionCreate" />
+                                    </xsd:schema>
                         responses:
                             201:
                                 description: Created
@@ -847,7 +1770,10 @@ version: 2.4
                             description: Returns the Field definition given by ID
                             headers:
                                 Accept:
-                                    description: application/vnd.ez.api.FieldDefinition+xml or application/vnd.ez.api.FieldDefinition+json
+                                    description: Response format, either application/vnd.ez.api.FieldDefinition+xml or application/vnd.ez.api.FieldDefinition+json
+                                    example: |
+                                        application/vnd.ez.api.FieldDefinition+xml
+                                        application/vnd.ez.api.FieldDefinition+json
                             responses:
                                 200:
                                     description: OK
@@ -859,9 +1785,103 @@ version: 2.4
                             description: Updates the attributes of a Field definition
                             headers:
                                 Accept:
-                                    description: application/vnd.ez.api.FieldDefinition+xml or application/vnd.ez.api.FieldDefinition+json
+                                    description: Response format, either application/vnd.ez.api.FieldDefinition+xml or application/vnd.ez.api.FieldDefinition+json
+                                    example: |
+                                        application/vnd.ez.api.FieldDefinition+xml
+                                        application/vnd.ez.api.FieldDefinition+json
                                 Content-Type:
-                                    description: application/vnd.ez.api.FieldDefinitionUpdate+xml or application/vnd.ez.api.FieldDefinitionUpdate+json
+                                    description: Media type, either application/vnd.ez.api.FieldDefinitionUpdate+xml or application/vnd.ez.api.FieldDefinitionUpdate+json
+                                    example: |
+                                        application/vnd.ez.api.FieldDefinitionUpdate+xml
+                                        application/vnd.ez.api.FieldDefinitionUpdate+json
+                            body:
+                                application/vnd.ez.api.FieldDefinition+xml:
+                                    schema: |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                          xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                                          <xsd:include schemaLocation="CommonDefinitions.xsd" />
+                                          <xsd:complexType name="vnd.ez.api.FieldDefinitionUpdate">
+                                            <xsd:all>
+                                              <xsd:element name="identifier" type="xsd:string" minOccurs="0">
+                                                <xsd:annotation>
+                                                  <xsd:documentation>
+                                                    If set the identifier of a field
+                                                    definition is changed
+                                                  </xsd:documentation>
+                                                </xsd:annotation>
+                                              </xsd:element>
+                                              <xsd:element name="fieldGroup" type="xsd:string">
+                                                <xsd:annotation>
+                                                  <xsd:documentation>
+                                                    If set the field group is changed
+                                                  </xsd:documentation>
+                                                </xsd:annotation>
+                                              </xsd:element>
+                                              <xsd:element name="position" type="xsd:int">
+                                                <xsd:annotation>
+                                                  <xsd:documentation>
+                                                    If set the position of the field definition in
+                                                    the content type is changed
+                                                  </xsd:documentation>
+                                                </xsd:annotation>
+                                              </xsd:element>
+                                              <xsd:element name="isTranslatable" type="xsd:boolean">
+                                                <xsd:annotation>
+                                                  <xsd:documentation>
+                                                    If set the translatable flag is set to this value
+                                                  </xsd:documentation>
+                                                </xsd:annotation>
+                                              </xsd:element>
+                                              <xsd:element name="isRequired" type="xsd:boolean">
+                                                <xsd:annotation>
+                                                  <xsd:documentation>
+                                                    If set the required flag is set to this value
+                                                  </xsd:documentation>
+                                                </xsd:annotation>
+                                              </xsd:element>
+                                              <xsd:element name="isInfoCollector" type="xsd:boolean">
+                                                <xsd:annotation>
+                                                  <xsd:documentation>
+                                                    If set the info collection flag is set to this value
+                                                  </xsd:documentation>
+                                                </xsd:annotation>
+                                              </xsd:element>
+                                              <xsd:element name="defaultValue" type="fieldValueType">
+                                                <xsd:annotation>
+                                                  <xsd:documentation>
+                                                    Default value of the field
+                                                  </xsd:documentation>
+                                                </xsd:annotation>
+                                              </xsd:element>
+                                              <xsd:element name="fieldSettings" type="fieldSettingsType">
+                                                <xsd:annotation>
+                                                  <xsd:documentation>
+                                                    Settings of the field
+                                                  </xsd:documentation>
+                                                </xsd:annotation>
+                                              </xsd:element>
+                                              <xsd:element name="validatorConfiguration" type="validatorConfigurationType">
+                                                <xsd:annotation>
+                                                  <xsd:documentation>
+                                                    Validator configuration of the field
+                                                  </xsd:documentation>
+                                                </xsd:annotation>
+                                              </xsd:element>
+                                              <xsd:element name="isSearchable" type="xsd:boolean">
+                                                <xsd:annotation>
+                                                  <xsd:documentation>
+                                                    If set the searchable flag is set to this value
+                                                  </xsd:documentation>
+                                                </xsd:annotation>
+                                              </xsd:element>
+                                              <xsd:element name="names" type="multiLanguageValuesType" />
+                                              <xsd:element name="descriptions" type="multiLanguageValuesType" />
+                                            </xsd:all>
+                                          </xsd:complexType>
+
+                                          <xsd:element name="FieldDefinitionInput" type="vnd.ez.api.FieldDefinitionUpdate" />
+                                        </xsd:schema>
                             responses:
                                 200:
                                     description: OK
@@ -880,13 +1900,15 @@ version: 2.4
                                     description: Error - The user is not authorized to delete this Content Type
                                 403:
                                     description: Error - There is no draft of the Content Type assigned to the authenticated user
-            # Source file states "/content/type/<ID>/groups", presumably a typo
             /groups:
                 get:
                     description: Returns the Content Type Group the Content Type belongs to.
                     headers:
                         Accept:
-                            description: application/vnd.ez.api.ContentTypeGroupRefList+xml or application/vnd.ez.api.ContentTypeGroupRefList+json
+                            description: Response format, either application/vnd.ez.api.ContentTypeGroupRefList+xml or application/vnd.ez.api.ContentTypeGroupRefList+json
+                            example: |
+                                application/vnd.ez.api.ContentTypeGroupRefList+xml
+                                application/vnd.ez.api.ContentTypeGroupRefList+json
                     responses:
                         200:
                             body:
@@ -907,7 +1929,40 @@ version: 2.4
                             type: uri
                     headers:
                         Accept:
-                            description: application/vnd.ez.api.ContentTypeGroupRefList+xml or application/vnd.ez.api.ContentTypeGroupRefList+json
+                            description: Response format, either application/vnd.ez.api.ContentTypeGroupRefList+xml or application/vnd.ez.api.ContentTypeGroupRefList+json
+                            example: |
+                                application/vnd.ez.api.ContentTypeGroupRefList+xml
+                                application/vnd.ez.api.ContentTypeGroupRefList+json
+                    body:
+                        application/vnd.ez.api.ContentTypeGroupRefList+xml:
+                            schema: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                            xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                                    <xsd:include schemaLocation="CommonDefinitions.xsd" />
+                                    <xsd:include schemaLocation="ContentType.xsd" />
+                                    <xsd:complexType name="vnd.ez.api.ContentTypeGroupRefList">
+                                        <xsd:complexContent>
+                                            <xsd:extension base="ref">
+                                                <xsd:sequence>
+                                                    <xsd:element name="ContentTypeGroupRef" maxOccurs="unbounded">
+                                                        <xsd:complexType>
+                                                            <xsd:complexContent>
+                                                                <xsd:extension base="ref">
+                                                                    <xsd:all>
+                                                                        <xsd:element name="unlink" type="controllerRef"
+                                                                                     minOccurs="0" />
+                                                                    </xsd:all>
+                                                                </xsd:extension>
+                                                            </xsd:complexContent>
+                                                        </xsd:complexType>
+                                                    </xsd:element>
+                                                </xsd:sequence>
+                                            </xsd:extension>
+                                        </xsd:complexContent>
+                                    </xsd:complexType>
+                                    <xsd:element name="ContentTypeGroupRefList" type="vnd.ez.api.ContentTypeGroupRefList" />
+                                </xsd:schema>
                     responses:
                         200:
                             body:
@@ -932,7 +1987,10 @@ version: 2.4
                         description: Removes the given group from the Content Type and returns the updated group list
                         headers:
                             Accept:
-                                description: application/vnd.ez.api.ContentTypeGroupRefList+xml or application/vnd.ez.api.ContentTypeGroupRefList+json
+                                description: Response format, either application/vnd.ez.api.ContentTypeGroupRefList+xml or application/vnd.ez.api.ContentTypeGroupRefList+json
+                                example: |
+                                    application/vnd.ez.api.ContentTypeGroupRefList+xml
+                                    application/vnd.ez.api.ContentTypeGroupRefList+json
                         responses:
                             200:
                                 body:
