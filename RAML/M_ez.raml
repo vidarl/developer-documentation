@@ -15,7 +15,10 @@ version: 2.4
                 type: integer
         headers:
             Accept:
-                description: Response format, either application/vnd.ez.api.BookmarkList+xml or application/vnd.ez.api.BookmarkList+json
+                description: if set the list is returned in XML or JSON format
+                example:  |
+                    application/vnd.ez.api.BookmarkList+xml
+                    application/vnd.ez.api.BookmarkList+json
         responses:
             200:
                 body:
@@ -186,7 +189,10 @@ version: 2.4
         description: List the root resources of the eZ Platform installation.
         headers:
             Accept:
-                description: application/vnd.ez.api.Root+xml or application/vnd.ez.api.Root+json
+                description: if set the list is return in xml or json format
+                example:  |
+                    application/vnd.ez.api.Root+xml
+                    application/vnd.ez.api.Root+json
         responses:
             200:
                 body:
@@ -317,9 +323,17 @@ version: 2.4
             description: Creates a new content draft assigned to the authenticated user. If a different userId is given in the input it is assigned to the given user but this required special rights for the authenticated user (this is useful for content staging where the transfer process does not have to authenticate with the user which created the content object in the source server). The user has to publish the content if it should be visible.
             headers:
                 Accept:
-                    description:  application/vnd.ez.api.Content+xml or application/vnd.ez.api.Content+json or application/vnd.ez.api.ContentInfo+xml or application/vnd.ez.api.ContentInfo+json
+                    description: Content - if set all informations for the content object including the embedded current version are returned in xml or json format. ContentInfo - if set all informations for the content object (excluding the current version) are returned in xml or json format
+                    example:  |
+                        application/vnd.ez.api.Content+xml
+                        application/vnd.ez.api.Content+json
+                        application/vnd.ez.api.ContentInfo+xml
+                        application/vnd.ez.api.ContentInfo+json
                 Content-Type:
-                    description: application/vnd.ez.api.ContentCreate+json or application/vnd.ez.api.ContentCreate+xml
+                    description: the ContentCreate schema encoded in xml or json
+                    example:  |
+                        application/vnd.ez.api.ContentCreate+xml
+                        application/vnd.ez.api.ContentCreate+json
             body:
                 application/vnd.ez.api.Content+xml:
                     schema: |
@@ -600,9 +614,15 @@ version: 2.4
                         type: comma separated list
                 headers:
                     Accept:
-                        description: application/vnd.ez.api.Content+xml or application/vnd.ez.api.Content+json or application/vnd.ez.api.ContentInfo+xml or application/vnd.ez.api.ContentInfo+json
+                        description: Content - 	if set all informations for the content object including the embedded current version are returned in xml or json format. ContentInfo - 	if set all informations for the content object (excluding the current version) are returned in xml or json format
+                        example:  |
+                            application/vnd.ez.api.Content+xml
+                            application/vnd.ez.api.Content+json
+                            application/vnd.ez.api.ContentInfo+xml
+                            application/vnd.ez.api.ContentInfo+json
                     If-None-Match:
-                        description: ETag If the provided etag matches the current etag then a "304 Not Modified" is returned. The etag changes if the meta data was changed - this happens also if there is a new published version.
+                        description: If the provided etag matches the current etag then a "304 Not Modified" is returned. The etag changes if the meta data was changed - this happens also if there is a new published version.
+                        example: ETag
                 responses:
                     200:
                         body:
@@ -630,15 +650,22 @@ version: 2.4
                         description: Error - the user is not authorized to read this object. This could also happen if there is no published version yet and another user owns a draft of this content
                     404:
                         description: Error - the ID is not found
-            post:
-                description: PATCH or POST with header X-HTTP-Method-Override PATCH. This method updates the content metadata which is independent from a version.
+            patch:
+                description: This method updates the content metadata which is independent from a version. PATCH or POST with header X-HTTP-Method-Override PATCH.
                 headers:
                      Accept:
-                        description: Response format, either application/vnd.ez.api.ContentInfo+xml or application/vnd.ez.api.ContentInfo+json
+                        description: If set all informations for the content object (excluding the current version) are returned in xml or json format
+                        example:  |
+                            application/vnd.ez.api.ContentInfo+xml
+                            application/vnd.ez.api.ContentInfo+json
                      If-match:
-                         description: ETag Causes to patch only if the specified etag is the current one. Otherwise a 412 is returned.
+                         description: Causes to patch only if the specified etag is the current one. Otherwise a 412 is returned.
+                         example: ETag
                      Content-Type:
-                        description: Response format, either application/vnd.ez.api.ContentUpdate+json or application/vnd.ez.api.ContentUpdate+xml
+                        description: the ContentUpdate schema encoded in xml or json
+                        example:  |
+                            application/vnd.ez.api.ContentUpdate+xml
+                            application/vnd.ez.api.ContentUpdate+json
                 body:
                     application/vnd.ez.api.ContentInfo+xml:
                         schema: |
@@ -685,18 +712,6 @@ version: 2.4
                         description: Error - the current ETag does not match with the provided one in the If-Match header
                     415:
                         description: Error - the media-type is not one of those specified in Headers
-
-            patch:
-                description: PATCH or POST with header X-HTTP-Method-Override PATCH. This method updates the content metadata which is independent from a version.
-                headers:
-                     Accept:
-                        description: application/vnd.ez.api.ContentInfo+xml or application/vnd.ez.api.ContentInfo+json
-                     If-match:
-                         description: ETag Causes to patch only if the specified etag is the current one. Otherwise a 412 is returned.
-                     Content-Type:
-                        description: Response format, either application/vnd.ez.api.ContentUpdate+json or application/vnd.ez.api.ContentUpdate+xml
-                responses:
-                    description: Same as POST /content/objects/<ID>
             delete:
                 description: The content is deleted. If the content has locations (which is required in 4.x) on delete all locations assigned the content object are deleted via delete subtree.
                 responses:
@@ -707,9 +722,10 @@ version: 2.4
                     401:
                         description: Error - the user is not authorized to delete this object
             copy:
-                description: COPY or POST with header X-HTTP-Method-Override COPY. Creates a new content object as copy under the given parent location given in the destination header.
+                description: Creates a new content object as copy under the given parent location given in the destination header. COPY or POST with header X-HTTP-Method-Override COPY.
                 headers:
-                    destination: A location resource to which the content object should be copied.
+                    destination:
+                        description: A location resource to which the content object should be copied.
                 responses:
                     201:
                         description: Copy created
@@ -740,9 +756,13 @@ version: 2.4
                         404:
                             description: Error - the resource does not exist
                 copy:
-                    description: COPY or POST with header X-HTTP-Method-Override COPY. The system creates a new draft version as a copy from the current version
+                    description: The system creates a new draft version as a copy from the current version. COPY or POST with header X-HTTP-Method-Override COPY.
                     headers:
-                      Accept: application/vnd.ez.api.Version+xml or application/vnd.ez.api.Version+json
+                      Accept:
+                          description: if set the updated version is returned in xml or json format
+                          example:  |
+                              application/vnd.ez.api.Version+xml
+                              application/vnd.ez.api.Version+json
                     responses:
                         201:
                             description: Created
@@ -757,7 +777,10 @@ version: 2.4
                     description: Returns a list of all versions of the content. This method does not include fields and relations in the Version elements of the response.
                     headers:
                         Accept:
-                            description: application/vnd.ez.api.VersionList+xml or application/vnd.ez.api.VersionList+json
+                            description: if set the version list is returned in xml or json format
+                            example:  |
+                                application/vnd.ez.api.VersionList+xml
+                                application/vnd.ez.api.VersionList+json
                     responses:
                         200:
                             body:
@@ -849,9 +872,13 @@ version: 2.4
                                 type: Comma separated list
                         headers:
                             If-None-Match:
-                                description: ETag Only return the version if the given ETag is the not current one otherwise a 304 is returned.
+                                description: Only return the version if the given ETag is the not current one otherwise a 304 is returned.
+                                example: ETag
                             Accept:
-                                description: application/vnd.ez.api.Version+xml or application/vnd.ez.api.Version+json
+                                description: if set the version list is returned in xml or json format
+                                example:  |
+                                    application/vnd.ez.api.Version+xml
+                                    application/vnd.ez.api.Version+json
                         responses:
                             200:
                                 body:
@@ -913,18 +940,24 @@ version: 2.4
                             404:
                                 description: Error - the ID or version is not found
                     post:
-                        description: A specific draft is updated - PATCH or POST with header X-HTTP-Method-Override "PATCH".
+                        description: A specific draft is updated. PATCH or POST with header X-HTTP-Method-Override PATCH.
                         queryParameters:
                             languages:
                                 description: restricts the output of translatable fields to the given languages
                                 type: Comma separated list
                         headers:
                             Accept:
-                                description: application/vnd.ez.api.Version+xml or application/vnd.ez.api.Version+json
+                                description: if set the updated version is returned in xml or json format
+                                example:  |
+                                    application/vnd.ez.api.Version+xml
+                                    application/vnd.ez.api.Version+json
                             If-match:
                                 description: Causes to patch only if the specified etag is the current one
                             Content-Type:
-                                description: application/vnd.ez.api.VersionUpdate+json or application/vnd.ez.api.VersionUpdate+xml
+                                description: the VersionUpdate schema encoded in xml or json
+                                example:  |
+                                    application/vnd.ez.api.VersionUpdate+xml
+                                    application/vnd.ez.api.VersionUpdate+json
                         body:
                           application/vnd.ez.api.Version+xml:
                               schema:
@@ -1014,9 +1047,13 @@ version: 2.4
                             412:
                                 description: Error - the current ETag does not match with the provided one in the If-Match header
                     copy:
-                        description: COPY or POST with header X-HTTP-Method-Override COPY. The system creates a new draft version as a copy from the given version
+                        description: The system creates a new draft version as a copy from the given version. COPY or POST with header X-HTTP-Method-Override COPY.
                         headers:
-                            Accept: application/vnd.ez.api.Version+xml or application/vnd.ez.api.Version+json
+                            Accept:
+                                description: if set the updated version is returned in xml or json format
+                                example:  |
+                                    application/vnd.ez.api.Version+xml
+                                    application/vnd.ez.api.Version+json
                         responses:
                             201:
                                 description: Created
@@ -1073,7 +1110,11 @@ version: 2.4
                                     description: the number of bookmarks returned
                                     type: integer
                             headers:
-                                Accept: application/vnd.ez.api.RelationList+xml or application/vnd.ez.api.RelationList+json
+                                Accept:
+                                    description: if set the relation is returned in xml or json format
+                                    example:  |
+                                        application/vnd.ez.api.RelationList+xml
+                                        application/vnd.ez.api.RelationList+json
                             responses:
                                 200:
                                     body:
@@ -1105,9 +1146,15 @@ version: 2.4
                             description: Creates a new relation of type COMMON for the given draft.
                             headers:
                                 Accept:
-                                    description: application/vnd.ez.api.Relation+xml or application/vnd.ez.api.Relation+json
+                                    description: if set the updated version is returned in xml or json format
+                                    example:  |
+                                        application/vnd.ez.api.Relation+xml
+                                        application/vnd.ez.api.Relation+json
                                 Content-Type:
-                                    description: application/vnd.ez.api.RelationCreate+xml or application/vnd.ez.api.RelationCreate+json
+                                    description: the RelationCreate (see RelationCreate) schema encoded in xml or json
+                                    example:  |
+                                        application/vnd.ez.api.RelationCreate+xml
+                                        application/vnd.ez.api.RelationCreate+json
                             body:
                                 application/vnd.ez.api.Relation+xml:
                                     schema:
@@ -1133,7 +1180,11 @@ version: 2.4
                                 get:
                                     description: loads a relation for the given content object
                                     headers:
-                                        Accept: application/vnd.ez.api.Relation+xml or application/vnd.ez.api.Relation+json
+                                        Accept:
+                                            description: if set the relation is returned in xml or json format
+                                            example:  |
+                                                application/vnd.ez.api.Relation+xml
+                                                application/vnd.ez.api.Relation+json
                                     responses:
                                         200:
                                             description: OK - loads a relation for the given content object
@@ -1166,7 +1217,16 @@ version: 2.4
                     post:
                         description: Creates a new location for the given content object
                         headers:
-                            Accept: application/vnd.ez.api.Location+xml or application/vnd.ez.api.Location+json
+                            Accept:
+                                description: if set the new location is returned in xml or json format
+                                example:  |
+                                    application/vnd.ez.api.Location+xml
+                                    application/vnd.ez.api.Location+json
+                            Content-Type:
+                                description: the LocationCreate schema encoded in xml or json
+                                example:  |
+                                    application/vnd.ez.api.LocationCreate+json
+                                    application/vnd.ez.api.LocationCreate+xml
                         body:
                             application/vnd.ez.api.Location+xml:
                                 schema:
@@ -1209,8 +1269,13 @@ version: 2.4
                     get:
                         description: loads all locations for the given content object
                         headers:
-                            Accept: application/vnd.ez.api.LocationList+xml or application/vnd.ez.api.LocationList+json
-                            If-None-Match: ETag
+                            Accept:
+                                description: if set the new location is returned in xml or json format
+                                example:  |
+                                    application/vnd.ez.api.LocationList+xml
+                                    application/vnd.ez.api.LocationList+json
+                            If-None-Match:
+                                description: ETag
                         responses:
                             200:
                                 body:
@@ -1229,7 +1294,11 @@ version: 2.4
         get:
             description: Loads an image variation
             headers:
-                Accept: application/vnd.ez.api.ImageVariation+xml or application/vnd.ez.api.ImageVariation+json
+                Accept:
+                    description: if set the image is returned in xml or json format
+                    example:  |
+                        application/vnd.ez.api.ImageVariation+xml
+                        application/vnd.ez.api.ImageVariation+json
             responses:
                 200:
                     body:
@@ -1267,8 +1336,13 @@ version: 2.4
             get:
                 description: loads the location for the given path
                 headers:
-                    Accept: application/vnd.ez.api.Location+xml or application/vnd.ez.api.Location+json
-                    If-None-Match: ETag
+                    Accept:
+                        description: if set the new location is returned in xml or json format
+                        example:  |
+                            application/vnd.ez.api.Location+xml
+                            application/vnd.ez.api.Location+json
+                    If-None-Match:
+                        description: ETag
                 responses:
                     200:
                         body:
@@ -1309,7 +1383,7 @@ version: 2.4
                         description: Error - the user is not authorized to move this location
                     404:
                         description: Error - the location with the given id does not exist
-            post:
+            copy:
                 description: Copies the subtree to another parent. COPY or POST with header X-HTTP-Method-Override COPY
                 headers:
                     Destination:
@@ -1341,7 +1415,11 @@ version: 2.4
                             description: the number of bookmarks returned
                             type: integer
                     headers:
-                        Accept: application/vnd.ez.api.LocationList+xml or application/vnd.ez.api.LocationList+json
+                        Accept:
+                            description: if set the new location list is returned in xml or json format
+                            example:  |
+                                 application/vnd.ez.api.LocationList+xml
+                                 application/vnd.ez.api.LocationList+json
                     responses:
                         200:
                             body:
@@ -1360,9 +1438,18 @@ version: 2.4
             patch:
                 description: updates the location, this method can also be used to hide/unhide a location via the hidden field in the LocationUpdate. PATCH or POST with header X-HTTP-Method-Override PATCH
                 headers:
-                    Accept: application/vnd.ez.api.Location+xml or application/vnd.ez.api.Location+json:
-                    Content-Type: application/vnd.ez.api.LocationUpdate+json or application/vnd.ez.api.LocationUpdate+xml
-                    If-Match: ETag
+                    Accept:
+                        description: if set the new location is returned in xml or json format
+                        example:  |
+                            application/vnd.ez.api.Location+xml
+                            application/vnd.ez.api.Location+json
+                    Content-Type:
+                        description: the LocationUpdate schema encoded in xml or json
+                        example:  |
+                            application/vnd.ez.api.LocationUpdate+xml
+                            application/vnd.ez.api.LocationUpdate+json
+                    If-Match:
+                        description: ETag
                 body:
                     application/vnd.ez.api.Location+xml:
                         schema:
@@ -1416,8 +1503,20 @@ version: 2.4
         post:
             description: Executes a query and returns view including the results. The View input reflects the criteria model of the public API. Will respond with a 301, as the resource has been moved to /views (Platform 1.0)
             headers:
-                Accept: application/vnd.ez.api.View+xml or application/vnd.ez.api.View+json or application/vnd.ez.api.View+xml; version=1.1 or application/vnd.ez.api.View+json; version=1.1
-                Content-Type: application/vnd.ez.api.ViewInput+xml or application/vnd.ez.api.ViewInput+json or application/vnd.ez.api.ViewInput+xml; version=1.1 or application/vnd.ez.api.ViewInput+json; version=1.1
+                Accept:
+                    description: the view in xml or json format
+                    example:  |
+                        application/vnd.ez.api.View+xml
+                        application/vnd.ez.api.View+json
+                        application/vnd.ez.api.View+xml; version=1.1
+                        application/vnd.ez.api.View+json; version=1.1
+                Content-Type:
+                    description: the view input in xml or json format
+                    example:  |
+                        application/vnd.ez.api.ViewInput+xml
+                        application/vnd.ez.api.ViewInput+json
+                        application/vnd.ez.api.ViewInput+xml; version=1.1
+                        application/vnd.ez.api.ViewInput+json; version=1.1
             responses:
                 301:
                     description: Moved permanently
@@ -1426,7 +1525,11 @@ version: 2.4
         get:
             description: Returns a list of view uris. The list includes public view and private view of the authenticated user.
             headers:
-                Accept: application/vnd.ez.api.RefList+xml or application/vnd.ez.api.RefList+json
+                Accept:
+                    description: the view link list in xml or json format
+                    example:  |
+                        application/vnd.ez.api.RefList+xml
+                        application/vnd.ez.api.RefList+json
             responses:
                 200:
                     description: OK - list of view uris
@@ -1434,7 +1537,11 @@ version: 2.4
             get:
                 description: Returns the view
                 headers:
-                    Accept: application/vnd.ez.api.View+xml or application/vnd.ez.api.View+json
+                    Accept:
+                        description: the view excluding results in xml or json format
+                        example:  |
+                            application/vnd.ez.api.View+xml
+                            application/vnd.ez.api.View+json
                 responses:
                     200:
                         description: OK - returns the view
@@ -1453,7 +1560,11 @@ version: 2.4
                 get:
                     description: Returns result of the view
                     headers:
-                        Accept: application/vnd.ez.api.ViewResult+xml or application/vnd.ez.api.ViewResult+json
+                        Accept:
+                            description: the view excluding results in xml or json format
+                            example:  |
+                                application/vnd.ez.api.ViewResult+xml
+                                application/vnd.ez.api.ViewResult+json
                     responses:
                         200:
                             description: OK - result of the view
@@ -1463,8 +1574,16 @@ version: 2.4
         post:
             description: Creates a new section
             headers:
-                Accept: application/vnd.ez.api.Section+xml or application/vnd.ez.api.Section+json
-                Content-Type: application/vnd.ez.api.SectionInput+json or application/vnd.ez.api.SectionInput+xml
+                Accept:
+                    description: if set the new section is returned in xml or json format
+                    example:  |
+                        application/vnd.ez.api.Section+xml
+                        application/vnd.ez.api.Section+json
+                Content-Type:
+                    description: the Section input schema encoded in xml or json
+                    example:  |
+                        application/vnd.ez.api.SectionInput+json
+                        application/vnd.ez.api.SectionInput+xml
             body:
                 application/vnd.ez.api.Section+xml:
                     schema:
@@ -1491,8 +1610,13 @@ version: 2.4
                 identifer:
                     description: only the section with the given identifier is returned.
             headers:
-                Accept: application/vnd.ez.api.SectionList+xml or application/vnd.ez.api.SectionList+json
-                If-None-Match: ETag
+                Accept:
+                    description: if set the section list is returned in xml or json format
+                    example:  |
+                        application/vnd.ez.api.SectionList+xml
+                        application/vnd.ez.api.SectionList+json
+                If-None-Match:
+                    description: ETag
             responses:
                 200:
                     body:
@@ -1527,8 +1651,13 @@ version: 2.4
             get:
                 description: Returns the section given by ID
                 headers:
-                    Accept: application/vnd.ez.api.Section+xml or application/vnd.ez.api.Section+json
-                    If-None-match: ETag
+                    Accept:
+                        description: if set the section is returned in xml or json format
+                        example:  |
+                            application/vnd.ez.api.Section+xml
+                            application/vnd.ez.api.Section+json
+                    If-None-match:
+                        description: ETag
                 responses:
                     200:
                         body:
@@ -1545,11 +1674,20 @@ version: 2.4
                     404:
                         description: Error - the section does not exist
             patch:
-                description: Updates a section - PATCH or POST with header X-HTTP-Method-Override
+                description: Updates a section. PATCH or POST with header X-HTTP-Method-Override PATCH
                 headers:
-                    Accept: application/vnd.ez.api.Section+xml or application/vnd.ez.api.Section+json
-                    Content-Type: application/vnd.ez.api.SectionInput+json or application/vnd.ez.api.SectionInput+xml
-                    If-Match: ETag
+                    Accept:
+                        description: if set the updated section is returned in xml or json format
+                        example:  |
+                            application/vnd.ez.api.Section+xml
+                            application/vnd.ez.api.Section+json
+                    Content-Type:
+                        description: the Section input schema encoded in xml or json
+                        example:  |
+                            application/vnd.ez.api.SectionInput+xml
+                            application/vnd.ez.api.SectionInput+json
+                    If-Match:
+                        description: ETag
                 responses:
                     200:
                         description: OK - section updated
@@ -1564,7 +1702,11 @@ version: 2.4
             delete:
                 description: the given section is deleted
                 headers:
-                    Accept: application/vnd.ez.api.ErrorMessage+xml or application/vnd.ez.api.ErrorMessage+json
+                    Accept:
+                        description: if set in the case of an error the error message is returned in xml or json format
+                        example:  |
+                            application/vnd.ez.api.ErrorMessage+xml
+                            application/vnd.ez.api.ErrorMessage+json
                 responses:
                     204:
                         description: No content - given section is deleted
@@ -1576,8 +1718,20 @@ version: 2.4
     post:
         description: executes a query and returns view including the results The View input reflects the criteria model of the public API
         headers:
-            Accept: application/vnd.ez.api.View+xml or application/vnd.ez.api.View+json or application/vnd.ez.api.View+xml; version=1.1 or application/vnd.ez.api.View+json; version=1.1
-            Content-Type: application/vnd.ez.api.ViewInput+xml or application/vnd.ez.api.ViewInput+json or application/vnd.ez.api.ViewInput+xml; version=1.1 or application/vnd.ez.api.ViewInput+json; version=1.1
+            Accept:
+                description: the view in xml or json format
+                example:  |
+                    application/vnd.ez.api.View+xml
+                    application/vnd.ez.api.View+json
+                    application/vnd.ez.api.View+xml; version=1.1
+                    application/vnd.ez.api.View+json; version=1.1
+            Content-Type:
+                description: the view input in xml or json format
+                example:  |
+                    application/vnd.ez.api.ViewInput+xml
+                    application/vnd.ez.api.ViewInput+json
+                    application/vnd.ez.api.ViewInput+xml; version=1.1
+                    application/vnd.ez.api.ViewInput+json; version=1.1
         body:
             application/vnd.ez.api.View+xml; version=1.1:
                 schema:
@@ -1687,7 +1841,13 @@ version: 2.4
                 remoteID:
                     description: retrieves the user group for the given remoteId
             headers:
-                Accept: application/vnd.ez.api.UserGroupList+xml or application/vnd.ez.api.UserGroupList+json or application/vnd.ez.api.UserGroupRefList+xml or application/vnd.ez.api.UserGroupRefList+json
+                Accept:
+                    description: UserGroupList - if set the user group list is returned in xml or json format. UserGroupRefList - if set the link list of user groups is returned in xml or json format
+                    example:  |
+                        application/vnd.ez.api.UserGroupList+xml
+                        application/vnd.ez.api.UserGroupList+json
+                        application/vnd.ez.api.UserGroupRefList+xml
+                        application/vnd.ez.api.UserGroupRefList+json
             responses:
                 200:
                     body:
@@ -1742,15 +1902,20 @@ version: 2.4
         /root:
             get:
                 description: Redirects to the root user group
-                response:
+                responses:
                     301:
                         description: Moved permanently.
         /{path}:
             get:
                 description: loads user groups for the given {path}
                 headers:
-                    Accept: application/vnd.ez.api.UserGroup+xml or application/vnd.ez.api.UserGroup+json
-                    If-None-Match: ETag
+                    Accept:
+                        description: if set the new user group is returned in xml or json format
+                        example:  |
+                            application/vnd.ez.api.UserGroup+xml
+                            application/vnd.ez.api.UserGroup+json
+                    If-None-Match:
+                        description: ETag
                 responses:
                     200:
                         description: OK - loads user groups
@@ -1761,9 +1926,19 @@ version: 2.4
             patch:
                 description: Updates a user group - PATCH or POST with header X-HTTP-Method-Override PATCH
                 headers:
-                    Accept: application/vnd.ez.api.UserGroup+xml or application/vnd.ez.api.UserGroup+json
-                    Content-Type: application/vnd.ez.api.UserGroupUpdate+json or application/vnd.ez.api.UserGroupUpdate+xml
-                    If-Match: ETag - Causes to patch only if the specified etag is the current one. Otherwise a 412 is returned.
+                    Accept:
+                        description: if set the new user group is returned in xml or json forma
+                        example:  |
+                            application/vnd.ez.api.UserGroup+xml
+                            application/vnd.ez.api.UserGroup+json
+                    Content-Type:
+                        description: the UserGroupUpdate schema encoded in xml or json
+                        example:  |
+                            application/vnd.ez.api.UserGroupUpdate+json
+                            application/vnd.ez.api.UserGroupUpdate+xml
+                    If-Match:
+                        description: Causes to patch only if the specified etag is the current one. Otherwise a 412 is returned.
+                        example: ETag
                 responses:
                     200:
                        description: OK - updated user group
@@ -1800,8 +1975,16 @@ version: 2.4
                 post:
                     description: Creates a new user in the given group
                     headers:
-                        Accept: application/vnd.ez.api.User+xml or application/vnd.ez.api.User+json
-                        Content-Type: application/vnd.ez.api.UserCreate+json or application/vnd.ez.api.UserCreate+xml
+                        Accept:
+                            description: if set the new user is returned in xml or json format
+                            example:  |
+                                application/vnd.ez.api.User+xml
+                                application/vnd.ez.api.User+json
+                        Content-Type:
+                            description: the UserCreate schema encoded in xml or json
+                            example:  |
+                                application/vnd.ez.api.UserCreate+json
+                                application/vnd.ez.api.UserCreate+xml
                     body:
                         application/vnd.ez.api.User+xml:
                             schema:
@@ -1888,8 +2071,16 @@ version: 2.4
                 post:
                     description: Creates a new user group under the given parent. To create a top level group use /user/groups/subgroups
                     headers:
-                        Accept: application/vnd.ez.api.UserGroup+xml or application/vnd.ez.api.UserGroup+json
-                        Content-Type: application/vnd.ez.api.UserGroupCreate+json or application/vnd.ez.api.UserGroupCreate+xml
+                        Accept:
+                            description: if set the new user group is returned in xml or json format
+                            example:  |
+                                application/vnd.ez.api.UserGroup+xml
+                                application/vnd.ez.api.UserGroup+json
+                        Content-Type:
+                            description: the UserGroupCreate schema encoded in xml or json
+                            example:  |
+                                application/vnd.ez.api.UserGroupCreate+json
+                                application/vnd.ez.api.UserGroupCreate+xml
                     body:
                         application/vnd.ez.api.UserGroup+xml:
                             schema:
@@ -2075,7 +2266,7 @@ version: 2.4
                         description: the given role is removed from the user or user group
                         headers:
                             Accept:
-                                description: if set the updated role assignment list is returned in xml format
+                                description: if set the updated role assignment list is returned in xml or json format
                                 example:  |
                                     application/vnd.ez.api.RoleAssignmentList+xml
                                     application/vnd.ez.api.RoleAssignmentList+json
@@ -2110,7 +2301,13 @@ version: 2.4
                     offset:
                         description: offset of the result set
                 headers:
-                    Accept: application/vnd.ez.api.UserList+xml or application/vnd.ez.api.UserList+json or application/vnd.ez.api.UserRefList+xml or application/vnd.ez.api.UserRefList+json
+                    Accept:
+                    description: UserList - if set the user list returned in xml or json format. UserRefList - if set the link list of users returned in xml or json format
+                    example:  |
+                        application/vnd.ez.api.UserList+xml
+                        application/vnd.ez.api.UserList+json
+                        application/vnd.ez.api.UserRefList+xml
+                        application/vnd.ez.api.UserRefList+json
                 responses:
                     200:
                         description: OK - the users of the group with the given ID
@@ -2127,7 +2324,13 @@ version: 2.4
                     offset:
                         description: the offset of the result set
                 headers:
-                    Accept: application/vnd.ez.api.UserGroupList+xml or application/vnd.ez.api.UserGroupList+json or application/vnd.ez.api.UserGroupRefList+xml or application/vnd.ez.api.UserGroupRefList+json
+                    Accept:
+                        description: UserGroupList - if set the user group list returned in xml or json format. UserGroupRefList - if set the link list of user groups is returned in xml or json format
+                        example:  |
+                            application/vnd.ez.api.UserGroupList+xml
+                            application/vnd.ez.api.UserGroupList+json
+                            application/vnd.ez.api.UserGroupRefList+xml
+                            application/vnd.ez.api.UserGroupRefList+json
                 responses:
                     200:
                         description: OK - list of the sub groups
@@ -2148,7 +2351,13 @@ version: 2.4
                 email:
                     description: lists users with the given email (ex: GET /user/users?email=editor@example.com)
             headers:
-                Accept: application/vnd.ez.api.UserList+xml or application/vnd.ez.api.UserList+json or application/vnd.ez.api.UserRefList+xml or application/vnd.ez.api.UserRefList+json
+                Accept:
+                    description: UserList - if set the user list returned in xml or json format. UserRefList - if set the link list of users returned in xml or json format
+                    example:  |
+                        application/vnd.ez.api.UserList+xml
+                        application/vnd.ez.api.UserList+json
+                        application/vnd.ez.api.UserRefList+xml
+                        application/vnd.ez.api.UserRefList+json
             responses:
                 200:
                     description: OK - Loads users either for a given remoteId or role
@@ -2174,8 +2383,13 @@ version: 2.4
             get:
                 description: loads the users of the group with the given ID
                 headers:
-                    Accept: application/vnd.ez.api.User+xml or application/vnd.ez.api.User+json
-                    If-None-Match: ETag
+                    Accept:
+                      description: if set the new user is returned in xml or json format
+                      example:  |
+                          application/vnd.ez.api.User+xml
+                          application/vnd.ez.api.User+json
+                    If-None-Match:
+                        description: ETag
                 responses:
                     200:
                        description: OK - the users of the group with the given ID
@@ -2186,9 +2400,19 @@ version: 2.4
             patch:
                 description: Updates a user
                 headers:
-                    Accept: application/vnd.ez.api.User+xml or application/vnd.ez.api.User+json
-                    Content-Type: application/vnd.ez.api.UserUpdate+json or application/vnd.ez.api.UserUpdate+xml
-                    If-Match: ETag Causes to patch only if the specified etag is the current one. Otherwise a 412 is returned.
+                    Accept:
+                        description: if set the new user is returned in xml or json format
+                        example:  |
+                            application/vnd.ez.api.User+xml
+                            application/vnd.ez.api.User+json
+                    Content-Type:
+                        description: the UserUpdate schema encoded in xml or json
+                        example:  |
+                            application/vnd.ez.api.UserUpdate+json
+                            application/vnd.ez.api.UserUpdate+xml
+                    If-Match:
+                        description: Causes to patch only if the specified etag is the current one. Otherwise a 412 is returned.
+                        example: ETag
                 responses:
                     200:
                         description: OK
@@ -2223,7 +2447,10 @@ version: 2.4
                             type: integer
                     headers:
                         Accept:
-                            description: application/vnd.ez.api.UserGroupRefList+xml or application/vnd.ez.api.UserGroupRefList+json
+                            description: if set the link list of user groups is returned in xml or json format
+                            example:  |
+                                application/vnd.ez.api.UserGroupRefList+xml
+                                application/vnd.ez.api.UserGroupRefList+json
                     responses:
                         200:
                             body:
@@ -2250,12 +2477,10 @@ version: 2.4
                             description: the new parent group resource of the user
                     headers:
                         Accept:
-                            description: application/vnd.ez.api.UserGroupRefList+xml or application/vnd.ez.api.UserGroupRefList+json
-                    body:
-                        application/vnd.ez.api.UserGroupRefList+xml:
+                            description: if set the link list of user groups is returned in xml or json format
                             example:  |
-                                POST /user/users/45/groups?/user/groups/1/5/88 HTTP/1.1
-                                Accept: application/vnd.ez.api.UserGroupRefList+xml
+                                application/vnd.ez.api.UserGroupRefList+xml
+                                application/vnd.ez.api.UserGroupRefList+json
                     responses:
                         200:
                             body:
@@ -2419,7 +2644,7 @@ version: 2.4
                         description: the given role is removed from the user or user group
                         headers:
                             Accept:
-                                description: if set the updated role assignment list is returned in xml format
+                                description: if set the updated role assignment list is returned in xml or json format
                                 example:  |
                                     application/vnd.ez.api.RoleAssignmentList+xml
                                     application/vnd.ez.api.RoleAssignmentList+json
@@ -2459,7 +2684,7 @@ version: 2.4
                     type: integer
             headers:
                 Accept:
-                    description: if set the user list returned in xml or json format (see Role)
+                    description: if set the user list returned in xml or json format
                     example:  |
                         application/vnd.ez.api.RoleList+xml
                         application/vnd.ez.api.RoleList+json
@@ -2652,4 +2877,419 @@ version: 2.4
                         401:
                             description: Error - the user is not authorized to delete this role
             /policies:
-                totu
+                get:
+                    description: loads policies for the given role
+                    headers:
+                        Accept:
+                            description: if set the policy list is returned in xml or json format
+                            example:  |
+                                application/vnd.ez.api.PolicyList+xml
+                                application/vnd.ez.api.PolicyList+json
+                    responses:
+                        200:
+                            body:
+                                application/vnd.ez.api.PolicyList:
+                                    example:  |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <PolicyList href="/user/roles/11/policies" media-type="application/vnd.ez.api.PolicyList">
+                                          <Policy href="/user/roles/11/policies/45" media-type="application/vnd.ez.api.Policy+xml">
+                                            <id>45</id>
+                                            <module>content</module>
+                                            <function>create</function>
+                                            <limitations>
+                                              <limitation identifier="Class">
+                                                <values>
+                                                  <ref href="/content/types/10" media-type="application/vnd.ez.api.ContentType+xml" />
+                                                  <ref href="/content/types/11" media-type="application/vnd.ez.api.ContentType+xml" />
+                                                  <ref href="/content/types/12" media-type="application/vnd.ez.api.ContentType+xml" />
+                                                </values>
+                                              </limitation>
+                                              <limitation identifier="ParentClass">
+                                                <values>
+                                                  <ref href="/content/types/4" media-type="application/vnd.ez.api.ContentType+xml" />
+                                                </values>
+                                              </limitation>
+                                            </limitations>
+                                          </Policy>
+                                          <Policy href="/user/roles/11/policies/49" media-type="application/vnd.ez.api.Policy+xml">
+                                            <id>49</id>
+                                            <module>content</module>
+                                            <function>read</function>
+                                            <limitations>
+                                              <limitation identifier="Section">
+                                                <values>
+                                                  <ref href="/content/sections/1" media-type="application/vnd.ez.api.Section+xml" />
+                                                  <ref href="/content/sections/2" media-type="application/vnd.ez.api.Section+xml" />
+                                                  <ref href="/content/sections/4" media-type="application/vnd.ez.api.Section+xml" />
+                                                </values>
+                                              </limitation>
+                                            </limitations>
+                                          </Policy>
+                                        </PolicyList>
+                        401:
+                            description: Error - the user has no permission to read roles
+                        404:
+                            description: Error - the role does not exist
+                delete:
+                    description: all policies of the given role are deleted
+                    responses:
+                        204:
+                            description: No Content - all policies of the given role are deleted
+                        401:
+                            description: Error - the user is not authorized to delete this content type
+                post:
+                    description: creates a policy
+                    headers:
+                        Accept:
+                            description: if set the updated policy is returned in xml or json format
+                            example:  |
+                                application/vnd.ez.api.Policy+xml
+                                application/vnd.ez.api.Policy+json
+                        Content-Type:
+                            description: if set the updated policy is returned in xml or json format
+                            example: |
+                                application/vnd.ez.api.PolicyCreate+xml
+                                application/vnd.ez.api.PolicyCreate+json
+                    body:
+                        application/vnd.ez.api.Policy+xml:
+                            scheam: |
+                        application/vnd.ez.api.PolicyCreate+xml:
+                            example:  |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <PolicyCreate>
+                                  <module>content</module>
+                                  <function>create</function>
+                                  <limitations>
+                                    <limitation identifier="Class">
+                                      <values>
+                                        <ref href="/content/types/13"/>
+                                      </values>
+                                    </limitation>
+                                    <limitation identifier="ParentClass">
+                                      <values>
+                                        <ref href="/content/types/12"/>
+                                      </values>
+                                    </limitation>
+                                  </limitations>
+                                </PolicyCreate>
+                    responses:
+                        201:
+                            body:
+                                application/vnd.ez.api.Policy+xml:
+                                    example:  |
+                                        <Policy href="/user/roles/11/policies/55" media-type="application/vnd.ez.api.Policy+xml">
+                                          <id>55</id>
+                                          <module>content</module>
+                                          <function>create</function>
+                                          <limitations>
+                                            <limitation identifier="Class">
+                                              <values>
+                                                <ref href="/content/types/13"/>
+                                              </values>
+                                            </limitation>
+                                            <limitation identifier="ParentClass">
+                                              <values>
+                                                <ref href="/content/types/12"/>
+                                              </values>
+                                            </limitation>
+                                          </limitations>
+                                         </Policy>
+                        400:
+                            description: Error - the Input does not match the input schema definition, In this case the response contains an ErrorMessage OR validation of limitation in PolicyCreate fails
+                        401:
+                            description: Error - the user is not authorized to create the policy
+                        404:
+                            description: Error - the role does not exist
+                patch:
+                    description: Updates a policy. PATCH or POST with header X-HTTP-Method-Override PATCH
+                    headers:
+                        Accept:
+                            description: if set the updated policy is returned in xml or json format
+                            example:  |
+                                application/vnd.ez.api.Policy+xml
+                                application/vnd.ez.api.Policy+json
+                        Content-Type:
+                            description: if set the updated policy is returned in xml or json format
+                            example:  |
+                                application/vnd.ez.api.PolicyUpdate+xml
+                                application/vnd.ez.api.PolicyUpdate+json
+                        If-Match:
+                            description: Causes to patch only if the specified etag is the current one. Otherwise a 412 is returned.
+                            example: ETag
+                    body:
+                        application/vnd.ez.api.Policy+xml:
+                            schema:
+                        application/vnd.ez.api.Policy+xml:
+                            example:  |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <PolicyUpdate>
+                                  <limitations>
+                                    <limitation identifier="Class">
+                                      <values>
+                                        <ref href="/content/types/14"/>
+                                      </values>
+                                    </limitation>
+                                    <limitation identifier="ParentClass">
+                                      <values>
+                                        <ref href="/content/types/10"/>
+                                      </values>
+                                    </limitation>
+                                  </limitations>
+                                </PolicyUpdate>
+                    responses:
+                        200:
+                            body:
+                                application/vnd.ez.api.Policy+xml:
+                                    example:  |
+                                        <Policy href="/user/roles/11/policies/55" media-type="application/vnd.ez.api.Policy+xml">
+                                          <id>55</id>
+                                          <module>content</module>
+                                          <function>create</function>
+                                          <limitations>
+                                            <limitation identifier="Class">
+                                              <values>
+                                                <ref href="/content/types/14"/>
+                                              </values>
+                                            </limitation>
+                                            <limitation identifier="ParentClass">
+                                              <values>
+                                                <ref href="/content/types/10"/>
+                                              </values>
+                                            </limitation>
+                                          </limitations>
+                                         </Policy>
+                        400:
+                            description: Error - the Input does not match the input schema definition, In this case the response contains an ErrorMessage OR validation of limitation in PolicyUpdate fails
+                        401:
+                            description: Error - the user is not authorized to update the policy
+                        404:
+                            description: Error - the role does not exist
+                        412:
+                            description: Error - the current ETag does not match with the provided one in the If-Match header
+                /{id}:
+                    get:
+                        description: loads a policy for the given module and function
+                        headers:
+                            Accept:
+                                description: if set the policy is returned in xml or json format
+                                example:  |
+                                    application/vnd.ez.api.Policy+xml
+                                    application/vnd.ez.api.Policy+json
+                            If-None-Match:
+                                description: ETag
+                        responses:
+                            200:
+                                body:
+                                    application/vnd.ez.api.Policy+xml:
+                                        example:  |
+                                            <Policy href="/user/roles/11/policies/45" media-type="application/vnd.ez.api.Policy+xml">
+                                              <id>45</id>
+                                              <module>content</module>
+                                              <function>create</function>
+                                              <limitations>
+                                                <limitation identifier="Class">
+                                                  <values>
+                                                    <ref href="/content/types/10" media-type="application/vnd.ez.api.ContentType+xml" />
+                                                    <ref href="/content/types/11" media-type="application/vnd.ez.api.ContentType+xml" />
+                                                    <ref href="/content/types/12" media-type="application/vnd.ez.api.ContentType+xml" />
+                                                  </values>
+                                                </limitation>
+                                                <limitation identifier="ParentClass">
+                                                  <values>
+                                                    <ref href="/content/types/4" media-type="application/vnd.ez.api.ContentType+xml" />
+                                                  </values>
+                                                </limitation>
+                                              </limitations>
+                                            </Policy>
+                            401:
+                                description: Error - the user has no permission to read roles
+                            404:
+                                description: Error - the role or policy does not exist
+                    delete:
+                        description: the given policy is deleted
+                        responses:
+                            204:
+                                description: No Content - the given policy is deleted
+                            401:
+                                description: Error - the user is not authorized to delete this content type
+                            404:
+                                description: Error - the role or policy does not exist
+    /policies:
+        get:
+            description: search all policies which are applied to a given user
+            queryParameters:
+                userId:
+                    description: the user id
+            headers:
+                Accept:
+                    description: if set the policy list is returned in xml or json format
+                    example:  |
+                        application/vnd.ez.api.PolicyList+xml
+                        application/vnd.ez.api.PolicyList+json
+            responses:
+                200:
+                    description: OK
+                401:
+                    description: Error - the user has no permission to read roles
+    /sessions:
+        post:
+            description: Performs a login for the user or check if session exists and returns the session and session cookie. The client will need to remember both session name/id and CSRF token as this is for security reasons not exposed via GET.
+            headers:
+                Accept:
+                    description: if set the Session is returned in xml or json format
+                    example:  |
+                        application/vnd.ez.api.Session+xml
+                        application/vnd.ez.api.Session+json
+                Content-Type:
+                    description: the SessionInput schema encoded in xml or json
+                    example:  |
+                        application/vnd.ez.api.SessionInput+xml
+                        application/vnd.ez.api.SessionInput+json
+                Cookie:
+                    description: (only needed for session's checking) {sessionName}={sessionID}
+                X-CSRF-Token:
+                    description: (only needed for session's checking) The {csrfToken} needed on all unsafe http methods with session.
+            body:
+                application/vnd.ez.api.Session+xml:
+                    schema:
+                application/vnd.ez.api.Session+xml (session's creation):
+                    example:  |
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <SessionInput>
+                          <login>admin</login>
+                          <password>secret</password>
+                        </SessionInput>
+                application/vnd.ez.api.Session+json (session's creation):
+                    example:  |
+                        {
+                          "SessionInput": {
+                            "login": "admin",
+                            "password": "secret"
+                          }
+                        }
+                application/vnd.ez.api.Session+xml (log in with active session):
+                    example:  |
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <SessionInput>
+                          <login>admin</login>
+                          <password>secret</password>
+                        </SessionInput>
+                application/vnd.ez.api.Session+json:
+                    example:  |
+                        {
+                          "SessionInput": {
+                            "login": "admin",
+                            "password": "secret"
+                          }
+                        }
+            responses:
+                200:
+                    description: If session already exists
+                    body:
+                        application/vnd.ez.api.Session+xml:
+                            example:  |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <Session href="user/sessions/go327ij2cirpo59pb6rrv2a4el2/refresh" media-type="application/vnd.ez.api.Session+xml">
+                                  <name>eZSSID</name>
+                                  <identifier>go327ij2cirpo59pb6rrv2a4el2</identifier>
+                                  <csrfToken>23lkneri34ijajedfw39orj3j93</csrfToken>
+                                  <User href="/user/users/14" media-type="vnd.ez.api.User+xml"/>
+                                </Session>
+                        application/vnd.ez.api.Session+json:
+                            example:  |
+                                {
+                                  "Session": {
+                                    "name": "eZSSID",
+                                    "identifier": "go327ij2cirpo59pb6rrv2a4el2",
+                                    "csrfToken": "23lkneri34ijajedfw39orj3j93",
+                                    "User": {
+                                      "_href": "/user/users/14",
+                                      "_media-type": "application/vnd.ez.api.User+json"
+                                    }
+                                  }
+                                }
+                201:
+                    description: If session is created
+                    body:
+                        application/vnd.ez.api.Session+xml:
+                            example:  |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <Session href="/user/sessions/sessionID" media-type="application/vnd.ez.api.Session+xml">
+                                  <name>eZSSID</name>
+                                  <identifier>go327ij2cirpo59pb6rrv2a4el2</identifier>
+                                  <csrfToken>23lkneri34ijajedfw39orj3j93</csrfToken>
+                                  <User href="/user/users/14" media-type="vnd.ez.api.User+xml"/>
+                                </Session>
+                        application/vnd.ez.api.Session+json:
+                            example:  |
+                                {
+                                  "Session": {
+                                    "name": "eZSSID",
+                                    "identifier": "go327ij2cirpo59pb6rrv2a4el2",
+                                    "csrfToken": "23lkneri34ijajedfw39orj3j93",
+                                    "User": {
+                                      "_href": "/user/users/14",
+                                      "_media-type": "application/vnd.ez.api.User+json"
+                                    }
+                                  }
+                                }
+                400:
+                    description: Error - the Input does not match the input schema definition, In this case the response contains an ErrorMessage
+                401:
+                    description: Error - the authorization failed
+                409:
+                    description: Error - header contained a session cookie but different user was authorized
+        /{sessionID}:
+            delete:
+                description: The user session is removed i.e. the user is logged out.
+                headers:
+                    Cookie:
+                        description: {sessionName}={essionID}
+                    X-CSRF-Token:
+                        description: The {csrfToken} needed on all unsafe http methods with session.
+                responses:
+                    204:
+                        body:
+                            example:  |
+                                HTTP/1.1 204 No Content
+                                Set-Cookie: eZSSID=deleted; Expires=Thu, 01-Jan-1970 00:00:01 GMT; Path=/; Domain=.example.net; HttpOnly
+                    404:
+                        description: Error - the session does not exist
+            /refresh:
+                post:
+                    description: Give the session's User information
+                    headers:
+                        Cookie:
+                            description: {sessionName}={sessionID}
+                        X-CSRF-Token:
+                            description: The {csrfToken} needed on all unsafe http methods with session.
+                    responses:
+                        200:
+                            body:
+                                application/vnd.ez.api.Session+xml:
+                                    example:  |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <Session href="user/sessions/go327ij2cirpo59pb6rrv2a4el2/refresh" media-type="application/vnd.ez.api.Session+xml">
+                                          <name>eZSSID</name>
+                                          <identifier>go327ij2cirpo59pb6rrv2a4el2</identifier>
+                                          <csrfToken>23lkneri34ijajedfw39orj3j93</csrfToken>
+                                          <User href="/user/users/14" media-type="vnd.ez.api.User+xml"/>
+                                        </Session>
+                                application/vnd.ez.api.Session+json:
+                                    example:  |
+                                        {
+                                          "Session": {
+                                            "name": "eZSSID",
+                                            "identifier": "go327ij2cirpo59pb6rrv2a4el2",
+                                            "csrfToken": "23lkneri34ijajedfw39orj3j93",
+                                            "User": {
+                                              "_href": "/user/users/14",
+                                              "_media-type": "application/vnd.ez.api.User+json"
+                                            }
+                                          }
+                                        }
+                        404:
+                            description: Error - the session does not exist
+
+
+
