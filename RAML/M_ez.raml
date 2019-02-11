@@ -1965,6 +1965,142 @@ version: 2.4
                             description: Error - the Input does not match the input schema definition, In this case the response contains an ErrorMessage
                         401:
                             description: Error - the user is not authorized to create this user group
+            /roles:
+                get:
+                    description: Returns a list of all roles assigned to the given user group
+                    headers:
+                        Accept:
+                            description: if set the role assignment list is returned in xml or json format
+                            example:  |
+                                application/vnd.ez.api.RoleAssignmentList+xml
+                                application/vnd.ez.api.RoleAssignmentList+json
+                    responses:
+                        200:
+                            body:
+                                application/vnd.ez.api.RoleAssignmentList+xml:
+                                    example:  |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <RoleAssignmentList href="/user/groups/1/5/65/roles" media-type="application/vnd.ez.api.RoleAssignmentList+xml">
+                                          <RoleAssignment href="/user/groups/1/5/65/roles/5" media-type="application/vnd.ez.api.RoleAssignment+xml">
+                                            <Role href="/user/roles/5" media-type="application/vnd.ez.api.Role+xml"/>
+                                          </RoleAssignment>
+                                          <RoleAssignment href="/user/groups/1/5/65/roles/7" media-type="application/vnd.ez.api.RoleAssignment+xml">
+                                            <limitation identifier="Subtree">
+                                              <values>
+                                                  <ref href="/content/locations/1/23/88" media-type="application/vnd.ez.api.Location+xml" />
+                                                  <ref href="/content/locations/1/32/67" media-type="application/vnd.ez.api.Location+xml" />
+                                              </values>
+                                            </limitation>
+                                            <Role href="/user/roles/7" media-type="application/vnd.ez.api.Role+xml"/>
+                                          </RoleAssignment>
+                                        </RoleAssignmentList>
+                        400:
+                            description: Error - the user has no permission to read roles
+                post:
+                    description: assign a role to a user group.
+                    headers:
+                        Accept:
+                            description: if set the updated role assignment list is returned in xml or json format
+                            example:  |
+                                application/vnd.ez.api.RoleAssignmentList+xml
+                                application/vnd.ez.api.RoleAssignmentList+json
+                        Content-Type:
+                            description: the RoleAssignInput schema encoded in json or xml
+                            example:  |
+                                application/vnd.ez.api.RoleAssignInput+json
+                                application/vnd.ez.api.RoleAssignInput+xml
+                    body:
+                        application/vnd.ez.api.RoleAssignmentList+xml:
+                            schema:
+                        application/vnd.ez.api.RoleAssignmentList+xml:
+                            example:  |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <RoleAssignInput>
+                                  <Role href="/user/role/11" media-type="application/vnd.ez.api.RoleAssignInput+xml"/>
+                                  <limitation identifier="Section">
+                                      <values>
+                                          <ref href="/content/sections/1" media-type="application/vnd.ez.api.Section+xml" />
+                                          <ref href="/content/sections/4" media-type="application/vnd.ez.api.Section+xml" />
+                                      </values>
+                                  </limitation>
+                                </RoleAssignInput>
+                    responses:
+                        200:
+                            body:
+                                application/vnd.ez.api.RoleAssignmentList+xml:
+                                    example:  |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <RoleAssignmentList href="/user/groups/1/5/65/roles" media-type="application/vnd.ez.api.RoleAssignmentList+xml">
+                                          <RoleAssignment href="/user/groups/1/5/65/roles/5" media-type="application/vnd.ez.api.RoleAssignment+xml">
+                                            <Role href="/user/roles/5" media-type="application/vnd.ez.api.Role+xml"/>
+                                          </RoleAssignment>
+                                          <RoleAssignment href="/user/groups/1/5/65/roles/7" media-type="application/vnd.ez.api.RoleAssignment+xml">
+                                            <limitation identifier="Subtree">
+                                              <values>
+                                                  <ref href="/content/locations/1/23/88" media-type="application/vnd.ez.api.Location+xml" />
+                                                  <ref href="/content/locations/1/32/67" media-type="application/vnd.ez.api.Location+xml" />
+                                              </values>
+                                            </limitation>
+                                            <Role href="/user/roles/7" media-type="application/vnd.ez.api.Role+xml"/>
+                                          </RoleAssignment>
+                                          <RoleAssignment href="/user/groups/1/5/65/roles/11" media-type="application/vnd.ez.api.RoleAssignment+xml">
+                                            <limitation identifier="Section">
+                                              <values>
+                                                  <ref href="/content/sections/1" media-type="application/vnd.ez.api.Section+xml" />
+                                                  <ref href="/content/sections/4" media-type="application/vnd.ez.api.Section+xml" />
+                                              </values>
+                                            </limitation>
+                                            <Role href="/user/roles/11" media-type="application/vnd.ez.api.Role+xml"/>
+                                          </RoleAssignment>
+                                        </RoleAssignmentList>
+                        400:
+                            description: Error - validation of limitation in RoleAssignInput fails
+                        401:
+                            description: Error - the user is not authorized to assign this role
+                /{id}:
+                    get:
+                        description: Returns a roleassignment to the given user group
+                        headers:
+                            Accept:
+                                description: if set the role assignment list is returned in xml or json format
+                                example:  |
+                                    application/vnd.ez.api.RoleAssignment+xml
+                                    application/vnd.ez.api.RoleAssignment+json
+                        responses:
+                            200:
+                                description: OK
+                            401:
+                                description: Error - the user has no permission to read roles
+                    delete:
+                        description: the given role is removed from the user or user group
+                        headers:
+                            Accept:
+                                description: if set the updated role assignment list is returned in xml format
+                                example:  |
+                                    application/vnd.ez.api.RoleAssignmentList+xml
+                                    application/vnd.ez.api.RoleAssignmentList+json
+                        responses:
+                            200:
+                                body:
+                                    application/vnd.ez.api.RoleAssignmentList+xml:
+                                        example:  |
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <RoleAssignmentList href="/user/groups/1/5/65/roles" media-type="application/vnd.ez.api.RoleAssignmentList+xml">
+                                              <RoleAssignment href="/user/groups/1/5/65/roles/5" media-type="application/vnd.ez.api.RoleAssignment+xml">
+                                                <Role href="/user/roles/5" media-type="application/vnd.ez.api.Role+xml"/>
+                                              </RoleAssignment>
+                                              <RoleAssignment href="/user/groups/1/5/65/roles/11" media-type="application/vnd.ez.api.RoleAssignment+xml">
+                                                <limitation identifier="Section">
+                                                  <values>
+                                                      <ref href="/content/sections/1" media-type="application/vnd.ez.api.Section+xml" />
+                                                      <ref href="/content/sections/4" media-type="application/vnd.ez.api.Section+xml" />
+                                                  </values>
+                                                </limitation>
+                                                <Role href="/user/roles/11" media-type="application/vnd.ez.api.Role+xml"/>
+                                              </RoleAssignment>
+                                            </RoleAssignmentList>
+                            401:
+                                description: Error - the user is not authorized to delete this content type
         /{id}/users:
             get:
                 description: loads the users of the group with the given ID
@@ -2173,6 +2309,142 @@ version: 2.4
                             description: Error - the user is not in the given group
                         404:
                             description: Error - the user does not exist
+            /roles:
+                get:
+                    description: Returns a list of all roles assigned to the given user
+                    headers:
+                        Accept:
+                            description: if set the role assignment list is returned in xml or json format
+                            example:  |
+                                application/vnd.ez.api.RoleAssignmentList+xml
+                                application/vnd.ez.api.RoleAssignmentList+json
+                    responses:
+                        200:
+                            body:
+                                application/vnd.ez.api.RoleAssignmentList+xml:
+                                    example:  |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <RoleAssignmentList href="/user/groups/1/5/65/roles" media-type="application/vnd.ez.api.RoleAssignmentList+xml">
+                                          <RoleAssignment href="/user/groups/1/5/65/roles/5" media-type="application/vnd.ez.api.RoleAssignment+xml">
+                                            <Role href="/user/roles/5" media-type="application/vnd.ez.api.Role+xml"/>
+                                          </RoleAssignment>
+                                          <RoleAssignment href="/user/groups/1/5/65/roles/7" media-type="application/vnd.ez.api.RoleAssignment+xml">
+                                            <limitation identifier="Subtree">
+                                              <values>
+                                                  <ref href="/content/locations/1/23/88" media-type="application/vnd.ez.api.Location+xml" />
+                                                  <ref href="/content/locations/1/32/67" media-type="application/vnd.ez.api.Location+xml" />
+                                              </values>
+                                            </limitation>
+                                            <Role href="/user/roles/7" media-type="application/vnd.ez.api.Role+xml"/>
+                                          </RoleAssignment>
+                                        </RoleAssignmentList>
+                        400:
+                            description: Error - the user has no permission to read roles
+                post:
+                    description: assigns a role to a user.
+                    headers:
+                        Accept:
+                            description: if set the updated role assignment list is returned in xml or json format
+                            example:  |
+                                application/vnd.ez.api.RoleAssignmentList+xml
+                                application/vnd.ez.api.RoleAssignmentList+json
+                        Content-Type:
+                            description: the RoleAssignInput schema encoded in json or xml
+                            example:  |
+                                application/vnd.ez.api.RoleAssignInput+json
+                                application/vnd.ez.api.RoleAssignInput+xml
+                    body:
+                        application/vnd.ez.api.RoleAssignmentList+xml:
+                            schema:
+                        application/vnd.ez.api.RoleAssignmentList+xml:
+                            example:  |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <RoleAssignInput>
+                                  <Role href="/user/role/11" media-type="application/vnd.ez.api.RoleAssignInput+xml"/>
+                                  <limitation identifier="Section">
+                                      <values>
+                                          <ref href="/content/sections/1" media-type="application/vnd.ez.api.Section+xml" />
+                                          <ref href="/content/sections/4" media-type="application/vnd.ez.api.Section+xml" />
+                                      </values>
+                                  </limitation>
+                                </RoleAssignInput>
+                    responses:
+                        200:
+                            body:
+                                application/vnd.ez.api.RoleAssignmentList+xml:
+                                    example:  |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <RoleAssignmentList href="/user/groups/1/5/65/roles" media-type="application/vnd.ez.api.RoleAssignmentList+xml">
+                                          <RoleAssignment href="/user/groups/1/5/65/roles/5" media-type="application/vnd.ez.api.RoleAssignment+xml">
+                                            <Role href="/user/roles/5" media-type="application/vnd.ez.api.Role+xml"/>
+                                          </RoleAssignment>
+                                          <RoleAssignment href="/user/groups/1/5/65/roles/7" media-type="application/vnd.ez.api.RoleAssignment+xml">
+                                            <limitation identifier="Subtree">
+                                              <values>
+                                                  <ref href="/content/locations/1/23/88" media-type="application/vnd.ez.api.Location+xml" />
+                                                  <ref href="/content/locations/1/32/67" media-type="application/vnd.ez.api.Location+xml" />
+                                              </values>
+                                            </limitation>
+                                            <Role href="/user/roles/7" media-type="application/vnd.ez.api.Role+xml"/>
+                                          </RoleAssignment>
+                                          <RoleAssignment href="/user/groups/1/5/65/roles/11" media-type="application/vnd.ez.api.RoleAssignment+xml">
+                                            <limitation identifier="Section">
+                                              <values>
+                                                  <ref href="/content/sections/1" media-type="application/vnd.ez.api.Section+xml" />
+                                                  <ref href="/content/sections/4" media-type="application/vnd.ez.api.Section+xml" />
+                                              </values>
+                                            </limitation>
+                                            <Role href="/user/roles/11" media-type="application/vnd.ez.api.Role+xml"/>
+                                          </RoleAssignment>
+                                        </RoleAssignmentList>
+                        400:
+                            description: Error - validation of limitation in RoleAssignInput fails
+                        401:
+                            description: Error - the user is not authorized to assign this role
+                /{id}:
+                    get:
+                        description: Returns a roleassignment to the given user group
+                        headers:
+                            Accept:
+                                description: if set the role assignment list is returned in xml or json format
+                                example:  |
+                                    application/vnd.ez.api.RoleAssignment+xml
+                                    application/vnd.ez.api.RoleAssignment+json
+                        responses:
+                            200:
+                                description: OK
+                            401:
+                                description: Error - the user has no permission to read roles
+                    delete:
+                        description: the given role is removed from the user or user group
+                        headers:
+                            Accept:
+                                description: if set the updated role assignment list is returned in xml format
+                                example:  |
+                                    application/vnd.ez.api.RoleAssignmentList+xml
+                                    application/vnd.ez.api.RoleAssignmentList+json
+                        responses:
+                            200:
+                                body:
+                                    application/vnd.ez.api.RoleAssignmentList+xml:
+                                        example:  |
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <RoleAssignmentList href="/user/groups/1/5/65/roles" media-type="application/vnd.ez.api.RoleAssignmentList+xml">
+                                              <RoleAssignment href="/user/groups/1/5/65/roles/5" media-type="application/vnd.ez.api.RoleAssignment+xml">
+                                                <Role href="/user/roles/5" media-type="application/vnd.ez.api.Role+xml"/>
+                                              </RoleAssignment>
+                                              <RoleAssignment href="/user/groups/1/5/65/roles/11" media-type="application/vnd.ez.api.RoleAssignment+xml">
+                                                <limitation identifier="Section">
+                                                  <values>
+                                                      <ref href="/content/sections/1" media-type="application/vnd.ez.api.Section+xml" />
+                                                      <ref href="/content/sections/4" media-type="application/vnd.ez.api.Section+xml" />
+                                                  </values>
+                                                </limitation>
+                                                <Role href="/user/roles/11" media-type="application/vnd.ez.api.Role+xml"/>
+                                              </RoleAssignment>
+                                            </RoleAssignmentList>
+                            401:
+                                description: Error - the user is not authorized to delete this content type
     /roles:
         get:
             description: Returns a list of all roles
@@ -2310,6 +2582,13 @@ version: 2.4
                             description: Error - the user is not authorized to update the role
                         412:
                             description: Error - the current ETag does not match with the provided one in the If-Match header
+            delete:
+                description: the given role and all assignments to users or user groups are deleted
+                responses:
+                    204:
+                        description: No Content
+                    401:
+                        description: Error - the user is not authorized to delete this role
             /draft:
                 get:
                     description: loads a role draft by original role ID
@@ -2354,3 +2633,23 @@ version: 2.4
                             description: Error - there is no draft or role with the given ID
                         412:
                             description: Error - the current ETag does not match with the provided one in the If-Match header
+                publish:
+                    description: Publishes a role draft. PUBLISH or POST with header X-HTTP-Method-Override PUBLISH
+                    responses:
+                        204:
+                            description: No Content
+                        401:
+                            description: Error - the user is not authorized to publish this content type draft
+                        403:
+                            description: Error - the content type draft is not complete e.g. there is no field definition provided
+                        404:
+                            description: Error - there is no draft or role with the given ID
+                delete:
+                    description: The given role draft is deleted.
+                    responses:
+                        204:
+                            description: No Content
+                        401:
+                            description: Error - the user is not authorized to delete this role
+            /policies:
+                totu
