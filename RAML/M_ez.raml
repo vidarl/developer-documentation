@@ -335,8 +335,37 @@ version: 2.4
                         application/vnd.ez.api.ContentCreate+xml
                         application/vnd.ez.api.ContentCreate+json
             body:
-                application/vnd.ez.api.Content+xml:
+                application/vnd.ez.api.ContentCreate+xml:
                     schema: |
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                          xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                          <xsd:include schemaLocation="CommonDefinitions.xsd" />
+                          <xsd:complexType name="contentCreateType">
+                            <xsd:all>
+                              <xsd:element name="ContentType" type="ref" />
+                              <xsd:element name="mainLanguageCode" type="xsd:string" />
+                              <xsd:element name="LocationCreate" type="locationCreateType"/>
+                              <xsd:element name="Section" type="ref" minOccurs="0" />
+                              <xsd:element name="User" type="ref" minOccurs="0" />
+                              <xsd:element name="alwaysAvailable" type="xsd:boolean"
+                                default="true" minOccurs="0" />
+                              <xsd:element name="remoteId" type="xsd:string"
+                                minOccurs="0" />
+                              <xsd:element name="modificationDate" type="xsd:dateTime"
+                                minOccurs="0" />
+                              <xsd:element name="fields">
+                                <xsd:complexType>
+                                  <xsd:sequence>
+                                    <xsd:element name="field" type="fieldInputValueType" />
+                                  </xsd:sequence>
+                                </xsd:complexType>
+                              </xsd:element>
+                            </xsd:all>
+                          </xsd:complexType>
+                          <xsd:element name="ContentCreate" type="contentCreateType"></xsd:element>
+                        </xsd:schema>
+                application/vnd.ez.api.Content+xml:
                     example:  |
                         <ContentCreate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
                           <ContentType href="/content/types/10"/>
@@ -379,7 +408,6 @@ version: 2.4
                           </fields>
                         </ContentCreate>
                 application/vnd.ez.api.Content+json:
-                    schema: |
                     example:  |
                         {
                           "ContentCreate": {
@@ -667,8 +695,31 @@ version: 2.4
                             application/vnd.ez.api.ContentUpdate+xml
                             application/vnd.ez.api.ContentUpdate+json
                 body:
-                    application/vnd.ez.api.ContentInfo+xml:
+                    application/vnd.ez.api.ContentUpdate+xml:
                         schema: |
+                            <?xml version="1.0" encoding="UTF-8"?>
+                            <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                              xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                              <xsd:include schemaLocation="CommonDefinitions.xsd" />
+                              <xsd:complexType name="contentUpdateType">
+                                <xsd:all>
+                                  <xsd:element name="mainLanguageCode" type="xsd:string" minOccurs="0" />
+                                  <xsd:element name="Section" type="ref" minOccurs="0" />
+                                  <xsd:element name="MainLocation" type="ref" minOccurs="0" />
+                                  <xsd:element name="Owner" type="ref" minOccurs="0" />
+                                  <xsd:element name="alwaysAvailable" type="xsd:boolean"
+                                    default="true" minOccurs="0" />
+                                  <xsd:element name="remoteId" type="xsd:string"
+                                    minOccurs="0" />
+                                  <xsd:element name="modificationDate" type="xsd:dateTime"
+                                    minOccurs="0" />
+                                  <xsd:element name="publishDate" type="xsd:dateTime"
+                                    minOccurs="0" />
+                                </xsd:all>
+                              </xsd:complexType>
+                              <xsd:element name="ContentUpdate" type="contentUpdateType"></xsd:element>
+                            </xsd:schema>
+                    application/vnd.ez.api.ContentInfo+xml:
                         example: |
                             <?xml version="1.0" encoding="UTF-8"?>
                             <ContentUpdate>
@@ -959,30 +1010,52 @@ version: 2.4
                                     application/vnd.ez.api.VersionUpdate+xml
                                     application/vnd.ez.api.VersionUpdate+json
                         body:
-                          application/vnd.ez.api.Version+xml:
-                              schema:
-                              example:  |
-                                  <?xml version="1.0" encoding="UTF-8"?>
-                                  <VersionUpdate xmlns:p="http://ez.no/API/Values"
-                                    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-                                    xsi:schemaLocation="http://ez.no/API/Values ../VersionUpdate.xsd ">
-                                    <modificationDate>2001-12-31T12:00:00</modificationDate>
-                                    <initialLanguageCode>ger-DE</initialLanguageCode>
-                                    <fields>
-                                      <field>
-                                        <id>1234</id>
-                                        <fieldDefinitionIdentifier>title</fieldDefinitionIdentifier>
-                                        <languageCode>ger-DE</languageCode>
-                                        <fieldValue>Neuer Titel</fieldValue>
-                                      </field>
-                                      <field>
-                                        <id>1235</id>
-                                        <fieldDefinitionIdentifier>summary</fieldDefinitionIdentifier>
-                                        <languageCode>ger-DE</languageCode>
-                                        <fieldValue>Dies ist eine neue Zusammenfassungy</fieldValue>
-                                      </field>
-                                    </fields>
-                                  </VersionUpdate>
+                            application/vnd.ez.api.VersionUpdate+xml:
+                                schema: |
+                                    <?xml version="1.0" encoding="UTF-8"?>
+                                    <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                      xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                                      <xsd:include schemaLocation="CommonDefinitions.xsd" />
+                                      <xsd:complexType name="versionUpdateType">
+                                        <xsd:all>
+                                          <xsd:element name="User" type="ref" minOccurs="0" />
+                                          <xsd:element name="modificationDate" type="xsd:dateTime" />
+                                          <xsd:element name="initialLanguageCode" type="xsd:string"
+                                            minOccurs="0" />
+                                          <xsd:element name="fields">
+                                            <xsd:complexType>
+                                              <xsd:sequence>
+                                                <xsd:element name="field" type="fieldInputValueType" />
+                                              </xsd:sequence>
+                                            </xsd:complexType>
+                                          </xsd:element>
+                                        </xsd:all>
+                                      </xsd:complexType>
+                                      <xsd:element name="VersionUpdate" type="versionUpdateType" />
+                                    </xsd:schema>
+                            application/vnd.ez.api.Version+xml:
+                                example:  |
+                                    <?xml version="1.0" encoding="UTF-8"?>
+                                    <VersionUpdate xmlns:p="http://ez.no/API/Values"
+                                      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                                      xsi:schemaLocation="http://ez.no/API/Values ../VersionUpdate.xsd ">
+                                      <modificationDate>2001-12-31T12:00:00</modificationDate>
+                                      <initialLanguageCode>ger-DE</initialLanguageCode>
+                                      <fields>
+                                        <field>
+                                          <id>1234</id>
+                                          <fieldDefinitionIdentifier>title</fieldDefinitionIdentifier>
+                                          <languageCode>ger-DE</languageCode>
+                                          <fieldValue>Neuer Titel</fieldValue>
+                                        </field>
+                                        <field>
+                                          <id>1235</id>
+                                          <fieldDefinitionIdentifier>summary</fieldDefinitionIdentifier>
+                                          <languageCode>ger-DE</languageCode>
+                                          <fieldValue>Dies ist eine neue Zusammenfassungy</fieldValue>
+                                        </field>
+                                      </fields>
+                                    </VersionUpdate>
                         responses:
                             200:
                                 body:
@@ -1156,8 +1229,18 @@ version: 2.4
                                         application/vnd.ez.api.RelationCreate+xml
                                         application/vnd.ez.api.RelationCreate+json
                             body:
+                                application/vnd.ez.api.RelationCreate+xml:
+                                    schema: |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                          xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                                          <xsd:complexType name="relationCreateType">
+                                            <xsd:all>
+                                              <xsd:element name="Destination" type="ref" />
+                                            </xsd:all>
+                                          </xsd:complexType>
+                                        </xsd:schema>
                                 application/vnd.ez.api.Relation+xml:
-                                    schema:
                                     example:  |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <RelationCreate>
@@ -1177,32 +1260,32 @@ version: 2.4
                                                   <RelationType>COMMON</RelationType>
                                                 </Relation>
                         /{id}:
-                                get:
-                                    description: loads a relation for the given content object
-                                    headers:
-                                        Accept:
-                                            description: if set the relation is returned in xml or json format
-                                            example:  |
-                                                application/vnd.ez.api.Relation+xml
-                                                application/vnd.ez.api.Relation+json
-                                    responses:
-                                        200:
-                                            description: OK - loads a relation for the given content object
-                                        401:
-                                            description: Error - the user is not authorized to read this object
-                                        404:
-                                            description: Error - the object with the given id or the relation does not exist
-                                delete:
-                                    description: Deletes a relation of the given draft.
-                                    responses:
-                                        204:
-                                            description: No Content - deleted a relation of the given draft.
-                                        401:
-                                            description: Error - the user is not authorized to delete this relation
-                                        403:
-                                            description: Error - the relation is not of type COMMON or the given version is not a draft
-                                        404:
-                                            description: Error - content object was not found or the relation was not found in the given version
+                            get:
+                                description: loads a relation for the given content object
+                                headers:
+                                    Accept:
+                                        description: if set the relation is returned in xml or json format
+                                        example:  |
+                                            application/vnd.ez.api.Relation+xml
+                                            application/vnd.ez.api.Relation+json
+                                responses:
+                                    200:
+                                        description: OK - loads a relation for the given content object
+                                    401:
+                                        description: Error - the user is not authorized to read this object
+                                    404:
+                                        description: Error - the object with the given id or the relation does not exist
+                            delete:
+                                description: Deletes a relation of the given draft.
+                                responses:
+                                    204:
+                                        description: No Content - deleted a relation of the given draft.
+                                    401:
+                                        description: Error - the user is not authorized to delete this relation
+                                    403:
+                                        description: Error - the relation is not of type COMMON or the given version is not a draft
+                                    404:
+                                        description: Error - content object was not found or the relation was not found in the given version
             /relations:
                 get:
                     description: Redirects to the relations of the current version
@@ -1228,8 +1311,52 @@ version: 2.4
                                     application/vnd.ez.api.LocationCreate+json
                                     application/vnd.ez.api.LocationCreate+xml
                         body:
+                            application/vnd.ez.api.LocationCreate+xml:
+                                schema: |
+                                    <?xml version="1.0" encoding="UTF-8"?>
+                                    <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                      xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                                      <xsd:include schemaLocation="CommonDefinitions.xsd" />
+                                      <xsd:complexType name="vnd.ez.api.LocationCreate">
+                                        <xsd:all>
+                                          <xsd:element name="ParentLocation" type="ref">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                The parent location where the new location
+                                                is created
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="priority" type="xsd:int" minOccurs="0" default="0">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                Location priority
+                                                Position of the
+                                                Location
+                                                among its siblings when sorted using priority
+                                                sort order.
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="hidden" type="xsd:boolean"
+                                            minOccurs="0" default="false">
+                                            <xsd:annotation>
+                                              <xsd:documentation>
+                                                Indicates that the Location entity has
+                                                been
+                                                explicitly marked as hidden.
+                                              </xsd:documentation>
+                                            </xsd:annotation>
+                                          </xsd:element>
+                                          <xsd:element name="remoteId" type="xsd:string"
+                                            minOccurs="0" />
+                                          <xsd:element name="sortField" type="sortFieldType" />
+                                          <xsd:element name="sortOrder" type="sortOrderType" />
+                                        </xsd:all>
+                                      </xsd:complexType>
+                                      <xsd:element name="LocationCreate" type="vnd.ez.api.LocationCreate" />
+                                    </xsd:schema>
                             application/vnd.ez.api.Location+xml:
-                                schema:
                                 example:  |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <LocationCreate>
@@ -1451,8 +1578,39 @@ version: 2.4
                     If-Match:
                         description: ETag
                 body:
+                    application/vnd.ez.api.LocationUpdate+xml:
+                        schema: |
+                            <?xml version="1.0" encoding="UTF-8"?>
+                            <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                              xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                              <xsd:include schemaLocation="CommonDefinitions.xsd" />
+
+                              <xsd:complexType name="vnd.ez.api.LocationUpdate">
+                                <xsd:all>
+                                  <xsd:element name="priority" type="xsd:int" minOccurs="0">
+                                    <xsd:annotation>
+                                      <xsd:documentation>
+                                         If set the location priority is changed to the given value
+                                      </xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element name="hidden" type="xsd:boolean"
+                                    minOccurs="0">
+                                    <xsd:annotation>
+                                      <xsd:documentation>
+                                        If set to true the location is hidden, if set to false the location is unhidden.
+                                      </xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                  <xsd:element name="remoteId" type="xsd:string"
+                                    minOccurs="0" />
+                                  <xsd:element name="sortField" type="sortFieldType" />
+                                  <xsd:element name="sortOrder" type="sortOrderType" />
+                                </xsd:all>
+                              </xsd:complexType>
+                              <xsd:element name="LocationUpdate" type="vnd.ez.api.LocationUpdate" />
+                            </xsd:schema>
                     application/vnd.ez.api.Location+xml:
-                        schema:
                         example: |
                             <?xml version="1.0" encoding="UTF-8"?>
                             <LocationUpdate>
@@ -1487,7 +1645,7 @@ version: 2.4
                         description: Error - the user is not authorized to update this location
                     404:
                         description: Error - the location with the given id does not exist
-            post:
+            swap:
                 description: Swaps the content of the location with the content of the given location. SWAP or POST with header X-HTTP-Method-Override SWAP
                 headers:
                     Destination:
@@ -1517,6 +1675,17 @@ version: 2.4
                         application/vnd.ez.api.ViewInput+json
                         application/vnd.ez.api.ViewInput+xml; version=1.1
                         application/vnd.ez.api.ViewInput+json; version=1.1
+                body:
+                    application/vnd.ez.api.ViewInput+xml:
+                        schema: |
+                           <xsd:complexType name="viewInputType">
+                             <xsd:all>
+                               <xsd:element name="identifier" type="xsd:string"
+                                 minOccurs="0" />
+                               <xsd:element name="public" type="xsd:boolean" default="false" />
+                               <xsd:element name="Query" type="queryType" />
+                             </xsd:all>
+                           </xsd:complexType>
             responses:
                 301:
                     description: Moved permanently
@@ -1585,8 +1754,19 @@ version: 2.4
                         application/vnd.ez.api.SectionInput+json
                         application/vnd.ez.api.SectionInput+xml
             body:
+                application/vnd.ez.api.SectionInput+xml:
+                    schema: |
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                          xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                          <xsd:complexType name="vnd.ez.api.SectionInput">
+                            <xsd:all>
+                                <xsd:element name="identifier" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+                            </xsd:all>
+                          </xsd:complexType>
+                        </xsd:schema>
                 application/vnd.ez.api.Section+xml:
-                    schema:
                     example: |
                         <?xml version="1.0" encoding="UTF-8"?>
                         <SectionInput>
@@ -1688,6 +1868,19 @@ version: 2.4
                             application/vnd.ez.api.SectionInput+json
                     If-Match:
                         description: ETag
+                body:
+                    application/vnd.ez.api.SectionInput+xml:
+                        schema: |
+                            <?xml version="1.0" encoding="UTF-8"?>
+                            <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                              xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                              <xsd:complexType name="vnd.ez.api.SectionInput">
+                            	<xsd:all>
+                            		<xsd:element name="identifier" type="xsd:string" minOccurs="0"/>
+                            		<xsd:element name="name" type="xsd:string" minOccurs="0"/>
+                            	</xsd:all>
+                              </xsd:complexType>
+                            </xsd:schema>
                 responses:
                     200:
                         description: OK - section updated
@@ -1733,8 +1926,21 @@ version: 2.4
                     application/vnd.ez.api.ViewInput+xml; version=1.1
                     application/vnd.ez.api.ViewInput+json; version=1.1
         body:
+            application/vnd.ez.api.ViewInput+xml:
+                schema: |
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                      xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                      <xsd:complexType name="viewInputType">
+                        <xsd:all>
+                          <xsd:element name="identifier" type="xsd:string"
+                            minOccurs="0" />
+                          <xsd:element name="public" type="xsd:boolean" default="false" />
+                          <xsd:element name="Query" type="queryType" />
+                        </xsd:all>
+                      </xsd:complexType>
+                    </xsd:schema>
             application/vnd.ez.api.View+xml; version=1.1:
-                schema:
                 example:  |
                     <?xml version="1.0" encoding="UTF-8"?>
                     <ViewInput>
@@ -1758,7 +1964,6 @@ version: 2.4
             200:
                 body:
                     application/vnd.ez.api.View+xml; version=1.1:
-                        schema:
                         example:  |
                             <?xml version="1.0" encoding="UTF-8"?>
                             <View href="/views/TitleView" media-type="application/vnd.ez.api.View+xml; version=1.1">
@@ -1939,6 +2144,31 @@ version: 2.4
                     If-Match:
                         description: Causes to patch only if the specified etag is the current one. Otherwise a 412 is returned.
                         example: ETag
+                body:
+                    application/vnd.ez.api.UserGroupUpdate+xml:
+                        schema: |
+                            <?xml version="1.0" encoding="UTF-8"?>
+                            <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                              xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                              <xsd:include schemaLocation="CommonDefinitions.xsd" />
+
+                              <xsd:complexType name="vnd.ez.api.UserGroupUpdate">
+                                <xsd:all>
+                                  <xsd:element name="mainLanguageCode" type="xsd:string" minOccurs="0"/>
+                                  <xsd:element name="Section" type="ref" minOccurs="0"/>
+                                  <xsd:element name="remoteId" type="xsd:string"
+                                    minOccurs="0" />
+                                  <xsd:element name="fields">
+                                    <xsd:complexType>
+                                      <xsd:sequence>
+                                        <xsd:element name="field" type="fieldInputValueType" maxOccurs="unbounded"/>
+                                      </xsd:sequence>
+                                    </xsd:complexType>
+                                  </xsd:element>
+                                </xsd:all>
+                              </xsd:complexType>
+                              <xsd:element name="UserGroupUpdate" type="vnd.ez.api.UserGroupUpdate"></xsd:element>
+                            </xsd:schema>
                 responses:
                     200:
                        description: OK - updated user group
@@ -1986,8 +2216,36 @@ version: 2.4
                                 application/vnd.ez.api.UserCreate+json
                                 application/vnd.ez.api.UserCreate+xml
                     body:
+                        application/vnd.ez.api.UserCreate+xml:
+                            schema: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                  xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                                  <xsd:include schemaLocation="CommonDefinitions.xsd" />
+
+                                  <xsd:complexType name="vnd.ez.api.UserCreate">
+                                    <xsd:all>
+                                      <xsd:element name="ContentType" type="ref" minOccurs="0" />
+                                      <xsd:element name="mainLanguageCode" type="xsd:string" />
+                                      <xsd:element name="Section" type="ref" minOccurs="0"/>
+                                      <xsd:element name="remoteId" type="xsd:string"
+                                        minOccurs="0" />
+                                      <xsd:element name="login" type="xsd:string"/>
+                                      <xsd:element name="email" type="xsd:string" />
+                                      <xsd:element name="enabled" type="xsd:boolean" default="true" minOccurs="0"  />
+                                      <xsd:element name="password" type="xsd:string"/>
+                                      <xsd:element name="fields">
+                                        <xsd:complexType>
+                                          <xsd:sequence>
+                                            <xsd:element name="field" type="fieldInputValueType" maxOccurs="unbounded"/>
+                                          </xsd:sequence>
+                                        </xsd:complexType>
+                                      </xsd:element>
+                                    </xsd:all>
+                                  </xsd:complexType>
+                                  <xsd:element name="UserCreate" type="vnd.ez.api.UserCreate"></xsd:element>
+                                </xsd:schema>
                         application/vnd.ez.api.User+xml:
-                            schema:
                             example:  |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <UserCreate>
@@ -2082,8 +2340,32 @@ version: 2.4
                                 application/vnd.ez.api.UserGroupCreate+json
                                 application/vnd.ez.api.UserGroupCreate+xml
                     body:
+                        application/vnd.ez.api.UserGroupCreate+xml:
+                            schema: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                  xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                                  <xsd:include schemaLocation="CommonDefinitions.xsd" />
+
+                                  <xsd:complexType name="vnd.ez.api.UserGroupCreate">
+                                    <xsd:all>
+                                      <xsd:element name="ContentType" type="ref" minOccurs="0" />
+                                      <xsd:element name="mainLanguageCode" type="xsd:string" />
+                                      <xsd:element name="Section" type="ref" minOccurs="0"/>
+                                      <xsd:element name="remoteId" type="xsd:string"
+                                        minOccurs="0" />
+                                      <xsd:element name="fields">
+                                        <xsd:complexType>
+                                          <xsd:sequence>
+                                            <xsd:element name="field" type="fieldInputValueType" maxOccurs="unbounded"/>
+                                          </xsd:sequence>
+                                        </xsd:complexType>
+                                      </xsd:element>
+                                    </xsd:all>
+                                  </xsd:complexType>
+                                  <xsd:element name="UserGroupCreate" type="vnd.ez.api.UserGroupCreate"></xsd:element>
+                                </xsd:schema>
                         application/vnd.ez.api.UserGroup+xml:
-                            schema:
                             example:  |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <UserGroupCreate>
@@ -2201,8 +2483,18 @@ version: 2.4
                                 application/vnd.ez.api.RoleAssignInput+json
                                 application/vnd.ez.api.RoleAssignInput+xml
                     body:
-                        application/vnd.ez.api.RoleAssignmentList+xml:
-                            schema:
+                        application/vnd.ez.api.RoleAssignInput+xml:
+                            schema: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                  xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                                  <xsd:complexType name="vnd.ez.api.RoleAssignInput">
+                                    <xsd:all>
+                                      <xsd:element name="Role" type="ref" />
+                                      <xsd:element name="limitation" type="roleLimitationType" />
+                                    </xsd:all>
+                                  </xsd:complexType>
+                                </xsd:schema>
                         application/vnd.ez.api.RoleAssignmentList+xml:
                             example:  |
                                 <?xml version="1.0" encoding="UTF-8"?>
@@ -2413,6 +2705,37 @@ version: 2.4
                     If-Match:
                         description: Causes to patch only if the specified etag is the current one. Otherwise a 412 is returned.
                         example: ETag
+                body:
+                    application/vnd.ez.api.UserUpdate+xml:
+                        schema: |
+                            <?xml version="1.0" encoding="UTF-8"?>
+                            <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                              xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                              <xsd:include schemaLocation="CommonDefinitions.xsd" />
+
+                              <xsd:complexType name="vnd.ez.api.UserUpdate">
+                                <xsd:all>
+                                  <xsd:element name="mainLanguageCode" type="xsd:string"
+                                    minOccurs="0" />
+                                  <xsd:element name="Section" type="ref" minOccurs="0" />
+                                  <xsd:element name="remoteId" type="xsd:string"
+                                    minOccurs="0" />
+                                  <xsd:element name="login" type="xsd:string" minOccurs="0" />
+                                  <xsd:element name="email" type="xsd:string" minOccurs="0" />
+                                  <xsd:element name="enabled" type="xsd:boolean" minOccurs="0"  />
+                                  <xsd:element name="password" type="xsd:string" minOccurs="0"  />
+                                  <xsd:element name="fields">
+                                    <xsd:complexType>
+                                      <xsd:sequence>
+                                        <xsd:element name="field" type="fieldInputValueType"
+                                          maxOccurs="unbounded" />
+                                      </xsd:sequence>
+                                    </xsd:complexType>
+                                  </xsd:element>
+                                </xsd:all>
+                              </xsd:complexType>
+                              <xsd:element name="UserUpdate" type="vnd.ez.api.UserUpdate"></xsd:element>
+                            </xsd:schema>
                 responses:
                     200:
                         description: OK
@@ -2579,8 +2902,19 @@ version: 2.4
                                 application/vnd.ez.api.RoleAssignInput+json
                                 application/vnd.ez.api.RoleAssignInput+xml
                     body:
-                        application/vnd.ez.api.RoleAssignmentList+xml:
-                            schema:
+                        application/vnd.ez.api.RoleAssignInput+xml:
+                            schema: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                  xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                                  <xsd:complexType name="vnd.ez.api.RoleAssignInput">
+                                    <xsd:all>
+                                      <xsd:element name="Role" type="ref" />
+                                      <xsd:element name="limitation" type="roleLimitationType" />
+                                    </xsd:all>
+                                  </xsd:complexType>
+                                  <xsd:element name="RoleAssignInput" type="vnd.ez.api.RoleAssignInput"/>
+                                </xsd:schema>
                         application/vnd.ez.api.RoleAssignmentList+xml:
                             example:  |
                                 <?xml version="1.0" encoding="UTF-8"?>
@@ -2709,8 +3043,24 @@ version: 2.4
                         application/vnd.ez.api.RoleInput+json
                         application/vnd.ez.api.RoleInput+xml
             body:
-                 application/vnd.ez.api.Role+xml:
-                    schema:
+                 application/vnd.ez.api.RoleInput+xml:
+                    schema: |
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                          xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                          <xsd:complexType name="vnd.ez.api.RoleInput">
+                            <xsd:all>
+                              <xsd:element name="identifier" type="xsd:string">
+                                <xsd:annotation>
+                                  <xsd:documentation>
+                                    String identifier of the role
+                                  </xsd:documentation>
+                                </xsd:annotation>
+                              </xsd:element>
+                            </xsd:all>
+                          </xsd:complexType>
+                          <xsd:element name="RoleInput" type="vnd.ez.api.RoleInput"/>
+                        </xsd:schema>
                  application/vnd.ez.api.Role+xml:
                     example:  |
                         <?xml version="1.0" encoding="UTF-8"?>
@@ -2763,8 +3113,24 @@ version: 2.4
                             application/vnd.ez.api.RoleInput+json
                             application/vnd.ez.api.RoleInput+xml
                 body:
-                    application/vnd.ez.api.Role+xml:
-                        schema:
+                    application/vnd.ez.api.RoleInput+xml:
+                        schema: |
+                            <?xml version="1.0" encoding="UTF-8"?>
+                            <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                              xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                              <xsd:complexType name="vnd.ez.api.RoleInput">
+                                <xsd:all>
+                                  <xsd:element name="identifier" type="xsd:string">
+                                    <xsd:annotation>
+                                      <xsd:documentation>
+                                        String identifier of the role
+                                      </xsd:documentation>
+                                    </xsd:annotation>
+                                  </xsd:element>
+                                </xsd:all>
+                              </xsd:complexType>
+                              <xsd:element name="RoleInput" type="vnd.ez.api.RoleInput"/>
+                            </xsd:schema>
                     application/vnd.ez.api.RoleDraft+xml:
                         example:  |
                             <?xml version="1.0" encoding="UTF-8"?>
@@ -2798,6 +3164,25 @@ version: 2.4
                             application/vnd.ez.api.RoleInput+xml
                     If-Match:
                         description: ETag Causes to patch only if the specified etag is the current one. Otherwise a 412 is returned.
+                    body:
+                        application/vnd.ez.api.RoleInput+xml:
+                            schema: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                  xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                                  <xsd:complexType name="vnd.ez.api.RoleInput">
+                                    <xsd:all>
+                                      <xsd:element name="identifier" type="xsd:string">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            String identifier of the role
+                                          </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                    </xsd:all>
+                                  </xsd:complexType>
+                                  <xsd:element name="RoleInput" type="vnd.ez.api.RoleInput"/>
+                                </xsd:schema>
                     responses:
                         200:
                             description: OK
@@ -2847,6 +3232,25 @@ version: 2.4
                                 application/vnd.ez.api.RoleInput+xml
                         If-Match:
                             description: ETag Causes to patch only if the specified etag is the current one. Otherwise a 412 is returned.
+                    body:
+                        application/vnd.ez.api.RoleInput+xml:
+                            schema: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                  xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                                  <xsd:complexType name="vnd.ez.api.RoleInput">
+                                    <xsd:all>
+                                      <xsd:element name="identifier" type="xsd:string">
+                                        <xsd:annotation>
+                                          <xsd:documentation>
+                                            String identifier of the role
+                                          </xsd:documentation>
+                                        </xsd:annotation>
+                                      </xsd:element>
+                                    </xsd:all>
+                                  </xsd:complexType>
+                                  <xsd:element name="RoleInput" type="vnd.ez.api.RoleInput"/>
+                                </xsd:schema>
                     responses:
                         200:
                             description: OK
@@ -2938,7 +3342,7 @@ version: 2.4
                         401:
                             description: Error - the user is not authorized to delete this content type
                 post:
-                    description: creates a policy
+                    description: Creates a policy
                     headers:
                         Accept:
                             description: if set the updated policy is returned in xml or json format
@@ -2951,8 +3355,20 @@ version: 2.4
                                 application/vnd.ez.api.PolicyCreate+xml
                                 application/vnd.ez.api.PolicyCreate+json
                     body:
-                        application/vnd.ez.api.Policy+xml:
+                        application/vnd.ez.api.PolicyCreate+xml:
                             scheam: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                  xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                                  <xsd:complexType name="vnd.ez.api.PolityCreate">
+                                    <xsd:all>
+                                      <xsd:element name="module" type="xsd:string" />
+                                      <xsd:element name="function" type="xsd:string" />
+                                      <xsd:element name="limitations" type="limitationListType"></xsd:element>
+                                    </xsd:all>
+                                  </xsd:complexType>
+                                  <xsd:element name="PolicyCreate" type="vnd.ez.api.PolityCreate"/>
+                                </xsd:schema>
                         application/vnd.ez.api.PolicyCreate+xml:
                             example:  |
                                 <?xml version="1.0" encoding="UTF-8"?>
@@ -3017,8 +3433,18 @@ version: 2.4
                             description: Causes to patch only if the specified etag is the current one. Otherwise a 412 is returned.
                             example: ETag
                     body:
-                        application/vnd.ez.api.Policy+xml:
-                            schema:
+                        application/vnd.ez.api.PolicyUpdate+xml:
+                            schema: |
+                              <?xml version="1.0" encoding="UTF-8"?>
+                              <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                                xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                                <xsd:complexType name="vnd.ez.api.PolityUpdate">
+                                  <xsd:all>
+                                    <xsd:element name="limitations" type="limitationListType"></xsd:element>
+                                  </xsd:all>
+                                </xsd:complexType>
+                                <xsd:element name="PolicyUpdate" type="vnd.ez.api.PolityUpdate"/>
+                              </xsd:schema>
                         application/vnd.ez.api.Policy+xml:
                             example:  |
                                 <?xml version="1.0" encoding="UTF-8"?>
@@ -3150,8 +3576,19 @@ version: 2.4
                 X-CSRF-Token:
                     description: (only needed for session's checking) The {csrfToken} needed on all unsafe http methods with session.
             body:
-                application/vnd.ez.api.Session+xml:
-                    schema:
+                application/vnd.ez.api.SessionInput+xml:
+                    schema: |
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+                          xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
+                          <xsd:complexType name="vnd.ez.api.SessionInput">
+                            <xsd:all>
+                              <xsd:element name="login" type="xsd:string"/>
+                              <xsd:element name="password" type="xsd:string" />
+                            </xsd:all>
+                          </xsd:complexType>
+                          <xsd:element name="SessionInput" type="vnd.ez.api.SessionInput"></xsd:element>
+                        </xsd:schema>
                 application/vnd.ez.api.Session+xml (session's creation):
                     example:  |
                         <?xml version="1.0" encoding="UTF-8"?>
@@ -3290,6 +3727,3 @@ version: 2.4
                                         }
                         404:
                             description: Error - the session does not exist
-
-
-
