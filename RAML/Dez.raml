@@ -16,13 +16,13 @@ version: 2.4
                     description: Offset of the result set
             headers:
                 Accept:
-                    description: Response format, either application/vnd.ez.api.ContentInfo+xml or application/vnd.ez.api.ContentInfo+json
+                    description: If set the Trash item list is returned in XML or JSON format
                     example: |
                         application/vnd.ez.api.Trash+xml
                         application/vnd.ez.api.Trash+json
             responses:
                 200:
-                    description: OK
+                    description: OK - returns the list of items in Trash
                     body:
                         application/vnd.ez.api.Trash+xml:
                             schema: |
@@ -137,7 +137,7 @@ version: 2.4
             description: Empties the trash
             responses:
                 204:
-                    description: No Content
+                    description: No Content - Trash emptied
                 401:
                     description: Error - The user is not authorized to empty all items from Trash
         /{trashItemid}:
@@ -145,7 +145,7 @@ version: 2.4
                 description: Returns the item in Trash with the provided ID
                 headers:
                     Accept:
-                        description: Response format, either application/vnd.ez.api.TrashItem+xml or application/vnd.ez.api.TrashItem+json
+                        description: If set the item in Trash is returned in XML or JSON format
                         example: |
                             application/vnd.ez.api.TrashItem+xml
                             application/vnd.ez.api.TrashItem+json
@@ -248,13 +248,13 @@ version: 2.4
                             </xsd:schema>
                 responses:
                     200:
-                        description: OK
+                        description: OK - returns the item in Trash
                     401:
                         description: Error - The user has no permission to read the item in Trash
                     404:
                         description: Error - An item in Trash with the provided ID does not exist
             move:
-                description: MOVE or POST with header X-HTTP-Method-Override MOVE. Restores an item from Trash.
+                description: Restores an item from Trash. MOVE or POST with header X-HTTP-Method-Override MOVE.
                 headers:
                     Destination:
                         description: If the destination Location uri is provided, the item from Trash is restored under this Location, otherwise under its original parent Location
@@ -272,7 +272,7 @@ version: 2.4
                 description: Deletes the provided item from Trash
                 responses:
                     204:
-                        description: No Content
+                        description: No Content - item deleted
                     401:
                         description: Error - The user is not authorized to delete the provided item
                     404:
@@ -282,7 +282,7 @@ version: 2.4
             description: Returns a list of all Object State Groups
             headers:
                 Accept:
-                    description: Response format, either application/vnd.ez.api.ObjectStateGroupList+xml or application/vnd.ez.api.ObjectStateGroupList+json
+                    description: If set the Object State Group list is returned in XML or JSON format
                     example: |
                         application/vnd.ez.api.ObjectStateGroupList+xml
                         application/vnd.ez.api.ObjectStateGroupList+json
@@ -290,24 +290,24 @@ version: 2.4
                     description: ETag
             responses:
                 200:
-                    description: OK
+                    description: OK - returns a list of Object State Groups
                 401:
                     description: Error - The user has no permission to read Object State Groups
         post:
             description: Creates a new Object State Group
             headers:
                 Accept:
-                    description: Response format, either application/vnd.ez.api.ObjectStateGroup+xml or application/vnd.ez.api.ObjectStateGroup+json
+                    description: If set the new Object State Group is returned in XML or JSON format
                     example: |
                         application/vnd.ez.api.ObjectStateGroup+xml
                         application/vnd.ez.api.ObjectStateGroup+json
                 Content-Type:
-                    description: Media type, either application/vnd.ez.api.ObjectStateGroupCreate+json or application/vnd.ez.api.ObjectStateGroupCreate+xml
+                    description: The ObjectStateGroup input schema encoded in XML or JSON
                     example: |
                         application/vnd.ez.api.ObjectStateGroupCreate+json
                         application/vnd.ez.api.ObjectStateGroupCreate+xml
             body:
-                application/vnd.ez.api.ObjectStateGroup+xml:
+                application/vnd.ez.api.ObjectStateGroupCreate+xml:
                     schema: |
                         <?xml version="1.0" encoding="UTF-8"?>
                         <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -349,7 +349,7 @@ version: 2.4
                 description: Returns the Object State Group with the provided ID
                 headers:
                     Accept:
-                        description: Response format, either application/vnd.ez.api.ObjectStateGroup+xml or application/vnd.ez.api.ObjectStateGroup+json
+                        description: If set the Object State Group is returned in XML or JSON format
                         example: |
                             application/vnd.ez.api.ObjectStateGroup+xml
                             application/vnd.ez.api.ObjectStateGroup+json
@@ -357,28 +357,28 @@ version: 2.4
                         description: ETag
                 responses:
                     200:
-                        description: OK
+                        description: OK - returns the Object State Group
                     401:
                         description: Error - The user is not authorized to read Object State Groups
                     404:
                         description: Error - The Object State Group does not exist
             patch:
-                description: PATCH or POST with header X-HTTP-Method-Override PATCH. Updates an Object State Group.
+                description: Updates an Object State Group. PATCH or POST with header X-HTTP-Method-Override PATCH.
                 headers:
                     Accept:
-                        description: Response format, either application/vnd.ez.api.ObjectStateGroup+xml or application/vnd.ez.api.ObjectStateGroup+json
+                        description: If set the updated Object State Group is returned in XML or JSON format
                         example: |
                             application/vnd.ez.api.ObjectStateGroup+xml
                             application/vnd.ez.api.ObjectStateGroup+json
                     Content-Type:
-                        description: Media type, either application/vnd.ez.api.ObjectStateGroupUpdate+json or application/vnd.ez.api.ObjectStateGroupUpdate+xml
+                        description: The ObjectStateGroup input schema encoded in XML or JSON
                         example: |
                             application/vnd.ez.api.ObjectStateGroupUpdate+json
                             application/vnd.ez.api.ObjectStateGroupUpdate+xml
                     If-Match:
                         description: ETag
                 body:
-                    application/vnd.ez.api.ObjectStateGroup+xml:
+                    application/vnd.ez.api.ObjectStateGroupUpdate+xml:
                         schema: |
                             <?xml version="1.0" encoding="UTF-8"?>
                             <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -411,7 +411,7 @@ version: 2.4
                             </xsd:schema>
                 responses:
                     200:
-                        description: OK
+                        description: OK - Object Stated group updated
                     400:
                         description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
                     401:
@@ -424,7 +424,7 @@ version: 2.4
                 description: Deletes the given Object State Group including Object States
                 responses:
                     204:
-                        description: No Content
+                        description: No Content - Object State Group deleted
                     401:
                         description: Error - The user is not authorized to delete an Object State Group
                     404:
@@ -434,7 +434,7 @@ version: 2.4
                     description: Returns a list of all Object States of the given group
                     headers:
                         Accept:
-                            description: Response format, either application/vnd.ez.api.ObjectStateList+xml or application/vnd.ez.api.ObjectStateList+json
+                            description: If set the Object State list is returned in XML or JSON format
                             example: |
                                 application/vnd.ez.api.ObjectStateList+xml
                                 application/vnd.ez.api.ObjectStateList+json
@@ -442,24 +442,24 @@ version: 2.4
                             description: ETag
                     responses:
                         200:
-                            description: OK
+                            description: OK - returns a list of Object States
                         401:
                             description: Error - The user has no permission to read Object States
                 post:
                     description: Creates a new Object State
                     headers:
                         Accept:
-                            description: Response format, either application/vnd.ez.api.ObjectState+xml or application/vnd.ez.api.ObjectState+json
+                            description: If set the new Object State is returned in XML or JSON format
                             example:
                                 application/vnd.ez.api.ObjectState+xml
                                 application/vnd.ez.api.ObjectState+json
                         Content-Type:
-                            description: Media type, either application/vnd.ez.api.ObjectStateGroupCreate+json or application/vnd.ez.api.ObjectStateGroupCreate+xml
+                            description: The Object State input schema encoded in XML or JSON
                             example: |
-                                application/vnd.ez.api.ObjectStateGroupCreate+json
-                                application/vnd.ez.api.ObjectStateGroupCreate+xml
+                                application/vnd.ez.api.ObjectStateCreate+json
+                                application/vnd.ez.api.ObjectStateCreate+xml
                     body:
-                        application/vnd.ez.api.ObjectState+xml:
+                        application/vnd.ez.api.ObjectStateCreate+xml:
                             schema: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -491,7 +491,7 @@ version: 2.4
                                 </xsd:schema>
                     responses:
                         201:
-                            description: Created
+                            description: Object State created
                         400:
                             description: Error - The input does not match the input schema definition, In this case the response contains an ErrorMessage
                         401:
@@ -503,7 +503,7 @@ version: 2.4
                         description: Returns the Object State
                         headers:
                             Accept:
-                                description: Response format, either application/vnd.ez.api.ObjectState+xml or application/vnd.ez.api.ObjectState+json
+                                description: If set the Object State is returned in XML or JSON format
                                 example: |
                                     application/vnd.ez.api.ObjectState+xml
                                     application/vnd.ez.api.ObjectState+json
@@ -511,28 +511,28 @@ version: 2.4
                                 description: ETag
                         responses:
                             200:
-                                description: OK
+                                description: OK - returns the Object State
                             401:
                                 description: Error - The user is not authorized to read Object State Groups
                             404:
                                 description: Error - The Object State Group does not exist
                     patch:
-                        description: PATCH or POST with header X-HTTP-Method-Override PATCH. Updates an Object State.
+                        description: Updates an Object State. PATCH or POST with header X-HTTP-Method-Override PATCH.
                         headers:
                             Accept:
-                                description: Response format, either application/vnd.ez.api.ObjectState+xml or application/vnd.ez.api.ObjectState+json
+                                description: If set the updated Object State is returned in XML or JSON format
                                 example: |
                                     application/vnd.ez.api.ObjectState+xml
                                     application/vnd.ez.api.ObjectState+json
                             Content-Type:
-                                description: Media type, either application/vnd.ez.api.ObjectStateUpdate+json or application/vnd.ez.api.ObjectStateUpdate+xml
+                                description: The Object State input schema encoded in XML or JSON
                                 example: |
                                     application/vnd.ez.api.ObjectStateUpdate+json
                                     application/vnd.ez.api.ObjectStateUpdate+xml
                             If-Match:
                                 description: ETag
                         body:
-                            application/vnd.ez.api.ObjectState+xml:
+                            application/vnd.ez.api.ObjectStateUpdate+xml:
                                 schema: |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -564,7 +564,7 @@ version: 2.4
                                     </xsd:schema>
                         responses:
                             200:
-                                description: OK
+                                description: OK - Object State updated
                             400:
                                 description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
                             401:
@@ -577,7 +577,7 @@ version: 2.4
                         description: Deletes provided Object State
                         responses:
                             204:
-                                description: No Content
+                                description: No Content - Object State deleted
                             401:
                                 description: Error - The user is not authorized to delete an Object State Group
                             404:
@@ -589,7 +589,7 @@ version: 2.4
                     description: Returns the Object States of a Content item
                     headers:
                         Accept:
-                            description: Response format, either application/vnd.ez.api.ContentObjectStates+xml or application/vnd.ez.api.ContentObjectStates+json
+                            description: If set the Object State is returned in XML or JSON format
                             example: |
                                 application/vnd.ez.api.ContentObjectStates+xml
                                 application/vnd.ez.api.ContentObjectStates+json
@@ -597,19 +597,19 @@ version: 2.4
                             description: ETag
                     responses:
                         200:
-                            description: OK
+                            description: OK - returns the Object State
                         404:
                             description: Error - The Content item does not exist
                 patch:
-                    description: PATCH or POST with header X-HTTP-Method-Override PATCH. Updates Object States of content. An Object State in the input overrides the state of the Object State Group.
+                    description: Updates Object States of content. An Object State in the input overrides the state of the Object State Group. PATCH or POST with header X-HTTP-Method-Override PATCH.
                     headers:
                         Accept:
-                            description: Response format, either application/vnd.ez.api.ContentObjectStates+xml or application/vnd.ez.api.ContentObjectStates+json
+                            description: If set the updated Object State is returned in XML or JSON format
                             example: |
                                 application/vnd.ez.api.ContentObjectStates+xml
                                 application/vnd.ez.api.ContentObjectStates+json
                         Content-Type:
-                            description: Media type, either application/vnd.ez.api.ContentObjectStates+xml or application/vnd.ez.api.ContentObjectStates+json
+                            description: The Content Object States input schema encoded in XML or JSON
                             example: |
                                 application/vnd.ez.api.ContentObjectStates+xml
                                 application/vnd.ez.api.ContentObjectStates+json
@@ -630,7 +630,7 @@ version: 2.4
                                 </xsd:schema>
                     responses:
                         204:
-                            description: OK
+                            description: OK - Object State updated
                         400:
                             description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
                         401:
@@ -644,30 +644,30 @@ version: 2.4
             description: Returns the list of global URL aliases
             headers:
                 Accept:
-                    description: Response format, either application/vnd.ez.api.UrlAliasRefList+xml or application/vnd.ez.api.UrlAliasRefList+json
+                    description: If set the URL alias list contains only references and is returned in XML or JSON format
                     example: |
                         application/vnd.ez.api.UrlAliasRefList+xml
                         application/vnd.ez.api.UrlAliasRefList+json
             responses:
                 200:
-                    description: OK
+                    description: OK - returns the list of URL aliases
                 401:
                     description: Error - The user has no permission to read URL aliases
         post:
             description: Creates a new URL alias
             headers:
                 Accept:
-                    description: Response format, either application/vnd.ez.api.UrlAlias+xml or application/vnd.ez.api.UrlAlias+json
+                    description: If set the new URL alias is returned in XML or JSON format
                     example: |
                         application/vnd.ez.api.UrlAlias+xml
                         application/vnd.ez.api.UrlAlias+json
                 Content-Type:
-                    description: Media type, either application/vnd.ez.api.UrlAliasCreate+xml or application/vnd.ez.api.UrlAliasCreate+json
+                    description: The URL alias input schema encoded in XML or JSON
                     example: |
                         application/vnd.ez.api.UrlAliasCreate+xml
                         application/vnd.ez.api.UrlAliasCreate+json
             body:
-                application/vnd.ez.api.UrlAlias+xml:
+                application/vnd.ez.api.UrlAliasCreate+xml:
                     schema: |
                         <?xml version="1.0" encoding="UTF-8"?>
                         <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -692,7 +692,7 @@ version: 2.4
                         </xsd:schema>
             responses:
                 201:
-                    description: Created
+                    description: URL alias created
                 400:
                     description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
                 401:
@@ -704,13 +704,13 @@ version: 2.4
                 description: Returns the URL alias with the given ID
                 headers:
                     Accept:
-                        description: Response format, either application/vnd.ez.api.UrlAlias+xml or application/vnd.ez.api.UrlAlias+json
+                        description: If set the URL alias is returned in XML or JSON format
                         example: |
                             application/vnd.ez.api.UrlAlias+xml
                             application/vnd.ez.api.UrlAlias+json
                 responses:
                     200:
-                        description: OK
+                        description: OK - returns the URL alias
                     401:
                         description: Error - The user is not authorized to read URL aliases
                     404:
@@ -719,7 +719,7 @@ version: 2.4
                 description: Deleted the provided URL alias
                 responses:
                     204:
-                        description: No Content
+                        description: No Content - URL alias deleted
                     401:
                         description: Error - The user is not authorized to delete a URL alias
                     404:
@@ -729,30 +729,30 @@ version: 2.4
             description: Returns a list of URL wildcards
             headers:
                 Accept:
-                    description: Response format, either application/vnd.ez.api.UrlWildcardList+xml or application/vnd.ez.api.UrlWildcardList+json
+                    description: If set the URL wildcard is returned in XML or JSON format
                     example: |
                         application/vnd.ez.api.UrlWildcardList+xml
                         application/vnd.ez.api.UrlWildcardList+json
             responses:
                 200:
-                    description: OK
+                    description: OK - returns a list of URL wildcards
                 401:
                     description: Error - The user has no permission to read URL wildcards
         post:
             description: Creates a new URL wildcard
             headers:
                 Accept:
-                    description: Response format, either application/vnd.ez.api.UrlWildcard+xml or application/vnd.ez.api.UrlWildcard+json
+                    description: If set the new URL wildcard is returned in XML or JSON format
                     example: |
                         application/vnd.ez.api.UrlWildcard+xml
                         application/vnd.ez.api.UrlWildcard+json
                 Content-Type:
-                    description: Media type, either application/vnd.ez.api.UrlWildcardCreate+xml or application/vnd.ez.api.UrlWildcardCreate+json
+                    description: The URL Wildcard input schema encoded in XML or JSON
                     example: |
                         application/vnd.ez.api.UrlWildcardCreate+xml
                         application/vnd.ez.api.UrlWildcardCreate+json
             body:
-                application/vnd.ez.api.UrlWildcard.xml:
+                application/vnd.ez.api.UrlWildcardCreate.xml:
                     schema: |
                         <?xml version="1.0" encoding="UTF-8"?>
                         <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -768,7 +768,7 @@ version: 2.4
                         </xsd:schema>
             responses:
                 201:
-                    description: Created
+                    description: URL wildcard created
                 400:
                     description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
                 401:
@@ -777,16 +777,16 @@ version: 2.4
                     description: Error - A URL wildcard with the same identifier already exists
         /{wildcardId}:
             get:
-                description: Returns the urlwildcard with the given id
+                description: Returns the URL wildcard with the given ID
                 headers:
                     Accept:
-                        description: Response format, either application/vnd.ez.api.UrlWildcard+xml or application/vnd.ez.api.UrlWildcard+json
+                        description: If set the URL wildcard is returned in XML or JSON format
                         example: |
                             application/vnd.ez.api.UrlWildcard+xml
                             application/vnd.ez.api.UrlWildcard+json
                 responses:
                     200:
-                        description: OK
+                        description: OK - returns the URL wildcard
                     401:
                         description: Error - The user is not authorized to read URL wildcards
                     404:
@@ -795,7 +795,7 @@ version: 2.4
                 description: Deletes the given URL wildcard
                 responses:
                     204:
-                        description: No Content
+                        description: No Content - URL wildcard deleted
                     401:
                         description: Error - The user is not authorized to delete a URL wildcard
                     404:
@@ -811,13 +811,13 @@ version: 2.4
                             type: boolean
                     headers:
                         Accept:
-                            description: Response format, either application/vnd.ez.api.UrlAliasRefList+xml or application/vnd.ez.api.UrlAliasRefList+json
+                            description: If set the URL alias list contains only references and is returned in XML or JSON format
                             example: |
                                 application/vnd.ez.api.UrlAliasRefList+xml
                                 application/vnd.ez.api.UrlAliasRefList+json
                     responses:
                         200:
-                            description: OK
+                            description: OK - returns the list of URL aliases
                         400:
                             description: Error - The user has no permission to read URL aliases
                         401:
@@ -831,12 +831,13 @@ version: 2.4
                     required: false
             headers:
                 Accept:
-                    description: Response format, either application/vnd.ez.api.ContentTypeGroupList+xml or application/vnd.ez.api.ContentTypeGroupList+json
+                    description: If set the Content Type Group list is returned in XML or JSON format
                     example: |
                         application/vnd.ez.api.ContentTypeGroupList+xml
                         application/vnd.ez.api.ContentTypeGroupList+json
             responses:
                 200:
+                    description: OK - returns a list of Content Type Groups
                     body:
                         application/vnd.ez.api.ContentTypeGroupList+xml:
                             example: |
@@ -871,17 +872,17 @@ version: 2.4
             description: Creates a new Content Type Group
             headers:
                 Accept:
-                    description: Response format, either application/vnd.ez.api.ContentTypeGroup+xml or application/vnd.ez.api.ContentTypeGroup+json
+                    description: If set the new Content Type Group is returned in XML or JSON format
                     example: |
                         application/vnd.ez.api.ContentTypeGroup+xml
                         application/vnd.ez.api.ContentTypeGroup+json
                 Content-Type:
-                    description: Media type, either application/vnd.ez.api.ContentTypeGroupInput+xml or application/vnd.ez.api.ContentTypeGroupInput+json
+                    description: The Content Type Group input schema encoded in XML or JSON
                     example: |
                         application/vnd.ez.api.ContentTypeGroupInput+xml
                         application/vnd.ez.api.ContentTypeGroupInput+json
             body:
-                application/vnd.ez.api.ContentTypeGroup+xml:
+                application/vnd.ez.api.ContentTypeGroupInput+xml:
                     schema: |
                         <?xml version="1.0" encoding="UTF-8"?>
                         <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -930,7 +931,7 @@ version: 2.4
                 description: Returns the Content Type Group with the provided ID
                 headers:
                     Accept:
-                        description: Response format, either application/vnd.ez.api.ContentTypeGroup+xml or application/vnd.ez.api.ContentTypeGroup+json
+                        description: If set the Content Type Group is returned in XML or JSON format
                         example: |
                             application/vnd.ez.api.ContentTypeGroup+xml
                             application/vnd.ez.api.ContentTypeGroup+json
@@ -938,21 +939,21 @@ version: 2.4
                         description: ETag
                 responses:
                     200:
-                        description: OK
+                        description: OK - returns the Content Type Group
                     401:
                         description: Error - The user is not authorized to read this Content Type Group
                     404:
                         description: Error - The Content Type Group does not exist
             patch:
-                description: PATCH or POST with header X-HTTP-Method-Override PATCH. Updates a Content Type Group.
+                description: Updates a Content Type Group. PATCH or POST with header X-HTTP-Method-Override PATCH.
                 headers:
                     Accept:
-                        description: Response format, either application/vnd.ez.api.ContentTypeGroup+xml or application/vnd.ez.api.ContentTypeGroup+json
+                        description: If set the updated Content Type Group is returned in XML or JSON format
                         example: |
                             application/vnd.ez.api.ContentTypeGroup+xml
                             application/vnd.ez.api.ContentTypeGroup+json
                     Content-Type:
-                        description: Media type, either application/vnd.ez.api.ContentTypeGroupInput+xml or application/vnd.ez.api.ContentTypeGroupInput+json
+                        description: The Content Type Group input schema encoded in XML or JSON
                         example: |
                             application/vnd.ez.api.ContentTypeGroupInput+xml
                             application/vnd.ez.api.ContentTypeGroupInput+json
@@ -960,7 +961,6 @@ version: 2.4
                         description: ETag causes patching only if the specified ETag is the current one. Otherwise a 412 is returned.
                 body:
                     application/vnd.ez.api.ContentTypeGroup+xml:
-                        schema: |
                         example: |
                             <?xml version="1.0" encoding="UTF-8"?>
                             <ContentTypeGroupInput>
@@ -968,6 +968,7 @@ version: 2.4
                             </ContentTypeGroupInput>
                 responses:
                     200:
+                        description: Content Type Group updated
                         body:
                             application/vnd.ez.api.ContentTypeGroup+xml:
                                 example: |
@@ -993,7 +994,7 @@ version: 2.4
                 description: Deletes the provided Content Type Group
                 responses:
                     204:
-                        description: No Content
+                        description: No Content - Content Type Group deleted
                     401:
                         description: Error - The user is not authorized to delete this Content Type Group
                     403:
@@ -1005,7 +1006,7 @@ version: 2.4
                     description: Returns a list of Content Types in the provided group
                     headers:
                         Accept:
-                            description: Response format, one of application/vnd.ez.api.ContentTypeInfoList+xml or application/vnd.ez.api.ContentTypeInfoList+json or application/vnd.ez.api.ContentTypeList+xml or application/vnd.ez.api.ContentTypeList+json
+                            description: If set the list of Content Type info objects or Content Types (including Field definitions) is returned in XML or JSON format
                             example: |
                                 application/vnd.ez.api.ContentTypeInfoList+xml
                                 application/vnd.ez.api.ContentTypeInfoList+json
@@ -1013,7 +1014,7 @@ version: 2.4
                                 application/vnd.ez.api.ContentTypeList+json
                     responses:
                         200:
-                            description: OK
+                            description: OK - returns a list on Content Types
                         401:
                             description: Error - The user has no permission to read the Content Types
                 post:
@@ -1024,17 +1025,17 @@ version: 2.4
                             type: boolean
                     headers:
                         Accept:
-                            description: Response format, either application/vnd.ez.api.ContentType+xml or application/vnd.ez.api.ContentType+json
+                            description: If set the new Content Type or draft is returned in XML or JSON format
                             example: |
                                 application/vnd.ez.api.ContentType+xml
                                 application/vnd.ez.api.ContentType+json
                         Content-Type:
-                            description: Media type, either application/vnd.ez.api.ContentTypeCreate+xml or application/vnd.ez.api.ContentTypeCreate+json
+                            description: The Content Type Create schema encoded in XML or JSON
                             example: |
                                 application/vnd.ez.api.ContentTypeCreate+xml
                                 application/vnd.ez.api.ContentTypeCreate+json
                     body:
-                        application/vnd.ez.api.ContentType.xml:
+                        application/vnd.ez.api.ContentTypeCreate.xml:
                             schema: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -1317,7 +1318,7 @@ version: 2.4
                     description: One of (asc|desc)
             headers:
                 Accept:
-                    description: Response format, one of application/vnd.ez.api.ContentTypeInfoList+xml or application/vnd.ez.api.ContentTypeInfoList+json or application/vnd.ez.api.ContentTypeList+xml or application/vnd.ez.api.ContentTypeList+json
+                    description: If set the list of Content Type info objects or Content Types (including Field definitions) is returned in XML or JSON format
                     example: |
                         application/vnd.ez.api.ContentTypeInfoList+xml
                         application/vnd.ez.api.ContentTypeInfoList+json
@@ -1325,7 +1326,7 @@ version: 2.4
                         application/vnd.ez.api.ContentTypeList+json
             responses:
                 200:
-                    description: OK
+                    description: OK - returns a list of Content Types
                 401:
                     description: Error - The user has no permission to read the Content Types
         /{contentTypeId}:
@@ -1333,7 +1334,7 @@ version: 2.4
                 description: Returns the Content Type with the provided ID
                 headers:
                     Accept:
-                        description: Response format, either application/vnd.ez.api.ContentType+xml or application/vnd.ez.api.ContentType+json
+                        description: If set the Content Type is returned in XML or JSON format
                         example: |
                             application/vnd.ez.api.ContentType+xml
                             application/vnd.ez.api.ContentType+json
@@ -1341,13 +1342,13 @@ version: 2.4
                         description: ETag
                 responses:
                     200:
-                        description: OK
+                        description: OK - returns the Content Type
                     401:
                         description: Error - The user is not authorized to read this Content Type
                     404:
                         description: Error - The Content Type does not exist
             copy:
-                description: COPY or POST with header X-HTTP-Method-Override COPY. Copies a Content Type. A new remoteId is generated, and the identifier of the copy is set to copy_of_%lt;originalBaseIdentifier&gt;_&lt;newTypeId&gt; (or another random string).
+                description: Copies a Content Type. A new remoteId is generated, and the identifier of the copy is set to copy_of_%lt;originalBaseIdentifier&gt;_&lt;newTypeId&gt; (or another random string). COPY or POST with header X-HTTP-Method-Override COPY.
                 responses:
                     201:
                         description: Copy of the Content Type created
@@ -1357,17 +1358,17 @@ version: 2.4
                 description: Creates a draft and updates it with the given data
                 headers:
                     Accept:
-                        description: Response format, either application/vnd.ez.api.ContentTypeInfo+xml or application/vnd.ez.api.ContentTypeInfo+json
+                        description: If set the new Content Type draft is returned in XML or JSON format
                         example: |
                             application/vnd.ez.api.ContentTypeInfo+xml
                             application/vnd.ez.api.ContentTypeInfo+json
                     Content-Type:
-                        description: Media type, either application/vnd.ez.api.ContentTypeUpdate+xml or application/vnd.ez.api.ContentTypeUpdate+json
+                        description: The Content Type Update schema encoded in XML or JSON
                         example: |
                             application/vnd.ez.api.ContentTypeUpdate+xml
                             application/vnd.ez.api.ContentTypeUpdate+json
                 body:
-                    application/vnd.ez.api.ContentTypeInfo+xml:
+                    application/vnd.ez.api.ContentTypeUpdate+xml:
                         schema: |
                             <?xml version="1.0" encoding="UTF-8"?>
                             <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -1502,7 +1503,7 @@ version: 2.4
                             </xsd:schema>
                 responses:
                     201:
-                        description: Created
+                        description: Draft created
                     400:
                         description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
                     401:
@@ -1513,7 +1514,7 @@ version: 2.4
                 description: Deletes the provided Content Type
                 responses:
                     204:
-                        description: No Content
+                        description: No Content - Content Type deleted
                     401:
                         description: Error - The user is not authorized to delete this Content Type
                     403:
@@ -1522,20 +1523,20 @@ version: 2.4
                         description: Error - The Content Type does not exist
             /draft:
                 patch:
-                    description: PATCH or POST with header X-HTTP-Method-Override PATCH. Updates metadata of a draft. This method does not handle Field definitions.
+                    description: Updates metadata of a draft. This method does not handle Field definitions. PATCH or POST with header X-HTTP-Method-Override PATCH.
                     headers:
                         Accept:
-                            description: Response format, either application/vnd.ez.api.ContentTypeInfo+xml or application/vnd.ez.api.ContentTypeInfo+json
+                            description: If set the new Content Type draft is returned in XML or JSON format
                             example: |
                                 application/vnd.ez.api.ContentTypeInfo+xml
                                 application/vnd.ez.api.ContentTypeInfo+json
                         Content-Type:
-                            description: Mediat type, either application/vnd.ez.api.ContentTypeUpdate+xml or application/vnd.ez.api.ContentTypeUpdate+json
+                            description: The Content Type Update schema encoded in XML or JSON
                             example: |
                                 application/vnd.ez.api.ContentTypeUpdate+xml
                                 application/vnd.ez.api.ContentTypeUpdate+json
                     body:
-                        application/vnd.ez.api.ContentTypeInfo+xml:
+                        application/vnd.ez.api.ContentTypeUpdate+xml:
                             schema: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -1680,6 +1681,7 @@ version: 2.4
                                 </ContentTypeUpdate>
                     responses:
                         200:
+                            description: Draft metadata updated
                             body:
                                 application/vnd.ez.api.ContentType+xml:
                                     example: |
@@ -1718,10 +1720,10 @@ version: 2.4
                         404:
                             description: Error - There is no draft for this Content Type
                 publish:
-                    description: PUBLISH or POST with header X-HTTP-Method-Override PUBLISH. Publishes a Content Type draft.
+                    description: Publishes a Content Type draft. PUBLISH or POST with header X-HTTP-Method-Override PUBLISH.
                     responses:
                         200:
-                            description: OK
+                            description: Content Type draft published
                         401:
                             description: Error - The user is not authorized to publish this Content Type draft
                         403:
@@ -1732,7 +1734,7 @@ version: 2.4
                     description: Deletes the provided Content Type draft
                     responses:
                         204:
-                            description: No Content
+                            description: No Content - Content Type draft deleted
                         401:
                             description: Error - The user is not authorized to delete this Content Type draft
                         404:
@@ -1742,17 +1744,17 @@ version: 2.4
                         description: Creates a new Field definition for the given Content Type
                         headers:
                             Accept:
-                                description: Response format, either application/vnd.ez.api.FieldDefinition+xml or application/vnd.ez.api.FieldDefinition+json
+                                description: If set the new Field definition is returned in XML or JSON format
                                 example: |
                                     application/vnd.ez.api.FieldDefinition+xml
                                     application/vnd.ez.api.FieldDefinition+json
                             Content-Type:
-                                description: Media type, either application/vnd.ez.api.FieldDefinitionCreate+xml or application/vnd.ez.api.FieldDefinitionCreate+json
+                                description: The Field Definition Create schema encoded in XML or JSON
                                 example: |
                                     application/vnd.ez.api.FieldDefinitionCreate+xml
                                     application/vnd.ez.api.FieldDefinitionCreate+json
                         body:
-                            application/vnd.ez.api.FieldDefinition+xml:
+                            application/vnd.ez.api.FieldDefinitionCreate+xml:
                                 schema: |
                                     <?xml version="1.0" encoding="UTF-8"?>
 
@@ -1852,7 +1854,7 @@ version: 2.4
                                     </xsd:schema>
                         responses:
                             201:
-                                description: Created
+                                description: Field definition created
                             400:
                                 description: Error - The input does not match the input schema definition or validation on the field definition fails. In this case the response contains an ErrorMessage
                             401:
@@ -1864,13 +1866,13 @@ version: 2.4
                             description: Returns the Field definition given by ID
                             headers:
                                 Accept:
-                                    description: Response format, either application/vnd.ez.api.FieldDefinition+xml or application/vnd.ez.api.FieldDefinition+json
+                                    description: If set the Field definition is returned in XML or JSON format
                                     example: |
                                         application/vnd.ez.api.FieldDefinition+xml
                                         application/vnd.ez.api.FieldDefinition+json
                             responses:
                                 200:
-                                    description: OK
+                                    description: OK - returns the Field definition
                                 401:
                                     description: Error - The user is not authorized to read the Content Type draft
                                 404:
@@ -1879,17 +1881,17 @@ version: 2.4
                             description: Updates the attributes of a Field definition
                             headers:
                                 Accept:
-                                    description: Response format, either application/vnd.ez.api.FieldDefinition+xml or application/vnd.ez.api.FieldDefinition+json
+                                    description: If set the updated Field definition is returned in XML or JSON format
                                     example: |
                                         application/vnd.ez.api.FieldDefinition+xml
                                         application/vnd.ez.api.FieldDefinition+json
                                 Content-Type:
-                                    description: Media type, either application/vnd.ez.api.FieldDefinitionUpdate+xml or application/vnd.ez.api.FieldDefinitionUpdate+json
+                                    description: The Field Definition Update schema encoded in XML or JSON
                                     example: |
                                         application/vnd.ez.api.FieldDefinitionUpdate+xml
                                         application/vnd.ez.api.FieldDefinitionUpdate+json
                             body:
-                                application/vnd.ez.api.FieldDefinition+xml:
+                                application/vnd.ez.api.FieldDefinitionUpdate+xml:
                                     schema: |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
@@ -1978,7 +1980,7 @@ version: 2.4
                                         </xsd:schema>
                             responses:
                                 200:
-                                    description: OK
+                                    description: OK - attributes updated
                                 400:
                                     description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
                                 401:
@@ -1989,7 +1991,7 @@ version: 2.4
                             description: Deletes the provided Field definition
                             responses:
                                 204:
-                                    description: No Content
+                                    description: No Content - Field definition deleted
                                 401:
                                     description: Error - The user is not authorized to delete this Content Type
                                 403:
@@ -1999,14 +2001,14 @@ version: 2.4
                     description: Returns the Content Type Group the Content Type belongs to.
                     headers:
                         Accept:
-                            description: Response format, either application/vnd.ez.api.ContentTypeGroupRefList+xml or application/vnd.ez.api.ContentTypeGroupRefList+json
+                            description: If set the Content Type Group list is returned in XML or JSON format
                             example: |
                                 application/vnd.ez.api.ContentTypeGroupRefList+xml
                                 application/vnd.ez.api.ContentTypeGroupRefList+json
                     responses:
                         200:
                             body:
-                                application/vnd.ez.api.ContentTypeGroup+xml:
+                                application/vnd.ez.api.ContentTypeGroupRefList+xml:
                                     example: |
                                         <ContentTypeGroupRefList>
                                             <ContentTypeGroupRef href="/content/typegroups/7" media-type="application/vnd.ez.api.ContentTypeGroup+xml"/>
@@ -2023,7 +2025,7 @@ version: 2.4
                             type: uri
                     headers:
                         Accept:
-                            description: Response format, either application/vnd.ez.api.ContentTypeGroupRefList+xml or application/vnd.ez.api.ContentTypeGroupRefList+json
+                            description: If set the updated Content Type Group list is returned in XML or JSON format
                             example: |
                                 application/vnd.ez.api.ContentTypeGroupRefList+xml
                                 application/vnd.ez.api.ContentTypeGroupRefList+json
@@ -2081,7 +2083,7 @@ version: 2.4
                         description: Removes the given group from the Content Type and returns the updated group list
                         headers:
                             Accept:
-                                description: Response format, either application/vnd.ez.api.ContentTypeGroupRefList+xml or application/vnd.ez.api.ContentTypeGroupRefList+json
+                                description: If set the updated Content Type Group list is returned in XML or JSON format
                                 example: |
                                     application/vnd.ez.api.ContentTypeGroupRefList+xml
                                     application/vnd.ez.api.ContentTypeGroupRefList+json
