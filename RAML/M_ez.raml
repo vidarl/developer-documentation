@@ -257,6 +257,7 @@ version: 2.4
                     description: Error - a given Location not exists / is not bookmarked
 /content:
     get:
+        # Listed as /content in the source file, but the endpoint does not seem to exist, as example works without /content as http://ezplatformee.local:8080/api/ezp/v2
         description: List the root resources of the eZ Platform installation.
         headers:
             Accept:
@@ -278,6 +279,10 @@ version: 2.4
                                 <contentTypeGroups media-type="application/vnd.ez.api.ContentTypeGroupList+xml" href="/api/ezp/v2/content/typegroups"/>
                                 <contentTypeGroupByIdentifier media-type="" href="/api/ezp/v2/content/typegroups{?identifier}"/>
                                 <users media-type="application/vnd.ez.api.UserRefList+xml" href="/api/ezp/v2/user/users"/>
+                                <usersByRoleId media-type="application/vnd.ez.api.UserRefList+xml" href="/api/ezp/v2/user/users{?roleId}"/>
+                                <usersByRemoteId media-type="application/vnd.ez.api.UserRefList+xml" href="/api/ezp/v2/user/users{?remoteId}"/>
+                                <usersByEmail media-type="application/vnd.ez.api.UserRefList+xml" href="/api/ezp/v2/user/users{?email}"/>
+                                <usersByLogin media-type="application/vnd.ez.api.UserRefList+xml" href="/api/ezp/v2/user/users{?login}"/>
                                 <roles media-type="application/vnd.ez.api.RoleList+xml" href="/api/ezp/v2/user/roles"/>
                                 <rootLocation media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2"/>
                                 <rootUserGroup media-type="application/vnd.ez.api.UserGroup+xml" href="/api/ezp/v2/user/groups/1/5"/>
@@ -300,92 +305,108 @@ version: 2.4
                                 "Root": {
                                     "_media-type": "application/vnd.ez.api.Root+json",
                                     "content": {
-                                        "_href": "/api/ezp/v2/content/objects",
-                                        "_media-type": ""
+                                        "_media-type": "",
+                                        "_href": "/api/ezp/v2/content/objects"
                                     },
                                     "contentByRemoteId": {
-                                        "_href": "/api/ezp/v2/content/objects{?remoteId}",
-                                        "_media-type": ""
-                                    },
-                                    "contentTypeByIdentifier": {
-                                        "_href": "/api/ezp/v2/content/types{?identifier}",
-                                        "_media-type": ""
-                                    },
-                                    "contentTypeGroupByIdentifier": {
-                                        "_href": "/api/ezp/v2/content/typegroups{?identifier}",
-                                        "_media-type": ""
-                                    },
-                                    "contentTypeGroups": {
-                                        "_href": "/api/ezp/v2/content/typegroups",
-                                        "_media-type": "application/vnd.ez.api.ContentTypeGroupList+json"
+                                        "_media-type": "",
+                                        "_href": "/api/ezp/v2/content/objects{?remoteId}"
                                     },
                                     "contentTypes": {
-                                        "_href": "/api/ezp/v2/content/types",
-                                        "_media-type": "application/vnd.ez.api.ContentTypeInfoList+json"
+                                        "_media-type": "application/vnd.ez.api.ContentTypeInfoList+json",
+                                        "_href": "/api/ezp/v2/content/types"
                                     },
-                                    "createSession": {
-                                        "_href": "/api/ezp/v2/user/sessions",
-                                        "_media-type": "application/vnd.ez.api.UserSession+json"
+                                    "contentTypeByIdentifier": {
+                                        "_media-type": "",
+                                        "_href": "/api/ezp/v2/content/types{?identifier}"
                                     },
-                                    "globalUrlAliases": {
-                                        "_href": "/api/ezp/v2/content/urlaliases",
-                                        "_media-type": "application/vnd.ez.api.UrlAliasRefList+json"
+                                    "contentTypeGroups": {
+                                        "_media-type": "application/vnd.ez.api.ContentTypeGroupList+json",
+                                        "_href": "/api/ezp/v2/content/typegroups"
                                     },
-                                    "locationByPath": {
-                                        "_href": "/api/ezp/v2/content/locations{?locationPath}",
-                                        "_media-type": ""
-                                    },
-                                    "locationByRemoteId": {
-                                        "_href": "/api/ezp/v2/content/locations{?remoteId}",
-                                        "_media-type": ""
-                                    },
-                                    "objectStateGroups": {
-                                        "_href": "/api/ezp/v2/content/objectstategroups",
-                                        "_media-type": "application/vnd.ez.api.ObjectStateGroupList+json"
-                                    },
-                                    "objectStates": {
-                                        "_href": "/api/ezp/v2/content/objectstategroups/{objectStateGroupId}/objectstates",
-                                        "_media-type": "application/vnd.ez.api.ObjectStateList+json"
-                                    },
-                                    "roles": {
-                                        "_href": "/api/ezp/v2/user/roles",
-                                        "_media-type": "application/vnd.ez.api.RoleList+json"
-                                    },
-                                    "rootLocation": {
-                                        "_href": "/api/ezp/v2/content/locations/1/2",
-                                        "_media-type": "application/vnd.ez.api.Location+json"
-                                    },
-                                    "rootMediaFolder": {
-                                        "_href": "/api/ezp/v2/content/locations/1/43",
-                                        "_media-type": "application/vnd.ez.api.Location+json"
-                                    },
-                                    "rootUserGroup": {
-                                        "_href": "/api/ezp/v2/user/groups/1/5",
-                                        "_media-type": "application/vnd.ez.api.UserGroup+json"
-                                    },
-                                    "sections": {
-                                        "_href": "/api/ezp/v2/content/sections",
-                                        "_media-type": "application/vnd.ez.api.SectionList+json"
-                                    },
-                                    "trash": {
-                                        "_href": "/api/ezp/v2/content/trash",
-                                        "_media-type": "application/vnd.ez.api.Trash+json"
-                                    },
-                                    "urlWildcards": {
-                                        "_href": "/api/ezp/v2/content/urlwildcards",
-                                        "_media-type": "application/vnd.ez.api.UrlWildcardList+json"
+                                    "contentTypeGroupByIdentifier": {
+                                        "_media-type": "",
+                                        "_href": "/api/ezp/v2/content/typegroups{?identifier}"
                                     },
                                     "users": {
-                                        "_href": "/api/ezp/v2/user/users",
-                                        "_media-type": "application/vnd.ez.api.UserRefList+json"
+                                        "_media-type": "application/vnd.ez.api.UserRefList+json",
+                                        "_href": "/api/ezp/v2/user/users"
+                                    },
+                                    "usersByRoleId": {
+                                        "_media-type": "application/vnd.ez.api.UserRefList+json",
+                                        "_href": "/api/ezp/v2/user/users{?roleId}"
+                                    },
+                                    "usersByRemoteId": {
+                                        "_media-type": "application/vnd.ez.api.UserRefList+json",
+                                        "_href": "/api/ezp/v2/user/users{?remoteId}"
+                                    },
+                                    "usersByEmail": {
+                                        "_media-type": "application/vnd.ez.api.UserRefList+json",
+                                        "_href": "/api/ezp/v2/user/users{?email}"
+                                    },
+                                    "usersByLogin": {
+                                        "_media-type": "application/vnd.ez.api.UserRefList+json",
+                                        "_href": "/api/ezp/v2/user/users{?login}"
+                                    },
+                                    "roles": {
+                                        "_media-type": "application/vnd.ez.api.RoleList+json",
+                                        "_href": "/api/ezp/v2/user/roles"
+                                    },
+                                    "rootLocation": {
+                                        "_media-type": "application/vnd.ez.api.Location+json",
+                                        "_href": "/api/ezp/v2/content/locations/1/2"
+                                    },
+                                    "rootUserGroup": {
+                                        "_media-type": "application/vnd.ez.api.UserGroup+json",
+                                        "_href": "/api/ezp/v2/user/groups/1/5"
+                                    },
+                                    "rootMediaFolder": {
+                                        "_media-type": "application/vnd.ez.api.Location+json",
+                                        "_href": "/api/ezp/v2/content/locations/1/43"
+                                    },
+                                    "locationByRemoteId": {
+                                        "_media-type": "",
+                                        "_href": "/api/ezp/v2/content/locations{?remoteId}"
+                                    },
+                                    "locationByPath": {
+                                        "_media-type": "",
+                                        "_href": "/api/ezp/v2/content/locations{?locationPath}"
+                                    },
+                                    "trash": {
+                                        "_media-type": "application/vnd.ez.api.Trash+json",
+                                        "_href": "/api/ezp/v2/content/trash"
+                                    },
+                                    "sections": {
+                                        "_media-type": "application/vnd.ez.api.SectionList+json",
+                                        "_href": "/api/ezp/v2/content/sections"
                                     },
                                     "views": {
-                                        "_href": "/api/ezp/v2/views",
-                                        "_media-type": "application/vnd.ez.api.RefList+json"
+                                        "_media-type": "application/vnd.ez.api.RefList+json",
+                                        "_href": "/api/ezp/v2/views"
+                                    },
+                                    "objectStateGroups": {
+                                        "_media-type": "application/vnd.ez.api.ObjectStateGroupList+json",
+                                        "_href": "/api/ezp/v2/content/objectstategroups"
+                                    },
+                                    "objectStates": {
+                                        "_media-type": "application/vnd.ez.api.ObjectStateList+json",
+                                        "_href": "/api/ezp/v2/content/objectstategroups/{objectStateGroupId}/objectstates"
+                                    },
+                                    "globalUrlAliases": {
+                                        "_media-type": "application/vnd.ez.api.UrlAliasRefList+json",
+                                        "_href": "/api/ezp/v2/content/urlaliases"
+                                    },
+                                    "urlWildcards": {
+                                        "_media-type": "application/vnd.ez.api.UrlWildcardList+json",
+                                        "_href": "/api/ezp/v2/content/urlwildcards"
+                                    },
+                                    "createSession": {
+                                        "_media-type": "application/vnd.ez.api.UserSession+json",
+                                        "_href": "/api/ezp/v2/user/sessions"
                                     },
                                     "refreshSession": {
-                                        "_media-type": "application\/vnd.ez.api.UserSession+json",
-                                        "_href": "\/api\/ezp\/v2\/user\/sessions\/{sessionId}\/refresh"
+                                        "_media-type": "application/vnd.ez.api.UserSession+json",
+                                        "_href": "/api/ezp/v2/user/sessions/{sessionId}/refresh"
                                     }
                                 }
                             }
@@ -438,256 +459,151 @@ version: 2.4
                         </xsd:schema>
                 application/vnd.ez.api.Content+xml:
                     example:  |
+                        <?xml version="1.0" encoding="UTF-8"?>
                         <ContentCreate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-                          <ContentType href="/content/types/10"/>
-                          <mainLanguageCode>eng-US</mainLanguageCode>
+                          <ContentType href="/api/ezp/v2/content/types/2"/>
+                          <mainLanguageCode>eng-GB</mainLanguageCode>
                           <LocationCreate>
-                            <ParentLocation href="/content/locations/1/4/89" />
+                            <ParentLocation href="/api/ezp/v2/content/locations/1/2" />
                             <priority>0</priority>
                             <hidden>false</hidden>
                             <sortField>PATH</sortField>
                             <sortOrder>ASC</sortOrder>
                           </LocationCreate>
-                          <Section href="/content/sections/4"/>
+                          <Section href="/api/ezp/v2/content/sections/1"/>
                           <alwaysAvailable>true</alwaysAvailable>
-                          <remoteId>remoteId12345678</remoteId>
+                          <remoteId></remoteId>
                           <fields>
                             <field>
                               <fieldDefinitionIdentifier>title</fieldDefinitionIdentifier>
-                              <languageCode>eng-US</languageCode>
-                              <fieldValue>This is a title</fieldValue>
+                              <languageCode>eng-GB</languageCode>
+                              <fieldValue>draft article</fieldValue>
                             </field>
                             <field>
-                              <fieldDefinitionIdentifier>summary</fieldDefinitionIdentifier>
-                              <languageCode>eng-US</languageCode>
-                              <fieldValue>This is a summary</fieldValue>
-                            </field>
-                            <field>
-                              <fieldDefinitionIdentifier>authors</fieldDefinitionIdentifier>
-                              <languageCode>eng-US</languageCode>
+                              <fieldDefinitionIdentifier>intro</fieldDefinitionIdentifier>
+                              <languageCode>eng-GB</languageCode>
                               <fieldValue>
-                                <value>
-                                  <value key="name">John Doe</value>
-                                  <value key="email">john.doe@example.net</value>
-                                </value>
-                                <value>
-                                  <value key="name">Bruce Willis</value>
-                                  <value key="email">bruce.willis@example.net</value>
-                                </value>
-                              </fieldValue>
+                            <value key="xml"><![CDATA[<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit"><p>draft draft</p></section>]]></value>
+                           </fieldValue>
+                            </field>
+                            <field>
+                              <fieldDefinitionIdentifier>body</fieldDefinitionIdentifier>
+                              <languageCode>eng-GB</languageCode>
+                              <fieldValue>
+                            <value key="xml"><![CDATA[<section xmlns="http://ez.no/namespaces/ezpublish5/xhtml5/edit"><p>draft draft draft </p></section>]]></value>
+                           </fieldValue>
                             </field>
                           </fields>
                         </ContentCreate>
-                application/vnd.ez.api.Content+json:
-                    example:  |
-                        {
-                          "ContentCreate": {
-                            "ContentType": {
-                              "_href": "/content/types/10"
-                            },
-                            "mainLanguageCode": "eng-US",
-                            "LocationCreate": {
-                              "ParentLocation": {
-                                "_href": "/content/locations/1/4/89"
-                              },
-                              "priority": "0",
-                              "hidden": false,
-                              "sortField": "PATH",
-                              "sortOrder": "ASC"
-                            },
-                            "Section": {
-                              "_href": "/content/sections/4"
-                            },
-                            "alwaysAvailable": true,
-                            "remoteId": "remoteId12345678",
-                            "fields": {
-                              "field": [
-                                {
-                                  "fieldDefinitionIdentifier": "title",
-                                  "languageCode": "eng-US",
-                                  "fieldValue": "This is a title"
-                                },
-                                {
-                                  "fieldDefinitionIdentifier": "summary",
-                                  "languageCode": "eng-US",
-                                  "fieldValue": "This is a summary"
-                                },
-                                {
-                                  "fieldDefinitionIdentifier": "authors",
-                                  "languageCode": "eng-US",
-                                  "fieldValue": [
-                                     {
-                                       "name": "John Doe",
-                                       "email": "john.doe@example.net"
-                                     },
-                                     {
-                                       "name": "Bruce Willis",
-                                       "email": "bruce.willis@example.net"
-                                     }
-                                  ]
-                                }
-                              ]
-                            }
-                          }
-                        }
             responses:
                 201:
                     body:
                         application/vnd.ez.api.Content+xml:
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
-                                <Content href="/content/objects/23" id="23"
-                                  media-type="application/vnd.ez.api.Content+xml" remoteId="remoteId12345678" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-                                  <ContentType href="/content/types/10" media-type="application/vnd.ez.api.ContentType+xml" />
-                                  <Name>This is a title</Name>
-                                  <Versions href="/content/objects/23/versions" media-type="application/vnd.ez.api.VersionList+xml" />
-                                  <CurrentVersion href="/content/objects/23/currentversion"
-                                    media-type="application/vnd.ez.api.Version+xml">
-                                    <Version href="/content/objects/23/versions/1" media-type="application/vnd.ez.api.Version+xml">
-                                      <VersionInfo>
-                                        <id>123</id>
-                                        <versionNo>1</versionNo>
-                                        <status>DRAFT</status>
-                                        <modificationDate>2012-02-12T12:30:00</modificationDate>
-                                        <Creator href="/user/users/14" media-type="application/vnd.ez.api.User+xml" />
-                                        <creationDate>2012-02-12T12:30:00</creationDate>
-                                        <initialLanguageCode>eng-US</initialLanguageCode>
-                                        <Content href="/content/objects/23" media-type="application/vnd.ez.api.ContentInfo+xml" />
-                                      </VersionInfo>
-                                      <fields>
-                                        <field>
-                                          <id>1234</id>
-                                          <fieldDefinitionIdentifier>title</fieldDefinitionIdentifier>
-                                          <languageCode>eng-UK</languageCode>
-                                          <fieldValue>This is a title</fieldValue>
-                                        </field>
-                                        <field>
-                                          <id>1235</id>
-                                          <fieldDefinitionIdentifier>summary</fieldDefinitionIdentifier>
-                                          <languageCode>eng-UK</languageCode>
-                                          <fieldValue>This is a summary</fieldValue>
-                                        </field>
-                                        <field>
-                                          <fieldDefinitionIdentifier>authors</fieldDefinitionIdentifier>
-                                          <languageCode>eng-US</languageCode>
-                                          <fieldValue>
-                                            <value>
-                                              <value key="name">John Doe</value>
-                                              <value key="email">john.doe@example.net</value>
-                                            </value>
-                                            <value>
-                                              <value key="name">Bruce Willis</value>
-                                              <value key="email">bruce.willis@example.net</value>
-                                            </value>
-                                          </fieldValue>
-                                        </field>
-                                      </fields>
-                                      <Relations href="/content/objects/23/versions/1/relations" media-type="application/vnd.ez.api.RelationList+xml" />
-                                    </Version>
-                                  </CurrentVersion>
-                                  <Section href="/content/sections/4" media-type="application/vnd.ez.api.Section+xml" />
-                                  <MainLocation href="/content/locations/1/4/65" media-type="application/vnd.ez.api.Location+xml" />
-                                  <Locations href="/content/objects/23/locations" media-type="application/vnd.ez.api.LocationList+xml" />
-                                  <Owner href="/user/users/14" media-type="application/vnd.ez.api.User+xml" />
-                                  <lastModificationDate>2012-02-12T12:30:00</lastModificationDate>
-                                  <mainLanguageCode>eng-US</mainLanguageCode>
-                                  <currentVersionNo>1</currentVersionNo>
-                                  <alwaysAvailable>true</alwaysAvailable>
+                                <Content media-type="application/vnd.ez.api.Content+xml" href="/api/ezp/v2/content/objects/83" remoteId="a9c8f00b1dba880df7a5ed3e93fad421" id="83">
+                                    <ContentType media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/2"/>
+                                    <Name>draft article</Name>
+                                    <Versions media-type="application/vnd.ez.api.VersionList+xml" href="/api/ezp/v2/content/objects/83/versions"/>
+                                    <CurrentVersion media-type="application/vnd.ez.api.Version+xml" href="/api/ezp/v2/content/objects/83/currentversion">
+                                        <Version media-type="application/vnd.ez.api.Version+xml" href="/api/ezp/v2/content/objects/83/versions/1">
+                                            <VersionInfo>
+                                                <id>547</id>
+                                                <versionNo>1</versionNo>
+                                                <status>DRAFT</status>
+                                                <modificationDate>2019-02-19T15:55:37+01:00</modificationDate>
+                                                <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                                <creationDate>2019-02-19T15:55:37+01:00</creationDate>
+                                                <initialLanguageCode>eng-GB</initialLanguageCode>
+                                                <languageCodes>eng-GB</languageCodes>
+                                                <VersionTranslationInfo media-type="application/vnd.ez.api.VersionTranslationInfo+xml">
+                                                    <Language>
+                                                        <languageCode>eng-GB</languageCode>
+                                                    </Language>
+                                                </VersionTranslationInfo>
+                                                <names>
+                                                    <value languageCode="eng-GB">draft article</value>
+                                                </names>
+                                                <Content media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/83"/>
+                                            </VersionInfo>
+                                            <Fields>
+                                                <field>
+                                                    <id>446</id>
+                                                    <fieldDefinitionIdentifier>title</fieldDefinitionIdentifier>
+                                                    <languageCode>eng-GB</languageCode>
+                                                    <fieldTypeIdentifier>ezstring</fieldTypeIdentifier>
+                                                    <fieldValue>draft article</fieldValue>
+                                                </field>
+                                                <field>
+                                                    <id>447</id>
+                                                    <fieldDefinitionIdentifier>short_title</fieldDefinitionIdentifier>
+                                                    <languageCode>eng-GB</languageCode>
+                                                    <fieldTypeIdentifier>ezstring</fieldTypeIdentifier>
+                                                    <fieldValue/>
+                                                </field>
+                                                <field>
+                                                    <id>448</id>
+                                                    <fieldDefinitionIdentifier>author</fieldDefinitionIdentifier>
+                                                    <languageCode>eng-GB</languageCode>
+                                                    <fieldTypeIdentifier>ezauthor</fieldTypeIdentifier>
+                                                    <fieldValue/>
+                                                </field>
+                                                <field>
+                                                    <id>449</id>
+                                                    <fieldDefinitionIdentifier>intro</fieldDefinitionIdentifier>
+                                                    <languageCode>eng-GB</languageCode>
+                                                    <fieldTypeIdentifier>ezrichtext</fieldTypeIdentifier>
+                                                    <fieldValue>
+                                                        <value key="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                                &lt;section xmlns=&quot;http://docbook.org/ns/docbook&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:ezxhtml=&quot;http://ez.no/xmlns/ezpublish/docbook/xhtml&quot; xmlns:ezcustom=&quot;http://ez.no/xmlns/ezpublish/docbook/custom&quot; version=&quot;5.0-variant ezpublish-1.0&quot;&gt;&lt;para&gt;draft draft&lt;/para&gt;&lt;/section&gt;
+                                </value>
+                                                        <value key="xhtml5edit">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                                &lt;section xmlns=&quot;http://ez.no/namespaces/ezpublish5/xhtml5/edit&quot;&gt;&lt;p&gt;draft draft&lt;/p&gt;&lt;/section&gt;
+                                </value>
+                                                    </fieldValue>
+                                                </field>
+                                                <field>
+                                                    <id>450</id>
+                                                    <fieldDefinitionIdentifier>body</fieldDefinitionIdentifier>
+                                                    <languageCode>eng-GB</languageCode>
+                                                    <fieldTypeIdentifier>ezrichtext</fieldTypeIdentifier>
+                                                    <fieldValue>
+                                                        <value key="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                                &lt;section xmlns=&quot;http://docbook.org/ns/docbook&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:ezxhtml=&quot;http://ez.no/xmlns/ezpublish/docbook/xhtml&quot; xmlns:ezcustom=&quot;http://ez.no/xmlns/ezpublish/docbook/custom&quot; version=&quot;5.0-variant ezpublish-1.0&quot;&gt;&lt;para&gt;draft draft draft &lt;/para&gt;&lt;/section&gt;
+                                </value>
+                                                        <value key="xhtml5edit">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                                &lt;section xmlns=&quot;http://ez.no/namespaces/ezpublish5/xhtml5/edit&quot;&gt;&lt;p&gt;draft draft draft &lt;/p&gt;&lt;/section&gt;
+                                </value>
+                                                    </fieldValue>
+                                                </field>
+                                                <field>
+                                                    <id>451</id>
+                                                    <fieldDefinitionIdentifier>enable_comments</fieldDefinitionIdentifier>
+                                                    <languageCode>eng-GB</languageCode>
+                                                    <fieldTypeIdentifier>ezboolean</fieldTypeIdentifier>
+                                                    <fieldValue>false</fieldValue>
+                                                </field>
+                                                <field>
+                                                    <id>452</id>
+                                                    <fieldDefinitionIdentifier>image</fieldDefinitionIdentifier>
+                                                    <languageCode>eng-GB</languageCode>
+                                                    <fieldTypeIdentifier>ezobjectrelation</fieldTypeIdentifier>
+                                                    <fieldValue>
+                                                        <value key="destinationContentId"/>
+                                                    </fieldValue>
+                                                </field>
+                                            </Fields>
+                                            <Relations media-type="application/vnd.ez.api.RelationList+xml" href="/api/ezp/v2/content/objects/83/versions/1/relations"/>
+                                        </Version>
+                                    </CurrentVersion>
+                                    <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/1"/>
+                                    <Locations media-type="application/vnd.ez.api.LocationList+xml" href="/api/ezp/v2/content/objects/83/locations"/>
+                                    <Owner media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                    <mainLanguageCode>eng-GB</mainLanguageCode>
+                                    <currentVersionNo>1</currentVersionNo>
+                                    <alwaysAvailable>true</alwaysAvailable>
+                                    <ObjectStates media-type="application/vnd.ez.api.ContentObjectStates+xml" href="/api/ezp/v2/content/objects/83/objectstates"/>
                                 </Content>
-                        application/vnd.ez.api.Content+json:
-                            example: |
-                                {
-                                  "Content": {
-                                    "_href": "/content/objects/23",
-                                    "_id": "23",
-                                    "_media-type": "application/vnd.ez.api.Content+json",
-                                    "_remoteId": "qwert123",
-                                    "ContentType": {
-                                      "_href": "/content/types/10",
-                                      "_media-type": "application/vnd.ez.api.ContentType+json"
-                                    },
-                                    "name": "This is a title",
-                                    "Versions": {
-                                      "_href": "/content/objects/23/versions",
-                                      "_media-type": "application/vnd.ez.api.VersionList+json"
-                                    },
-                                    "CurrentVersion": {
-                                      "_href": "/content/objects/23/currentversion",
-                                      "_media-type": "application/vnd.ez.api.Version+json",
-                                      "Version": {
-                                        "_href": "/content/objects/23/versions/1",
-                                        "_media-type": "application/vnd.ez.api.Version+json",
-                                        "VersionInfo": {
-                                          "id": "123",
-                                          "versionNo": "1",
-                                          "status": "DRAFT",
-                                          "modificationDate": "2012-02-12T12:30:00",
-                                          "creator": {
-                                            "_href": "/user/users/14",
-                                            "_media-type": "application/vnd.ez.api.User+json"
-                                          },
-                                          "creationDate": "2012-02-12T12:30:00",
-                                          "initialLanguageCode": "eng-US",
-                                          "Content": {
-                                            "_href": "/content/objects/23",
-                                            "_media-type": "application/vnd.ez.api.ContentInfo+json"
-                                          }
-                                        },
-                                        "fields": {
-                                          "field": [
-                                            {
-                                              "id": "1234",
-                                              "fieldDefinitionIdentifier": "title",
-                                              "languageCode": "eng-UK",
-                                              "fieldValue": "This is a title"
-                                            },
-                                            {
-                                              "id": "1235",
-                                              "fieldDefinitionIdentifier": "summary",
-                                              "languageCode": "eng-UK",
-                                              "fieldValue": "This is a summary"
-                                            },
-                                            {
-                                              "fieldDefinitionIdentifier": "authors",
-                                              "languageCode": "eng-US",
-                                              "fieldValue":
-                                              [
-                                                {
-                                                  "name": "John Doe",
-                                                  "email": "john.doe@example.net"
-                                                },
-                                                {
-                                                  "name": "Bruce Willis",
-                                                  "email": "bruce.willis@example.net"
-                                                }
-                                              ]
-                                            }
-                                          ]
-                                        }
-                                      }
-                                    },
-                                    "Section": {
-                                      "_href": "/content/sections/4",
-                                      "_media-type": "application/vnd.ez.api.Section+json"
-                                    },
-                                    "MainLocation": {
-                                      "_href": "/content/locations/1/4/65",
-                                      "_media-type": "application/vnd.ez.api.Location+json"
-                                    },
-                                    "Locations": {
-                                      "_href": "/content/objects/23/locations",
-                                      "_media-type": "application/vnd.ez.api.LocationList+json"
-                                    },
-                                    "Owner": {
-                                      "_href": "/user/users/14",
-                                      "_media-type": "application/vnd.ez.api.User+json"
-                                    },
-                                    "lastModificationDate": "2012-02-12T12:30:00",
-                                    "mainLanguageCode": "eng-US",
-                                    "currentVersionNo": "1",
-                                    "alwaysAvailable": true
-                                  }
-                                }
                 400:
                     description: Error - the Input does not match the input schema definition or the validation on a field fails
                 401:
@@ -695,18 +611,19 @@ version: 2.4
                 404:
                     description: Error - a parent Location is specified in the request body and it does not exist
         get:
+            # same as /{contentId} below?
             description: Loads the content for a given remote ID
             queryParameters:
                 remoteId:
                     description: The remote ID of the content. If present the content with the given remote ID is returned
             responses:
                 307:
-                    description: Temporary redirect
+                    description: Temporary Redirect
                 404:
                     description: Error - the content with the given remote ID does not exist
         /{contentId}:
             get:
-                description: Loads the content object for the given ID. Depending on the Accept header the current version is embedded (i.e the current published version or if not exists the draft of the authenticated user)
+                description: Loads the Content Object for the given ID. Depending on the Accept header the current version is embedded (i.e the current published version or if not exists the draft of the authenticated user)
                 queryParameters:
                      languages:
                         description: Restricts the output of translatable fields to the given languages
@@ -728,22 +645,117 @@ version: 2.4
                             application/vnd.ez.api.Content+xml:
                                 example: |
                                     <?xml version="1.0" encoding="UTF-8"?>
-                                    <Content href="/content/objects/23" id="23"
-                                      media-type="application/vnd.ez.api.Content+xml" remoteId="qwert123">
-                                      <ContentType href="/content/types/10" media-type="application/vnd.ez.api.ContentType+xml" />
-                                      <Name>This is a title</Name>
-                                      <Versions href="/content/objects/23/versions" media-type="application/vnd.ez.api.VersionList+xml" />
-                                      <CurrentVersion href="/content/objects/23/currentversion"
-                                        media-type="application/vnd.ez.api.Version+xml"/>
-                                      <Section href="/content/sections/4" media-type="application/vnd.ez.api.Section+xml" />
-                                      <MainLocation href="/content/locations/1/4/65" media-type="application/vnd.ez.api.Location+xml" />
-                                      <Locations href="/content/objects/23/locations" media-type="application/vnd.ez.api.LocationList+xml" />
-                                      <Owner href="/user/users/14" media-type="application/vnd.ez.api.User+xml" />
-                                      <lastModificationDate>2012-02-12T12:30:00</lastModificationDate>
-                                      <publishedDate>2012-02-12T15:30:00</publishedDate>
-                                      <mainLanguageCode>eng-US</mainLanguageCode>
-                                      <currentVersionNo>1</currentVersionNo>
-                                      <alwaysAvailable>true</alwaysAvailable>
+                                    <Content media-type="application/vnd.ez.api.Content+xml" href="/api/ezp/v2/content/objects/54" remoteId="d2b6b7f5d0935c45456a80d3a154f2e7" id="54">
+                                        <ContentType media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/2"/>
+                                        <Name>test</Name>
+                                        <Versions media-type="application/vnd.ez.api.VersionList+xml" href="/api/ezp/v2/content/objects/54/versions"/>
+                                        <CurrentVersion media-type="application/vnd.ez.api.Version+xml" href="/api/ezp/v2/content/objects/54/currentversion">
+                                            <Version media-type="application/vnd.ez.api.Version+xml" href="/api/ezp/v2/content/objects/54/versions/1">
+                                                <VersionInfo>
+                                                    <id>515</id>
+                                                    <versionNo>1</versionNo>
+                                                    <status>PUBLISHED</status>
+                                                    <modificationDate>2018-09-27T13:31:25+02:00</modificationDate>
+                                                    <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                                    <creationDate>2018-09-27T13:31:24+02:00</creationDate>
+                                                    <initialLanguageCode>eng-GB</initialLanguageCode>
+                                                    <languageCodes>eng-GB</languageCodes>
+                                                    <VersionTranslationInfo media-type="application/vnd.ez.api.VersionTranslationInfo+xml">
+                                                        <Language>
+                                                            <languageCode>eng-GB</languageCode>
+                                                        </Language>
+                                                    </VersionTranslationInfo>
+                                                    <names>
+                                                        <value languageCode="eng-GB">test</value>
+                                                    </names>
+                                                    <Content media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/54"/>
+                                                </VersionInfo>
+                                                <Fields>
+                                                    <field>
+                                                        <id>249</id>
+                                                        <fieldDefinitionIdentifier>title</fieldDefinitionIdentifier>
+                                                        <languageCode>eng-GB</languageCode>
+                                                        <fieldTypeIdentifier>ezstring</fieldTypeIdentifier>
+                                                        <fieldValue>test</fieldValue>
+                                                    </field>
+                                                    <field>
+                                                        <id>250</id>
+                                                        <fieldDefinitionIdentifier>short_title</fieldDefinitionIdentifier>
+                                                        <languageCode>eng-GB</languageCode>
+                                                        <fieldTypeIdentifier>ezstring</fieldTypeIdentifier>
+                                                        <fieldValue>test</fieldValue>
+                                                    </field>
+                                                    <field>
+                                                        <id>251</id>
+                                                        <fieldDefinitionIdentifier>author</fieldDefinitionIdentifier>
+                                                        <languageCode>eng-GB</languageCode>
+                                                        <fieldTypeIdentifier>ezauthor</fieldTypeIdentifier>
+                                                        <fieldValue>
+                                                            <value>
+                                                                <value key="id">1</value>
+                                                                <value key="name">Administrator User</value>
+                                                                <value key="email">nospam@ez.no</value>
+                                                            </value>
+                                                        </fieldValue>
+                                                    </field>
+                                                    <field>
+                                                        <id>252</id>
+                                                        <fieldDefinitionIdentifier>intro</fieldDefinitionIdentifier>
+                                                        <languageCode>eng-GB</languageCode>
+                                                        <fieldTypeIdentifier>ezrichtext</fieldTypeIdentifier>
+                                                        <fieldValue>
+                                                            <value key="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                                    &lt;section xmlns=&quot;http://docbook.org/ns/docbook&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:ezxhtml=&quot;http://ez.no/xmlns/ezpublish/docbook/xhtml&quot; xmlns:ezcustom=&quot;http://ez.no/xmlns/ezpublish/docbook/custom&quot; version=&quot;5.0-variant ezpublish-1.0&quot;&gt;&lt;para&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&lt;/para&gt;&lt;/section&gt;
+                                    </value>
+                                                            <value key="xhtml5edit">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                                    &lt;section xmlns=&quot;http://ez.no/namespaces/ezpublish5/xhtml5/edit&quot;&gt;&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.&lt;/p&gt;&lt;/section&gt;
+                                    </value>
+                                                        </fieldValue>
+                                                    </field>
+                                                    <field>
+                                                        <id>253</id>
+                                                        <fieldDefinitionIdentifier>body</fieldDefinitionIdentifier>
+                                                        <languageCode>eng-GB</languageCode>
+                                                        <fieldTypeIdentifier>ezrichtext</fieldTypeIdentifier>
+                                                        <fieldValue>
+                                                            <value key="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                                    &lt;section xmlns=&quot;http://docbook.org/ns/docbook&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; version=&quot;5.0-variant ezpublish-1.0&quot;/&gt;
+                                    </value>
+                                                            <value key="xhtml5edit">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                                    &lt;section xmlns=&quot;http://ez.no/namespaces/ezpublish5/xhtml5/edit&quot;/&gt;
+                                    </value>
+                                                        </fieldValue>
+                                                    </field>
+                                                    <field>
+                                                        <id>254</id>
+                                                        <fieldDefinitionIdentifier>enable_comments</fieldDefinitionIdentifier>
+                                                        <languageCode>eng-GB</languageCode>
+                                                        <fieldTypeIdentifier>ezboolean</fieldTypeIdentifier>
+                                                        <fieldValue>false</fieldValue>
+                                                    </field>
+                                                    <field>
+                                                        <id>255</id>
+                                                        <fieldDefinitionIdentifier>image</fieldDefinitionIdentifier>
+                                                        <languageCode>eng-GB</languageCode>
+                                                        <fieldTypeIdentifier>ezobjectrelation</fieldTypeIdentifier>
+                                                        <fieldValue>
+                                                            <value key="destinationContentId"/>
+                                                        </fieldValue>
+                                                    </field>
+                                                </Fields>
+                                                <Relations media-type="application/vnd.ez.api.RelationList+xml" href="/api/ezp/v2/content/objects/54/versions/1/relations"/>
+                                            </Version>
+                                        </CurrentVersion>
+                                        <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/1"/>
+                                        <MainLocation media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2/55"/>
+                                        <Locations media-type="application/vnd.ez.api.LocationList+xml" href="/api/ezp/v2/content/objects/54/locations"/>
+                                        <Owner media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <lastModificationDate>2018-09-27T13:31:25+02:00</lastModificationDate>
+                                        <publishedDate>2018-09-27T13:31:25+02:00</publishedDate>
+                                        <mainLanguageCode>eng-GB</mainLanguageCode>
+                                        <currentVersionNo>1</currentVersionNo>
+                                        <alwaysAvailable>false</alwaysAvailable>
+                                        <ObjectStates media-type="application/vnd.ez.api.ContentObjectStates+xml" href="/api/ezp/v2/content/objects/54/objectstates"/>
                                     </Content>
                     401:
                         description: Error - the user is not authorized to read this object. This could also happen if there is no published version yet and another user owns a draft of this content
@@ -794,12 +806,12 @@ version: 2.4
                         example: |
                             <?xml version="1.0" encoding="UTF-8"?>
                             <ContentUpdate>
-                              <mainLanguageCode>ger-DE</mainLanguageCode>
-                              <Section href="/content/sections/3"/>
-                              <MainLocation href="/content/locations/1/13/55"/>
-                              <Owner href="/user/users/13"/>
+                              <mainLanguageCode>eng-GB</mainLanguageCode>
+                              <Section href="/api/ezp/v2/content/sections/1"/>
+                              <MainLocation href="/api/ezp/v2/content/locations/2/63/66"/>
+                              <Owner href="/api/ezp/v2/user/users/11"/>
                               <alwaysAvailable>false</alwaysAvailable>
-                              <remoteId>qwert4321</remoteId>
+                              <remoteId>69848aeb86164c35e5c98202eebe9e05</remoteId>
                             </ContentUpdate>
                 responses:
                     200:
@@ -807,22 +819,21 @@ version: 2.4
                             application/vnd.ez.api.ContentUpdate+xml:
                                 example: |
                                     <?xml version="1.0" encoding="UTF-8"?>
-                                    <Content href="/content/objects/23" id="23"
-                                      media-type="application/vnd.ez.api.Content+xml" remoteId="qwert4321">
-                                      <ContentType href="/content/types/10" media-type="application/vnd.ez.api.ContentType+xml" />
-                                      <Name>This is a title</Name>
-                                      <Versions href="/content/objects/23/versions" media-type="application/vnd.ez.api.VersionList+xml" />
-                                      <CurrentVersion href="/content/objects/23/currentversion"
-                                        media-type="application/vnd.ez.api.Version+xml"/>
-                                      <Section href="/content/sections/3" media-type="application/vnd.ez.api.Section+xml" />
-                                      <MainLocation href="/content/locations/1/13/55" media-type="application/vnd.ez.api.Location+xml" />
-                                      <Locations href="/content/objects/23/locations" media-type="application/vnd.ez.api.LocationList+xml" />
-                                      <Owner href="/user/users/13" media-type="application/vnd.ez.api.User+xml" />
-                                      <lastModificationDate>2012-02-12T12:30:00</lastModificationDate>
-                                      <publishedDate>2012-02-12T15:30:00</publishedDate>
-                                      <mainLanguageCode>ger-DE</mainLanguageCode>
-                                      <currentVersionNo>1</currentVersionNo>
-                                      <alwaysAvailable>false</alwaysAvailable>
+                                    <Content media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/80" remoteId="69848aeb86164c35e5c98202eebe9e05" id="80">
+                                        <ContentType media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/2"/>
+                                        <Name>article1</Name>
+                                        <Versions media-type="application/vnd.ez.api.VersionList+xml" href="/api/ezp/v2/content/objects/80/versions"/>
+                                        <CurrentVersion media-type="application/vnd.ez.api.Version+xml" href="/api/ezp/v2/content/objects/80/currentversion"/>
+                                        <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/1"/>
+                                        <MainLocation media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2/63/66"/>
+                                        <Locations media-type="application/vnd.ez.api.LocationList+xml" href="/api/ezp/v2/content/objects/80/locations"/>
+                                        <Owner media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/11"/>
+                                        <lastModificationDate>2019-02-19T15:00:34+01:00</lastModificationDate>
+                                        <publishedDate>2019-02-19T15:00:34+01:00</publishedDate>
+                                        <mainLanguageCode>eng-GB</mainLanguageCode>
+                                        <currentVersionNo>1</currentVersionNo>
+                                        <alwaysAvailable>false</alwaysAvailable>
+                                        <ObjectStates media-type="application/vnd.ez.api.ContentObjectStates+xml" href="/api/ezp/v2/content/objects/80/objectstates"/>
                                     </Content>
                     400:
                         description: Error - the Input does not match the input schema definition
