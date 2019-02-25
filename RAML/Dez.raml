@@ -131,6 +131,41 @@ version: 2.4
                                   </xsd:complexType>
                                   <xsd:element name="trash" type="vnd.ez.api.Trash" />
                                 </xsd:schema>
+                            example: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <Trash media-type="application/vnd.ez.api.Trash+xml" href="/api/ezp/v2/content/trash">
+                                    <TrashItem media-type="application/vnd.ez.api.TrashItem+xml" href="/api/ezp/v2/content/trash/58">
+                                        <id>58</id>
+                                        <priority>0</priority>
+                                        <hidden>false</hidden>
+                                        <invisible>false</invisible>
+                                        <ParentLocation media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2/56"/>
+                                        <pathString>/1/2/56/58/</pathString>
+                                        <depth>3</depth>
+                                        <childCount>0</childCount>
+                                        <remoteId>59800915ad2eb8514de0bebe84f6ccba</remoteId>
+                                        <Content media-type="application/vnd.ez.api.Content+xml" href="/api/ezp/v2/content/objects/52"/>
+                                        <sortField>PATH</sortField>
+                                        <sortOrder>ASC</sortOrder>
+                                        <ContentInfo media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/52">
+                                            <Content media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/52" remoteId="881da87102313b0354dc2aa8f0e4b63b" id="52">
+                                                <ContentType media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/1"/>
+                                                <Name>Folder 1</Name>
+                                                <Versions media-type="application/vnd.ez.api.VersionList+xml" href="/api/ezp/v2/content/objects/52/versions"/>
+                                                <CurrentVersion media-type="application/vnd.ez.api.Version+xml" href="/api/ezp/v2/content/objects/52/currentversion"/>
+                                                <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/1"/>
+                                                <Locations media-type="application/vnd.ez.api.LocationList+xml" href="/api/ezp/v2/content/objects/52/locations"/>
+                                                <Owner media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                                <lastModificationDate>2019-02-06T09:03:09+01:00</lastModificationDate>
+                                                <publishedDate>2019-02-06T09:03:09+01:00</publishedDate>
+                                                <mainLanguageCode>eng-GB</mainLanguageCode>
+                                                <currentVersionNo>1</currentVersionNo>
+                                                <alwaysAvailable>true</alwaysAvailable>
+                                                <ObjectStates media-type="application/vnd.ez.api.ContentObjectStates+xml" href="/api/ezp/v2/content/objects/52/objectstates"/>
+                                            </Content>
+                                        </ContentInfo>
+                                    </TrashItem>
+                                </Trash>
                 401:
                     description: Error - The user has no permission to read the trash
         delete:
@@ -246,6 +281,39 @@ version: 2.4
                                 </xsd:complexContent>
                               </xsd:complexType>
                             </xsd:schema>
+                        example: |
+                            <?xml version="1.0" encoding="UTF-8"?>
+                            <TrashItem media-type="application/vnd.ez.api.TrashItem+xml" href="/api/ezp/v2/content/trash/60">
+                                <id>60</id>
+                                <priority>0</priority>
+                                <hidden>false</hidden>
+                                <invisible>false</invisible>
+                                <ParentLocation media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2/59"/>
+                                <pathString>/1/2/59/60/</pathString>
+                                <depth>3</depth>
+                                <childCount>0</childCount>
+                                <remoteId>8a37116e2d323ad138524e819b76f671</remoteId>
+                                <Content media-type="application/vnd.ez.api.Content+xml" href="/api/ezp/v2/content/objects/54"/>
+                                <sortField>PATH</sortField>
+                                <sortOrder>ASC</sortOrder>
+                                <ContentInfo media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/54">
+                                    <Content media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/54" remoteId="47c70e7ca160f3648b78c8166b48f077" id="54">
+                                        <ContentType media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/1"/>
+                                        <Name>To trash</Name>
+                                        <Versions media-type="application/vnd.ez.api.VersionList+xml" href="/api/ezp/v2/content/objects/54/versions"/>
+                                        <CurrentVersion media-type="application/vnd.ez.api.Version+xml" href="/api/ezp/v2/content/objects/54/currentversion"/>
+                                        <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/1"/>
+                                        <Locations media-type="application/vnd.ez.api.LocationList+xml" href="/api/ezp/v2/content/objects/54/locations"/>
+                                        <Owner media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <lastModificationDate>2019-02-22T09:45:48+01:00</lastModificationDate>
+                                        <publishedDate>2019-02-22T09:45:48+01:00</publishedDate>
+                                        <mainLanguageCode>eng-GB</mainLanguageCode>
+                                        <currentVersionNo>1</currentVersionNo>
+                                        <alwaysAvailable>true</alwaysAvailable>
+                                        <ObjectStates media-type="application/vnd.ez.api.ContentObjectStates+xml" href="/api/ezp/v2/content/objects/54/objectstates"/>
+                                    </Content>
+                                </ContentInfo>
+                            </TrashItem>
                 responses:
                     200:
                         description: OK - returns the item in Trash
@@ -291,6 +359,38 @@ version: 2.4
             responses:
                 200:
                     description: OK - returns a list of Object State Groups
+                    body:
+                        application/vnd.ez.api.ObjectStateGroupList+xml:
+                            example: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <ObjectStateGroupList media-type="application/vnd.ez.api.ObjectStateGroupList+xml" href="/api/ezp/v2/content/objectstategroups">
+                                    <ObjectStateGroup media-type="application/vnd.ez.api.ObjectStateGroup+xml" href="/api/ezp/v2/content/objectstategroups/2">
+                                        <id>2</id>
+                                        <identifier>ez_lock</identifier>
+                                        <defaultLanguageCode>eng-GB</defaultLanguageCode>
+                                        <languageCodes>eng-GB</languageCodes>
+                                        <ObjectStates media-type="application/vnd.ez.api.ObjectStateList+xml" href="/api/ezp/v2/content/objectstategroups/2/objectstates"/>
+                                        <names>
+                                            <value languageCode="eng-GB">Lock</value>
+                                        </names>
+                                        <descriptions>
+                                            <value languageCode="eng-GB"></value>
+                                        </descriptions>
+                                    </ObjectStateGroup>
+                                    <ObjectStateGroup media-type="application/vnd.ez.api.ObjectStateGroup+xml" href="/api/ezp/v2/content/objectstategroups/3">
+                                        <id>3</id>
+                                        <identifier>testgroup</identifier>
+                                        <defaultLanguageCode>eng-GB</defaultLanguageCode>
+                                        <languageCodes>eng-GB</languageCodes>
+                                        <ObjectStates media-type="application/vnd.ez.api.ObjectStateList+xml" href="/api/ezp/v2/content/objectstategroups/3/objectstates"/>
+                                        <names>
+                                            <value languageCode="eng-GB">Testgroup</value>
+                                        </names>
+                                        <descriptions>
+                                            <value languageCode="eng-GB"></value>
+                                        </descriptions>
+                                    </ObjectStateGroup>
+                                </ObjectStateGroupList>
                 401:
                     description: Error - The user has no permission to read Object State Groups
         post:
@@ -335,9 +435,38 @@ version: 2.4
                           </xsd:complexType>
                           <xsd:element name="ObjectStateGroupCreate" type="vnd.ez.api.ObjectStateGroupCreate" />
                         </xsd:schema>
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <ObjectStateGroup>
+                            <identifier>custom-states</identifier>
+                            <defaultLanguageCode>eng-GB</defaultLanguageCode>
+                            <names>
+                                <value languageCode="eng-GB">Custom State</value>
+                            </names>
+                            <descriptions>
+                                <value languageCode="eng-GB">Custom Object State</value>
+                            </descriptions>
+                        </ObjectStateGroup>
             responses:
                 201:
                     description: Object State Group created
+                    body:
+                        application/vnd.ez.api.ObjectStateGroup+xml:
+                            example: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <ObjectStateGroup media-type="application/vnd.ez.api.ObjectStateGroup+xml" href="/api/ezp/v2/content/objectstategroups/6">
+                                    <id>6</id>
+                                    <identifier>custom-states</identifier>
+                                    <defaultLanguageCode>eng-GB</defaultLanguageCode>
+                                    <languageCodes>eng-GB</languageCodes>
+                                    <ObjectStates media-type="application/vnd.ez.api.ObjectStateList+xml" href="/api/ezp/v2/content/objectstategroups/6/objectstates"/>
+                                    <names>
+                                        <value languageCode="eng-GB">Custom State</value>
+                                    </names>
+                                    <descriptions>
+                                        <value languageCode="eng-GB">Custom Object state</value>
+                                    </descriptions>
+                                </ObjectStateGroup>
                 400:
                     description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
                 401:
@@ -358,6 +487,23 @@ version: 2.4
                 responses:
                     200:
                         description: OK - returns the Object State Group
+                        body:
+                            application/vnd.ez.api.ObjectStateGroup+xml:
+                                example: |
+                                    <?xml version="1.0" encoding="UTF-8"?>
+                                    <ObjectStateGroup media-type="application/vnd.ez.api.ObjectStateGroup+xml" href="/api/ezp/v2/content/objectstategroups/6">
+                                        <id>6</id>
+                                        <identifier>custom-states</identifier>
+                                        <defaultLanguageCode>eng-GB</defaultLanguageCode>
+                                        <languageCodes>eng-GB</languageCodes>
+                                        <ObjectStates media-type="application/vnd.ez.api.ObjectStateList+xml" href="/api/ezp/v2/content/objectstategroups/6/objectstates"/>
+                                        <names>
+                                            <value languageCode="eng-GB">Custom State</value>
+                                        </names>
+                                        <descriptions>
+                                            <value languageCode="eng-GB">Custom Object state</value>
+                                        </descriptions>
+                                    </ObjectStateGroup>
                     401:
                         description: Error - The user is not authorized to read Object State Groups
                     404:
@@ -409,9 +555,33 @@ version: 2.4
                               <xsd:element name="ObjectStateGroup" type="vnd.ez.api.ObjectStateGroup" />
                               <xsd:element name="ObjectStateGroupList" type="vnd.ez.api.ObjectStateGroupList" />
                             </xsd:schema>
+                        example: |
+                            <?xml version="1.0" encoding="UTF-8"?>
+                            <ObjectStateGroup>
+                                <names>
+                                    <value languageCode="eng-GB">New Custom State name</value>
+                                </names>
+                            </ObjectStateGroup>
                 responses:
                     200:
                         description: OK - Object Stated group updated
+                        body:
+                            application/vnd.ez.api.ObjectStateGroup+xml:
+                                example: |
+                                    <?xml version="1.0" encoding="UTF-8"?>
+                                    <ObjectStateGroup media-type="application/vnd.ez.api.ObjectStateGroup+xml" href="/api/ezp/v2/content/objectstategroups/6">
+                                        <id>6</id>
+                                        <identifier>custom-states</identifier>
+                                        <defaultLanguageCode>eng-GB</defaultLanguageCode>
+                                        <languageCodes>eng-GB</languageCodes>
+                                        <ObjectStates media-type="application/vnd.ez.api.ObjectStateList+xml" href="/api/ezp/v2/content/objectstategroups/6/objectstates"/>
+                                        <names>
+                                            <value languageCode="eng-GB">New Custom State name</value>
+                                        </names>
+                                        <descriptions>
+                                            <value languageCode="eng-GB">Custom Object state</value>
+                                        </descriptions>
+                                    </ObjectStateGroup>
                     400:
                         description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
                     401:
@@ -443,6 +613,40 @@ version: 2.4
                     responses:
                         200:
                             description: OK - returns a list of Object States
+                            body:
+                                application/vnd.ez.api.ObjectStateList+xml:
+                                    example: |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <ObjectStateList media-type="application/vnd.ez.api.ObjectStateList+xml" href="/api/ezp/v2/content/objectstategroups/2/objectstates">
+                                            <ObjectState media-type="application/vnd.ez.api.ObjectState+xml" href="/api/ezp/v2/content/objectstategroups/2/objectstates/1">
+                                                <id>1</id>
+                                                <identifier>not_locked</identifier>
+                                                <priority>0</priority>
+                                                <ObjectStateGroup media-type="application/vnd.ez.api.ObjectStateGroup+xml" href="/api/ezp/v2/content/objectstategroups/2"/>
+                                                <defaultLanguageCode>eng-GB</defaultLanguageCode>
+                                                <languageCodes>eng-GB</languageCodes>
+                                                <names>
+                                                    <value languageCode="eng-GB">Not locked</value>
+                                                </names>
+                                                <descriptions>
+                                                    <value languageCode="eng-GB"></value>
+                                                </descriptions>
+                                            </ObjectState>
+                                            <ObjectState media-type="application/vnd.ez.api.ObjectState+xml" href="/api/ezp/v2/content/objectstategroups/2/objectstates/2">
+                                                <id>2</id>
+                                                <identifier>locked</identifier>
+                                                <priority>1</priority>
+                                                <ObjectStateGroup media-type="application/vnd.ez.api.ObjectStateGroup+xml" href="/api/ezp/v2/content/objectstategroups/2"/>
+                                                <defaultLanguageCode>eng-GB</defaultLanguageCode>
+                                                <languageCodes>eng-GB</languageCodes>
+                                                <names>
+                                                    <value languageCode="eng-GB">Locked</value>
+                                                </names>
+                                                <descriptions>
+                                                    <value languageCode="eng-GB"></value>
+                                                </descriptions>
+                                            </ObjectState>
+                                        </ObjectStateList>
                         401:
                             description: Error - The user has no permission to read Object States
                 post:
@@ -489,9 +693,40 @@ version: 2.4
                                     </xsd:complexType>
                                   <xsd:element name="ObjectStateCreate" type="vnd.ez.api.ObjectStateCreate" />
                                 </xsd:schema>
+                            example: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <ObjectStateCreate>
+                                  <identifier>new-state</identifier>
+                                  <priority>1</priority>
+                                  <defaultLanguageCode>eng-GB</defaultLanguageCode>
+                                  <names>
+                                    <value languageCode="eng-GB">New State</value>
+                                  </names>
+                                  <descriptions>
+                                    <value languageCode="eng-GB">New Object State</value>
+                                  </descriptions>
+                                </ObjectStateCreate>
                     responses:
                         201:
                             description: Object State created
+                            body:
+                                application/vnd.ez.api.ObjectState+xml:
+                                    example: |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <ObjectState media-type="application/vnd.ez.api.ObjectState+xml" href="/api/ezp/v2/content/objectstategroups/6/objectstates/6">
+                                            <id>6</id>
+                                            <identifier>new-state</identifier>
+                                            <priority>0</priority>
+                                            <ObjectStateGroup media-type="application/vnd.ez.api.ObjectStateGroup+xml" href="/api/ezp/v2/content/objectstategroups/6"/>
+                                            <defaultLanguageCode>eng-GB</defaultLanguageCode>
+                                            <languageCodes>eng-GB</languageCodes>
+                                            <names>
+                                                <value languageCode="eng-GB">New State</value>
+                                            </names>
+                                            <descriptions>
+                                                <value languageCode="eng-GB">New Object State</value>
+                                            </descriptions>
+                                        </ObjectState>
                         400:
                             description: Error - The input does not match the input schema definition, In this case the response contains an ErrorMessage
                         401:
@@ -512,6 +747,24 @@ version: 2.4
                         responses:
                             200:
                                 description: OK - returns the Object State
+                                body:
+                                    application/vnd.ez.api.ObjectState+xml:
+                                        example: |
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <ObjectState media-type="application/vnd.ez.api.ObjectState+xml" href="/api/ezp/v2/content/objectstategroups/6/objectstates/2">
+                                            <id>2</id>
+                                            <identifier>locked</identifier>
+                                            <priority>1</priority>
+                                            <ObjectStateGroup media-type="application/vnd.ez.api.ObjectStateGroup+xml" href="/api/ezp/v2/content/objectstategroups/6"/>
+                                            <defaultLanguageCode>eng-GB</defaultLanguageCode>
+                                            <languageCodes>eng-GB</languageCodes>
+                                            <names>
+                                                <value languageCode="eng-GB">Locked</value>
+                                            </names>
+                                            <descriptions>
+                                                <value languageCode="eng-GB"></value>
+                                            </descriptions>
+                                            </ObjectState>
                             401:
                                 description: Error - The user is not authorized to read Object State Groups
                             404:
@@ -562,9 +815,36 @@ version: 2.4
                                       </xsd:complexType>
                                       <xsd:element name="ObjectStateUpdate" type="vnd.ez.api.ObjectStateUpdate" />
                                     </xsd:schema>
+                                example: |
+                                    <?xml version="1.0" encoding="UTF-8"?>
+                                    <ObjectStateCreate>
+                                      <priority>3</priority>
+                                      <defaultLanguageCode>eng-GB</defaultLanguageCode>
+                                      <names>
+                                        <value languageCode="eng-GB">New Object State name</value>
+                                      </names>
+                                    </ObjectStateCreate>
                         responses:
                             200:
                                 description: OK - Object State updated
+                                body:
+                                    application/vnd.ez.api.ObjectState+xml:
+                                        example: |
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <ObjectState media-type="application/vnd.ez.api.ObjectState+xml" href="/api/ezp/v2/content/objectstategroups/2/objectstates/2">
+                                                <id>2</id>
+                                                <identifier>locked</identifier>
+                                                <priority>1</priority>
+                                                <ObjectStateGroup media-type="application/vnd.ez.api.ObjectStateGroup+xml" href="/api/ezp/v2/content/objectstategroups/2"/>
+                                                <defaultLanguageCode>eng-GB</defaultLanguageCode>
+                                                <languageCodes>eng-GB</languageCodes>
+                                                <names>
+                                                    <value languageCode="eng-GB">New Object State name</value>
+                                                </names>
+                                                <descriptions>
+                                                    <value languageCode="eng-GB"></value>
+                                                </descriptions>
+                                            </ObjectState>
                             400:
                                 description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
                             401:
@@ -598,6 +878,15 @@ version: 2.4
                     responses:
                         200:
                             description: OK - returns the Object State
+                            body:
+                                application/vnd.ez.api.ContentObjectStates+xml:
+                                    example: |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <ContentObjectStates media-type="application/vnd.ez.api.ContentObjectStates+xml">
+                                            <ObjectState media-type="application/vnd.ez.api.ObjectState+xml" href="/api/ezp/v2/content/objectstategroups/2/objectstates/1"/>
+                                            <ObjectState media-type="application/vnd.ez.api.ObjectState+xml" href="/api/ezp/v2/content/objectstategroups/3/objectstates/5"/>
+                                            <ObjectState media-type="application/vnd.ez.api.ObjectState+xml" href="/api/ezp/v2/content/objectstategroups/6/objectstates/6"/>
+                                        </ContentObjectStates>
                         404:
                             description: Error - The Content item does not exist
                 patch:
@@ -628,9 +917,21 @@ version: 2.4
                                     </xsd:sequence>
                                   </xsd:complexType>
                                 </xsd:schema>
+                            example: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <ContentObjectStates>
+                                    <ObjectState href="/api/ezp/v2/content/objectstategroups/3/objectstates/3"/>
+                                </ContentObjectStates>
                     responses:
                         204:
                             description: OK - Object State updated
+                            body:
+                                application/vnd.ez.api.ContentObjectStates+xml:
+                                    example: |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <ContentObjectStates media-type="application/vnd.ez.api.ContentObjectStates+xml">
+                                            <ObjectState media-type="application/vnd.ez.api.ObjectState+xml" href="/api/ezp/v2/content/objectstategroups/3/objectstates/3"/>
+                                        </ContentObjectStates>
                         400:
                             description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
                         401:
@@ -640,6 +941,7 @@ version: 2.4
                         412:
                             description: Error - The current ETag does not match the one provided in the If-Match header
     /urlaliases:
+        # TODO Does not return anything?
         get:
             description: Returns the list of global URL aliases
             headers:
@@ -690,9 +992,31 @@ version: 2.4
                             <xsd:attribute name="type" type="urlAliasType" />
                           </xsd:complexType>
                         </xsd:schema>
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <UrlAliasCreate type="LOCATION">
+                          <location href='/api/ezp/v2/content/locations/1/2/59' />
+                          <path>example-urlalias</path>
+                          <languageCode>eng-GB</languageCode>
+                          <alwaysAvailable>true</alwaysAvailable>
+                          <forward>true</forward>
+                        </UrlAliasCreate>
             responses:
                 201:
                     description: URL alias created
+                    body:
+                        application/vnd.ez.api.UrlAlias+xml:
+                            example: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <UrlAlias media-type="application/vnd.ez.api.UrlAlias+xml" href="/api/ezp/v2/content/urlaliases/0-deca3dadca45c3dff7861274b8e67ed7" id="0-deca3dadca45c3dff7861274b8e67ed7" type="LOCATION">
+                                    <location media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/59"/>
+                                    <path>/example-urlalias2</path>
+                                    <languageCodes>eng-GB</languageCodes>
+                                    <alwaysAvailable>true</alwaysAvailable>
+                                    <isHistory>false</isHistory>
+                                    <forward>true</forward>
+                                    <custom>true</custom>
+                                </UrlAlias>
                 400:
                     description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
                 401:
@@ -700,6 +1024,7 @@ version: 2.4
                 403:
                     description: Error - A URL alias with the same identifier already exists
         /{urlAliasId}:
+            # TODO Can't get example, because /urlaliases GET does not return URL alias numbers
             get:
                 description: Returns the URL alias with the given ID
                 headers:
@@ -725,6 +1050,7 @@ version: 2.4
                     404:
                         description: Error - The URL alias does not exist
     /urlwildcards:
+        # TODO Does not return anything?
         get:
             description: Returns a list of URL wildcards
             headers:
@@ -738,6 +1064,7 @@ version: 2.4
                     description: OK - returns a list of URL wildcards
                 401:
                     description: Error - The user has no permission to read URL wildcards
+        # TODO add example
         post:
             description: Creates a new URL wildcard
             headers:
@@ -776,6 +1103,7 @@ version: 2.4
                 403:
                     description: Error - A URL wildcard with the same identifier already exists
         /{wildcardId}:
+            # TODO Can't get example, because /urlwildcards GET does not return URL wildcard numbers
             get:
                 description: Returns the URL wildcard with the given ID
                 headers:
@@ -818,6 +1146,14 @@ version: 2.4
                     responses:
                         200:
                             description: OK - returns the list of URL aliases
+                            body:
+                                application/vnd.ez.api.UrlAliasRefList+xml:
+                                    example: |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <UrlAliasRefList media-type="application/vnd.ez.api.UrlAliasRefList+xml" href="/api/ezp/v2/content/locations/1/2/59/urlaliases">
+                                            <UrlAlias media-type="application/vnd.ez.api.UrlAlias+xml" href="/api/ezp/v2/content/urlaliases/0-deca3dadca45c3dff7861274b8e67ed7"/>
+                                            <UrlAlias media-type="application/vnd.ez.api.UrlAlias+xml" href="/api/ezp/v2/content/urlaliases/0-e1511fd04f57162341c2950fa1375867"/>
+                                        </UrlAliasRefList>
                         400:
                             description: Error - The user has no permission to read URL aliases
                         401:
@@ -842,24 +1178,33 @@ version: 2.4
                         application/vnd.ez.api.ContentTypeGroupList+xml:
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
-                                <ContentTypeGroupList href="/content/typegroups" media-type="application/vnd.ez.api.ContentTypeGroupList+xml">
-                                    <ContentTypeGroup href="/content/typegroups/1" media-type="application/vnd.ez.api.ContentTypeGroup+xml">
+                                <ContentTypeGroupList media-type="application/vnd.ez.api.ContentTypeGroupList+xml" href="/api/ezp/v2/content/typegroups">
+                                    <ContentTypeGroup media-type="application/vnd.ez.api.ContentTypeGroup+xml" href="/api/ezp/v2/content/typegroups/1">
                                         <id>1</id>
                                         <identifier>Content</identifier>
-                                        <created>2010-06-31T12:00:00</created>
-                                        <modified>2010-07-31T12:00:00</modified>
-                                        <Creator href="/user/users/13" media-type="application/vnd.ez.api.User+xml"/>
-                                        <Modifier href="/user/users/6" media-type="application/vnd.ez.api.User+xml"/>
-                                        <ContentTypes href="/content/typegroups/1/types" media-type="application/vnd.ez.api.ContentTypeList+xml"/>
+                                        <created>2002-09-05T11:08:48+02:00</created>
+                                        <modified>2002-10-06T18:35:06+02:00</modified>
+                                        <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <Modifier media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <ContentTypes media-type="application/vnd.ez.api.ContentTypeInfoList+xml" href="/api/ezp/v2/content/typegroups/1/types"/>
                                     </ContentTypeGroup>
-                                    <ContentTypeGroup href="/content/typegroups/2" media-type="application/vnd.ez.api.ContentTypeGroup+xml">
+                                    <ContentTypeGroup media-type="application/vnd.ez.api.ContentTypeGroup+xml" href="/api/ezp/v2/content/typegroups/2">
                                         <id>2</id>
+                                        <identifier>Users</identifier>
+                                        <created>2002-09-05T11:09:01+02:00</created>
+                                        <modified>2002-10-06T18:35:13+02:00</modified>
+                                        <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <Modifier media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <ContentTypes media-type="application/vnd.ez.api.ContentTypeInfoList+xml" href="/api/ezp/v2/content/typegroups/2/types"/>
+                                    </ContentTypeGroup>
+                                    <ContentTypeGroup media-type="application/vnd.ez.api.ContentTypeGroup+xml" href="/api/ezp/v2/content/typegroups/3">
+                                        <id>3</id>
                                         <identifier>Media</identifier>
-                                        <created>2010-06-31T14:00:00</created>
-                                        <modified>2010-09-31T12:00:00</modified>
-                                        <Creator href="/user/users/13" media-type="application/vnd.ez.api.User+xml"/>
-                                        <Modifier href="/user/users/9" media-type="application/vnd.ez.api.User+xml"/>
-                                        <ContentTypes href="/content/typegroups/2/types" media-type="application/vnd.ez.api.ContentTypeList+xml"/>
+                                        <created>2002-09-14T15:22:23+02:00</created>
+                                        <modified>2002-10-06T18:35:20+02:00</modified>
+                                        <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <Modifier media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <ContentTypes media-type="application/vnd.ez.api.ContentTypeInfoList+xml" href="/api/ezp/v2/content/typegroups/3/types"/>
                                     </ContentTypeGroup>
                                 </ContentTypeGroupList>
                 307:
@@ -940,6 +1285,19 @@ version: 2.4
                 responses:
                     200:
                         description: OK - returns the Content Type Group
+                        body:
+                            application/vnd.ez.api.ContentTypeGroup+xml:
+                                example: |
+                                    <?xml version="1.0" encoding="UTF-8"?>
+                                    <ContentTypeGroup media-type="application/vnd.ez.api.ContentTypeGroup+xml" href="/api/ezp/v2/content/typegroups/1">
+                                        <id>1</id>
+                                        <identifier>Content</identifier>
+                                        <created>2002-09-05T11:08:48+02:00</created>
+                                        <modified>2002-10-06T18:35:06+02:00</modified>
+                                        <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <Modifier media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <ContentTypes media-type="application/vnd.ez.api.ContentTypeInfoList+xml" href="/api/ezp/v2/content/typegroups/1/types"/>
+                                    </ContentTypeGroup>
                     401:
                         description: Error - The user is not authorized to read this Content Type Group
                     404:
@@ -973,14 +1331,14 @@ version: 2.4
                             application/vnd.ez.api.ContentTypeGroup+xml:
                                 example: |
                                     <?xml version="1.0" encoding="UTF-8"?>
-                                    <ContentTypeGroup href="/content/typesgroups/7" media-type="application/vnd.ez.api.ContentTypeGroup+xml">
-                                        <id>7</id>
+                                    <ContentTypeGroup media-type="application/vnd.ez.api.ContentTypeGroup+xml" href="/api/ezp/v2/content/typegroups/1">
+                                        <id>4</id>
                                         <identifier>updatedIdentifer</identifier>
-                                        <created>2012-02-31T12:45:00</created>
-                                        <modified>2012-04-13T12:45:00</modified>
-                                        <Creator href="/user/users/13" media-type="application/vnd.ez.api.User+xml"/>
-                                        <Modifier href="/user/users/8" media-type="application/vnd.ez.api.User+xml"/>
-                                        <ContentTypes href="/content/typegroups/7/types" media-type="application/vnd.ez.api.ContentTypeList+xml"/>
+                                        <created>2002-09-05T11:08:48+02:00</created>
+                                        <modified>2019-02-22T14:42:55+01:00</modified>
+                                        <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <Modifier media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <ContentTypes media-type="application/vnd.ez.api.ContentTypeInfoList+xml" href="/api/ezp/v2/content/typegroups/1/types"/>
                                     </ContentTypeGroup>
                     400:
                         description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
@@ -1015,6 +1373,244 @@ version: 2.4
                     responses:
                         200:
                             description: OK - returns a list on Content Types
+                            body:
+                                application/vnd.ez.api.ContentTypeInfoList+xml:
+                                    example: |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <ContentTypeInfoList media-type="application/vnd.ez.api.ContentTypeInfoList+xml" href="/api/ezp/v2/content/typegroups/1/types">
+                                            <ContentTypeInfo media-type="application/vnd.ez.api.ContentTypeInfo+xml" href="/api/ezp/v2/content/types/2">
+                                                <id>2</id>
+                                                <status>DEFINED</status>
+                                                <identifier>article</identifier>
+                                                <names>
+                                                    <value languageCode="eng-GB">Article</value>
+                                                </names>
+                                                <descriptions/>
+                                                <creationDate>2002-06-18T11:21:38+02:00</creationDate>
+                                                <modificationDate>2004-04-20T11:56:29+02:00</modificationDate>
+                                                <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                                <Modifier media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                                <Groups media-type="application/vnd.ez.api.ContentTypeGroupRefList+xml" href="/api/ezp/v2/content/types/2/groups"/>
+                                                <Draft media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/2/draft"/>
+                                                <remoteId>c15b600eb9198b1924063b5a68758232</remoteId>
+                                                <urlAliasSchema></urlAliasSchema>
+                                                <nameSchema>&lt;short_title|title&gt;</nameSchema>
+                                                <isContainer>true</isContainer>
+                                                <mainLanguageCode>eng-GB</mainLanguageCode>
+                                                <defaultAlwaysAvailable>false</defaultAlwaysAvailable>
+                                                <defaultSortField>PATH</defaultSortField>
+                                                <defaultSortOrder>ASC</defaultSortOrder>
+                                            </ContentTypeInfo>
+                                            <ContentTypeInfo media-type="application/vnd.ez.api.ContentTypeInfo+xml" href="/api/ezp/v2/content/types/1">
+                                                <id>1</id>
+                                                <status>DEFINED</status>
+                                                <identifier>folder</identifier>
+                                                <names>
+                                                    <value languageCode="eng-GB">Folder</value>
+                                                </names>
+                                                <descriptions/>
+                                                <creationDate>2002-06-18T11:21:38+02:00</creationDate>
+                                                <modificationDate>2015-11-29T22:14:32+01:00</modificationDate>
+                                                <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                                <Modifier media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                                <Groups media-type="application/vnd.ez.api.ContentTypeGroupRefList+xml" href="/api/ezp/v2/content/types/1/groups"/>
+                                                <Draft media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/1/draft"/>
+                                                <remoteId>a3d405b81be900468eb153d774f4f0d2</remoteId>
+                                                <urlAliasSchema></urlAliasSchema>
+                                                <nameSchema>&lt;short_name|name&gt;</nameSchema>
+                                                <isContainer>true</isContainer>
+                                                <mainLanguageCode>eng-GB</mainLanguageCode>
+                                                <defaultAlwaysAvailable>true</defaultAlwaysAvailable>
+                                                <defaultSortField>PATH</defaultSortField>
+                                                <defaultSortOrder>ASC</defaultSortOrder>
+                                            </ContentTypeInfo>
+                                        </ContentTypeInfoList>
+                                application/vnd.ez.api.ContentTypeList+xml:
+                                    example: |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <ContentTypeList media-type="application/vnd.ez.api.ContentTypeList+xml" href="/api/ezp/v2/content/typegroups/1/types">
+                                            <ContentType media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/2">
+                                                <id>2</id>
+                                                <status>DEFINED</status>
+                                                <identifier>article</identifier>
+                                                <names>
+                                                    <value languageCode="eng-GB">Article</value>
+                                                </names>
+                                                <descriptions/>
+                                                <creationDate>2002-06-18T11:21:38+02:00</creationDate>
+                                                <modificationDate>2004-04-20T11:56:29+02:00</modificationDate>
+                                                <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                                <Modifier media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                                <Groups media-type="application/vnd.ez.api.ContentTypeGroupRefList+xml" href="/api/ezp/v2/content/types/2/groups"/>
+                                                <Draft media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/2/draft"/>
+                                                <remoteId>c15b600eb9198b1924063b5a68758232</remoteId>
+                                                <urlAliasSchema></urlAliasSchema>
+                                                <nameSchema>&lt;short_title|title&gt;</nameSchema>
+                                                <isContainer>true</isContainer>
+                                                <mainLanguageCode>eng-GB</mainLanguageCode>
+                                                <defaultAlwaysAvailable>false</defaultAlwaysAvailable>
+                                                <defaultSortField>PATH</defaultSortField>
+                                                <defaultSortOrder>ASC</defaultSortOrder>
+                                                <FieldDefinitions media-type="application/vnd.ez.api.FieldDefinitionList+xml" href="/api/ezp/v2/content/types/2/fieldDefinitions">
+                                                    <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/2/fieldDefinitions/1">
+                                                        <id>1</id>
+                                                        <identifier>title</identifier>
+                                                        <fieldType>ezstring</fieldType>
+                                                        <fieldGroup></fieldGroup>
+                                                        <position>1</position>
+                                                        <isTranslatable>true</isTranslatable>
+                                                        <isRequired>true</isRequired>
+                                                        <isInfoCollector>false</isInfoCollector>
+                                                        <defaultValue>New article</defaultValue>
+                                                        <isSearchable>true</isSearchable>
+                                                        <names>
+                                                            <value languageCode="eng-GB">Title</value>
+                                                        </names>
+                                                        <descriptions/>
+                                                        <fieldSettings/>
+                                                        <validatorConfiguration>
+                                                            <value key="StringLengthValidator">
+                                                                <value key="maxStringLength">255</value>
+                                                                <value key="minStringLength"/></value>
+                                                        </validatorConfiguration>
+                                                    </FieldDefinition>
+                                                    <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/2/fieldDefinitions/152">
+                                                        <id>152</id>
+                                                        <identifier>short_title</identifier>
+                                                        <fieldType>ezstring</fieldType>
+                                                        <fieldGroup></fieldGroup>
+                                                        <position>2</position>
+                                                        <isTranslatable>true</isTranslatable>
+                                                        <isRequired>false</isRequired>
+                                                        <isInfoCollector>false</isInfoCollector>
+                                                        <defaultValue/>
+                                                        <isSearchable>true</isSearchable>
+                                                        <names>
+                                                            <value languageCode="eng-GB">Short title</value>
+                                                        </names>
+                                                        <descriptions/>
+                                                        <fieldSettings/>
+                                                        <validatorConfiguration>
+                                                            <value key="StringLengthValidator">
+                                                                <value key="maxStringLength">255</value>
+                                                                <value key="minStringLength"/></value>
+                                                        </validatorConfiguration>
+                                                    </FieldDefinition>
+                                                    <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/2/fieldDefinitions/153">
+                                                        <id>153</id>
+                                                        <identifier>author</identifier>
+                                                        <fieldType>ezauthor</fieldType>
+                                                        <fieldGroup></fieldGroup>
+                                                        <position>3</position>
+                                                        <isTranslatable>true</isTranslatable>
+                                                        <isRequired>false</isRequired>
+                                                        <isInfoCollector>false</isInfoCollector>
+                                                        <defaultValue/>
+                                                        <isSearchable>false</isSearchable>
+                                                        <names>
+                                                            <value languageCode="eng-GB">Author</value>
+                                                        </names>
+                                                        <descriptions/>
+                                                        <fieldSettings>
+                                                            <value key="defaultAuthor">1</value>
+                                                        </fieldSettings>
+                                                        <validatorConfiguration/>
+                                                    </FieldDefinition>
+                                                    <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/2/fieldDefinitions/120">
+                                                        <id>120</id>
+                                                        <identifier>intro</identifier>
+                                                        <fieldType>ezrichtext</fieldType>
+                                                        <fieldGroup></fieldGroup>
+                                                        <position>4</position>
+                                                        <isTranslatable>true</isTranslatable>
+                                                        <isRequired>true</isRequired>
+                                                        <isInfoCollector>false</isInfoCollector>
+                                                        <defaultValue>
+                                                            <value key="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                                        &lt;section xmlns=&quot;http://docbook.org/ns/docbook&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; version=&quot;5.0-variant ezpublish-1.0&quot;/&gt;
+                                        </value>
+                                                            <value key="xhtml5edit">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                                        &lt;section xmlns=&quot;http://ez.no/namespaces/ezpublish5/xhtml5/edit&quot;/&gt;
+                                        </value>
+                                                        </defaultValue>
+                                                        <isSearchable>true</isSearchable>
+                                                        <names>
+                                                            <value languageCode="eng-GB">Intro</value>
+                                                        </names>
+                                                        <descriptions/>
+                                                        <fieldSettings/>
+                                                        <validatorConfiguration/>
+                                                    </FieldDefinition>
+                                                    <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/2/fieldDefinitions/121">
+                                                        <id>121</id>
+                                                        <identifier>body</identifier>
+                                                        <fieldType>ezrichtext</fieldType>
+                                                        <fieldGroup></fieldGroup>
+                                                        <position>5</position>
+                                                        <isTranslatable>true</isTranslatable>
+                                                        <isRequired>false</isRequired>
+                                                        <isInfoCollector>false</isInfoCollector>
+                                                        <defaultValue>
+                                                            <value key="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                                        &lt;section xmlns=&quot;http://docbook.org/ns/docbook&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; version=&quot;5.0-variant ezpublish-1.0&quot;/&gt;
+                                        </value>
+                                                            <value key="xhtml5edit">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                                        &lt;section xmlns=&quot;http://ez.no/namespaces/ezpublish5/xhtml5/edit&quot;/&gt;
+                                        </value>
+                                                        </defaultValue>
+                                                        <isSearchable>true</isSearchable>
+                                                        <names>
+                                                            <value languageCode="eng-GB">Body</value>
+                                                        </names>
+                                                        <descriptions/>
+                                                        <fieldSettings/>
+                                                        <validatorConfiguration/>
+                                                    </FieldDefinition>
+                                                    <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/2/fieldDefinitions/123">
+                                                        <id>123</id>
+                                                        <identifier>enable_comments</identifier>
+                                                        <fieldType>ezboolean</fieldType>
+                                                        <fieldGroup></fieldGroup>
+                                                        <position>6</position>
+                                                        <isTranslatable>false</isTranslatable>
+                                                        <isRequired>false</isRequired>
+                                                        <isInfoCollector>false</isInfoCollector>
+                                                        <defaultValue>false</defaultValue>
+                                                        <isSearchable>false</isSearchable>
+                                                        <names>
+                                                            <value languageCode="eng-GB">Enable comments</value>
+                                                        </names>
+                                                        <descriptions/>
+                                                        <fieldSettings/>
+                                                        <validatorConfiguration/>
+                                                    </FieldDefinition>
+                                                    <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/2/fieldDefinitions/154">
+                                                        <id>154</id>
+                                                        <identifier>image</identifier>
+                                                        <fieldType>ezobjectrelation</fieldType>
+                                                        <fieldGroup></fieldGroup>
+                                                        <position>7</position>
+                                                        <isTranslatable>true</isTranslatable>
+                                                        <isRequired>false</isRequired>
+                                                        <isInfoCollector>false</isInfoCollector>
+                                                        <defaultValue>
+                                                            <value key="destinationContentId"/>
+                                                        </defaultValue>
+                                                        <isSearchable>true</isSearchable>
+                                                        <names>
+                                                            <value languageCode="eng-GB">Image</value>
+                                                        </names>
+                                                        <descriptions/>
+                                                        <fieldSettings>
+                                                            <value key="selectionMethod">SELECTION_BROWSE</value>
+                                                            <value key="selectionRoot"></value>
+                                                            <value key="selectionContentTypes"/>
+                                                        </fieldSettings>
+                                                        <validatorConfiguration/>
+                                                    </FieldDefinition>
+                                                </FieldDefinitions>
+                                            </ContentType>
+                                        </ContentTypeList>
                         401:
                             description: Error - The user has no permission to read the Content Types
                 post:
@@ -1167,6 +1763,7 @@ version: 2.4
                                   </xsd:complexType>
                                   <xsd:element name="ContentTypeCreate" type="vnd.ez.api.ContentTypeCreate"></xsd:element>
                                 </xsd:schema>
+                            # TODO example doesn't work, possibly related to Content Type translate
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <ContentTypeCreate>
@@ -1229,6 +1826,7 @@ version: 2.4
                             description: Content Type created
                             body:
                                 application/vnd.ez.api.ContentType+xml:
+                                    # TODO verify when request example is fixed
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <ContentType href="/content/types/32/draft" media-type="application/vnd.ez.api.ContentType+xml">
@@ -1318,6 +1916,7 @@ version: 2.4
                     description: One of (asc|desc)
             headers:
                 Accept:
+                    # REVIEW The same is returned with ContentTypeInfoList and ContentTypeList
                     description: If set the list of Content Type info objects or Content Types (including Field definitions) is returned in XML or JSON format
                     example: |
                         application/vnd.ez.api.ContentTypeInfoList+xml
@@ -1326,6 +1925,128 @@ version: 2.4
                         application/vnd.ez.api.ContentTypeList+json
             responses:
                 200:
+                    body:
+                        application/vnd.ez.api.ContentTypeInfoList+xml:
+                            example: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <ContentTypeInfoList media-type="application/vnd.ez.api.ContentTypeInfoList+xml" href="/api/ezp/v2/content/types">
+                                    <ContentTypeInfo media-type="application/vnd.ez.api.ContentTypeInfo+xml" href="/api/ezp/v2/content/types/2">
+                                        <id>2</id>
+                                        <status>DEFINED</status>
+                                        <identifier>article</identifier>
+                                        <names>
+                                            <value languageCode="eng-GB">Article</value>
+                                        </names>
+                                        <descriptions/>
+                                        <creationDate>2002-06-18T11:21:38+02:00</creationDate>
+                                        <modificationDate>2004-04-20T11:56:29+02:00</modificationDate>
+                                        <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <Modifier media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <Groups media-type="application/vnd.ez.api.ContentTypeGroupRefList+xml" href="/api/ezp/v2/content/types/2/groups"/>
+                                        <Draft media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/2/draft"/>
+                                        <remoteId>c15b600eb9198b1924063b5a68758232</remoteId>
+                                        <urlAliasSchema></urlAliasSchema>
+                                        <nameSchema>&lt;short_title|title&gt;</nameSchema>
+                                        <isContainer>true</isContainer>
+                                        <mainLanguageCode>eng-GB</mainLanguageCode>
+                                        <defaultAlwaysAvailable>false</defaultAlwaysAvailable>
+                                        <defaultSortField>PATH</defaultSortField>
+                                        <defaultSortOrder>ASC</defaultSortOrder>
+                                    </ContentTypeInfo>
+                                    <ContentTypeInfo media-type="application/vnd.ez.api.ContentTypeInfo+xml" href="/api/ezp/v2/content/types/13">
+                                        <id>13</id>
+                                        <status>DEFINED</status>
+                                        <identifier>copy_of_article_13</identifier>
+                                        <names>
+                                            <value languageCode="eng-GB">Article</value>
+                                        </names>
+                                        <descriptions/>
+                                        <creationDate>2019-02-06T10:55:12+01:00</creationDate>
+                                        <modificationDate>2019-02-06T10:55:12+01:00</modificationDate>
+                                        <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <Modifier media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <Groups media-type="application/vnd.ez.api.ContentTypeGroupRefList+xml" href="/api/ezp/v2/content/types/13/groups"/>
+                                        <Draft media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/13/draft"/>
+                                        <remoteId>b045340aaa8a7a1111f5a6bed6e70715</remoteId>
+                                        <urlAliasSchema></urlAliasSchema>
+                                        <nameSchema>&lt;short_title|title&gt;</nameSchema>
+                                        <isContainer>true</isContainer>
+                                        <mainLanguageCode>eng-GB</mainLanguageCode>
+                                        <defaultAlwaysAvailable>false</defaultAlwaysAvailable>
+                                        <defaultSortField>PATH</defaultSortField>
+                                        <defaultSortOrder>ASC</defaultSortOrder>
+                                    </ContentTypeInfo>
+                                    <ContentTypeInfo media-type="application/vnd.ez.api.ContentTypeInfo+xml" href="/api/ezp/v2/content/types/14">
+                                        <id>14</id>
+                                        <status>DEFINED</status>
+                                        <identifier>copy_of_article_14</identifier>
+                                        <names>
+                                            <value languageCode="eng-GB">Article</value>
+                                        </names>
+                                        <descriptions/>
+                                        <creationDate>2019-02-06T10:56:36+01:00</creationDate>
+                                        <modificationDate>2019-02-06T10:56:36+01:00</modificationDate>
+                                        <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <Modifier media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <Groups media-type="application/vnd.ez.api.ContentTypeGroupRefList+xml" href="/api/ezp/v2/content/types/14/groups"/>
+                                        <Draft media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/14/draft"/>
+                                        <remoteId>d7ae816f22fe929e67a359a2ef6e7cde</remoteId>
+                                        <urlAliasSchema></urlAliasSchema>
+                                        <nameSchema>&lt;short_title|title&gt;</nameSchema>
+                                        <isContainer>true</isContainer>
+                                        <mainLanguageCode>eng-GB</mainLanguageCode>
+                                        <defaultAlwaysAvailable>false</defaultAlwaysAvailable>
+                                        <defaultSortField>PATH</defaultSortField>
+                                        <defaultSortOrder>ASC</defaultSortOrder>
+                                    </ContentTypeInfo>
+                                    <ContentTypeInfo media-type="application/vnd.ez.api.ContentTypeInfo+xml" href="/api/ezp/v2/content/types/1">
+                                        <id>1</id>
+                                        <status>DEFINED</status>
+                                        <identifier>folder</identifier>
+                                        <names>
+                                            <value languageCode="eng-GB">Folder</value>
+                                        </names>
+                                        <descriptions/>
+                                        <creationDate>2002-06-18T11:21:38+02:00</creationDate>
+                                        <modificationDate>2015-11-29T22:14:32+01:00</modificationDate>
+                                        <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <Modifier media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <Groups media-type="application/vnd.ez.api.ContentTypeGroupRefList+xml" href="/api/ezp/v2/content/types/1/groups"/>
+                                        <Draft media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/1/draft"/>
+                                        <remoteId>a3d405b81be900468eb153d774f4f0d2</remoteId>
+                                        <urlAliasSchema></urlAliasSchema>
+                                        <nameSchema>&lt;short_name|name&gt;</nameSchema>
+                                        <isContainer>true</isContainer>
+                                        <mainLanguageCode>eng-GB</mainLanguageCode>
+                                        <defaultAlwaysAvailable>true</defaultAlwaysAvailable>
+                                        <defaultSortField>PATH</defaultSortField>
+                                        <defaultSortOrder>ASC</defaultSortOrder>
+                                    </ContentTypeInfo>
+                                    <ContentTypeInfo media-type="application/vnd.ez.api.ContentTypeInfo+xml" href="/api/ezp/v2/content/types/4">
+                                        <id>4</id>
+                                        <status>DEFINED</status>
+                                        <identifier>user</identifier>
+                                        <names>
+                                            <value languageCode="eng-GB">User</value>
+                                        </names>
+                                        <descriptions/>
+                                        <creationDate>2002-06-18T11:21:38+02:00</creationDate>
+                                        <modificationDate>2004-04-15T10:39:24+02:00</modificationDate>
+                                        <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <Modifier media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <Groups media-type="application/vnd.ez.api.ContentTypeGroupRefList+xml" href="/api/ezp/v2/content/types/4/groups"/>
+                                        <Draft media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/4/draft"/>
+                                        <remoteId>40faa822edc579b02c25f6bb7beec3ad</remoteId>
+                                        <urlAliasSchema></urlAliasSchema>
+                                        <nameSchema>&lt;first_name&gt; &lt;last_name&gt;</nameSchema>
+                                        <isContainer>false</isContainer>
+                                        <mainLanguageCode>eng-GB</mainLanguageCode>
+                                        <defaultAlwaysAvailable>true</defaultAlwaysAvailable>
+                                        <defaultSortField>PATH</defaultSortField>
+                                        <defaultSortOrder>ASC</defaultSortOrder>
+                                    </ContentTypeInfo>
+
+                                </ContentTypeInfoList>
                     description: OK - returns a list of Content Types
                 401:
                     description: Error - The user has no permission to read the Content Types
@@ -1342,6 +2063,191 @@ version: 2.4
                         description: ETag
                 responses:
                     200:
+                        body:
+                            application/vnd.ez.api.ContentType+xml:
+                                example: |
+                                    <?xml version="1.0" encoding="UTF-8"?>
+                                    <ContentType media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/2">
+                                        <id>2</id>
+                                        <status>DEFINED</status>
+                                        <identifier>article</identifier>
+                                        <names>
+                                            <value languageCode="eng-GB">Article</value>
+                                        </names>
+                                        <descriptions/>
+                                        <creationDate>2002-06-18T11:21:38+02:00</creationDate>
+                                        <modificationDate>2004-04-20T11:56:29+02:00</modificationDate>
+                                        <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <Modifier media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                        <Groups media-type="application/vnd.ez.api.ContentTypeGroupRefList+xml" href="/api/ezp/v2/content/types/2/groups"/>
+                                        <Draft media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/2/draft"/>
+                                        <remoteId>c15b600eb9198b1924063b5a68758232</remoteId>
+                                        <urlAliasSchema></urlAliasSchema>
+                                        <nameSchema>&lt;short_title|title&gt;</nameSchema>
+                                        <isContainer>true</isContainer>
+                                        <mainLanguageCode>eng-GB</mainLanguageCode>
+                                        <defaultAlwaysAvailable>false</defaultAlwaysAvailable>
+                                        <defaultSortField>PATH</defaultSortField>
+                                        <defaultSortOrder>ASC</defaultSortOrder>
+                                        <FieldDefinitions media-type="application/vnd.ez.api.FieldDefinitionList+xml" href="/api/ezp/v2/content/types/2/fieldDefinitions">
+                                            <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/2/fieldDefinitions/1">
+                                                <id>1</id>
+                                                <identifier>title</identifier>
+                                                <fieldType>ezstring</fieldType>
+                                                <fieldGroup></fieldGroup>
+                                                <position>1</position>
+                                                <isTranslatable>true</isTranslatable>
+                                                <isRequired>true</isRequired>
+                                                <isInfoCollector>false</isInfoCollector>
+                                                <defaultValue>New article</defaultValue>
+                                                <isSearchable>true</isSearchable>
+                                                <names>
+                                                    <value languageCode="eng-GB">Title</value>
+                                                </names>
+                                                <descriptions/>
+                                                <fieldSettings/>
+                                                <validatorConfiguration>
+                                                    <value key="StringLengthValidator">
+                                                        <value key="maxStringLength">255</value>
+                                                        <value key="minStringLength"/></value>
+                                                </validatorConfiguration>
+                                            </FieldDefinition>
+                                            <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/2/fieldDefinitions/152">
+                                                <id>152</id>
+                                                <identifier>short_title</identifier>
+                                                <fieldType>ezstring</fieldType>
+                                                <fieldGroup></fieldGroup>
+                                                <position>2</position>
+                                                <isTranslatable>true</isTranslatable>
+                                                <isRequired>false</isRequired>
+                                                <isInfoCollector>false</isInfoCollector>
+                                                <defaultValue/>
+                                                <isSearchable>true</isSearchable>
+                                                <names>
+                                                    <value languageCode="eng-GB">Short title</value>
+                                                </names>
+                                                <descriptions/>
+                                                <fieldSettings/>
+                                                <validatorConfiguration>
+                                                    <value key="StringLengthValidator">
+                                                        <value key="maxStringLength">255</value>
+                                                        <value key="minStringLength"/></value>
+                                                </validatorConfiguration>
+                                            </FieldDefinition>
+                                            <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/2/fieldDefinitions/153">
+                                                <id>153</id>
+                                                <identifier>author</identifier>
+                                                <fieldType>ezauthor</fieldType>
+                                                <fieldGroup></fieldGroup>
+                                                <position>3</position>
+                                                <isTranslatable>true</isTranslatable>
+                                                <isRequired>false</isRequired>
+                                                <isInfoCollector>false</isInfoCollector>
+                                                <defaultValue/>
+                                                <isSearchable>false</isSearchable>
+                                                <names>
+                                                    <value languageCode="eng-GB">Author</value>
+                                                </names>
+                                                <descriptions/>
+                                                <fieldSettings>
+                                                    <value key="defaultAuthor">1</value>
+                                                </fieldSettings>
+                                                <validatorConfiguration/>
+                                            </FieldDefinition>
+                                            <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/2/fieldDefinitions/120">
+                                                <id>120</id>
+                                                <identifier>intro</identifier>
+                                                <fieldType>ezrichtext</fieldType>
+                                                <fieldGroup></fieldGroup>
+                                                <position>4</position>
+                                                <isTranslatable>true</isTranslatable>
+                                                <isRequired>true</isRequired>
+                                                <isInfoCollector>false</isInfoCollector>
+                                                <defaultValue>
+                                                    <value key="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                                    &lt;section xmlns=&quot;http://docbook.org/ns/docbook&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; version=&quot;5.0-variant ezpublish-1.0&quot;/&gt;
+                                    </value>
+                                                    <value key="xhtml5edit">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                                    &lt;section xmlns=&quot;http://ez.no/namespaces/ezpublish5/xhtml5/edit&quot;/&gt;
+                                    </value>
+                                                </defaultValue>
+                                                <isSearchable>true</isSearchable>
+                                                <names>
+                                                    <value languageCode="eng-GB">Intro</value>
+                                                </names>
+                                                <descriptions/>
+                                                <fieldSettings/>
+                                                <validatorConfiguration/>
+                                            </FieldDefinition>
+                                            <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/2/fieldDefinitions/121">
+                                                <id>121</id>
+                                                <identifier>body</identifier>
+                                                <fieldType>ezrichtext</fieldType>
+                                                <fieldGroup></fieldGroup>
+                                                <position>5</position>
+                                                <isTranslatable>true</isTranslatable>
+                                                <isRequired>false</isRequired>
+                                                <isInfoCollector>false</isInfoCollector>
+                                                <defaultValue>
+                                                    <value key="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                                    &lt;section xmlns=&quot;http://docbook.org/ns/docbook&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; version=&quot;5.0-variant ezpublish-1.0&quot;/&gt;
+                                    </value>
+                                                    <value key="xhtml5edit">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                                    &lt;section xmlns=&quot;http://ez.no/namespaces/ezpublish5/xhtml5/edit&quot;/&gt;
+                                    </value>
+                                                </defaultValue>
+                                                <isSearchable>true</isSearchable>
+                                                <names>
+                                                    <value languageCode="eng-GB">Body</value>
+                                                </names>
+                                                <descriptions/>
+                                                <fieldSettings/>
+                                                <validatorConfiguration/>
+                                            </FieldDefinition>
+                                            <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/2/fieldDefinitions/123">
+                                                <id>123</id>
+                                                <identifier>enable_comments</identifier>
+                                                <fieldType>ezboolean</fieldType>
+                                                <fieldGroup></fieldGroup>
+                                                <position>6</position>
+                                                <isTranslatable>false</isTranslatable>
+                                                <isRequired>false</isRequired>
+                                                <isInfoCollector>false</isInfoCollector>
+                                                <defaultValue>false</defaultValue>
+                                                <isSearchable>false</isSearchable>
+                                                <names>
+                                                    <value languageCode="eng-GB">Enable comments</value>
+                                                </names>
+                                                <descriptions/>
+                                                <fieldSettings/>
+                                                <validatorConfiguration/>
+                                            </FieldDefinition>
+                                            <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/2/fieldDefinitions/154">
+                                                <id>154</id>
+                                                <identifier>image</identifier>
+                                                <fieldType>ezobjectrelation</fieldType>
+                                                <fieldGroup></fieldGroup>
+                                                <position>7</position>
+                                                <isTranslatable>true</isTranslatable>
+                                                <isRequired>false</isRequired>
+                                                <isInfoCollector>false</isInfoCollector>
+                                                <defaultValue>
+                                                    <value key="destinationContentId"/>
+                                                </defaultValue>
+                                                <isSearchable>true</isSearchable>
+                                                <names>
+                                                    <value languageCode="eng-GB">Image</value>
+                                                </names>
+                                                <descriptions/>
+                                                <fieldSettings>
+                                                    <value key="selectionMethod">SELECTION_BROWSE</value>
+                                                    <value key="selectionRoot"></value>
+                                                    <value key="selectionContentTypes"/>
+                                                </fieldSettings>
+                                                <validatorConfiguration/>
+                                            </FieldDefinition>
+                                        </FieldDefinitions>
+                                    </ContentType>
                         description: OK - returns the Content Type
                     401:
                         description: Error - The user is not authorized to read this Content Type
@@ -1355,6 +2261,7 @@ version: 2.4
                     401:
                         description: Error - The user is not authorized to copy this Content Type
             post:
+                # TODO: add request and response example
                 description: Creates a draft and updates it with the given data
                 headers:
                     Accept:
@@ -1673,44 +2580,44 @@ version: 2.4
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <ContentTypeUpdate>
                                     <names>
-                                        <value languageCode="ger-DE">Neuer Content Typ</value>
+                                        <value languageCode="eng-GB">Updated Content Type name</value>
                                     </names>
                                     <descriptions>
-                                        <value languageCode="ger-DE">Das ist ein neuer Content Typ</value>
+                                        <value languageCode="eng-GB">This is an updated Content Type description</value>
                                     </descriptions>
                                 </ContentTypeUpdate>
                     responses:
                         200:
                             description: Draft metadata updated
                             body:
-                                application/vnd.ez.api.ContentType+xml:
+                                application/vnd.ez.api.ContentTypeInfo+xml:
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
-                                        <ContentType href="/content/types/32/draft" media-type="application/vnd.ez.api.ContentType+xml">
-                                            <id>32</id>
+                                        <ContentTypeInfo media-type="application/vnd.ez.api.ContentTypeInfo+xml" href="/api/ezp/v2/content/types/14/draft">
+                                            <id>14</id>
                                             <status>DRAFT</status>
-                                            <identifier>newContentType</identifier>
+                                            <identifier>new_content_type</identifier>
                                             <names>
-                                                <value languageCode="eng-US">New Content Type</value>
-                                                <value languageCode="ger-DE">Neuer Content Typ</value>
+                                                <value languageCode="eng-GB">Updated Content Type name</value>
                                             </names>
                                             <descriptions>
-                                                <value languageCode="eng-US">This is a description</value>
-                                                <value languageCode="ger-DE">Das ist ein neuer Content Typ</value>
+                                                <value languageCode="eng-GB">This is an updated Content Type description</value>
                                             </descriptions>
-                                            <creationDate>2001-01-01T16:37:00</creationDate>
-                                            <modificationDate>2001-01-01T16:37:00</modificationDate>
-                                            <Creator href="/user/users/13" media-type="application/vnd.ez.api.User+xml"/>
-                                            <Modifier href="/user/users/13" media-type="application/vnd.ez.api.User+xml"/>
-                                            <remoteId>remoteId-qwert548</remoteId>
-                                            <urlAliasSchema>&lt;title&gt;</urlAliasSchema>
-                                            <nameSchema>&lt;title&gt;</nameSchema>
+                                            <creationDate>2019-02-06T10:56:36+01:00</creationDate>
+                                            <modificationDate>2019-02-25T12:15:51+01:00</modificationDate>
+                                            <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                            <Modifier media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                            <Groups media-type="application/vnd.ez.api.ContentTypeGroupRefList+xml" href="/api/ezp/v2/content/types/14/groups"/>
+                                            <Draft media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/14/draft"/>
+                                            <remoteId>d7ae816f22fe929e67a359a2ef6e7cde</remoteId>
+                                            <urlAliasSchema></urlAliasSchema>
+                                            <nameSchema>&lt;short_title|title&gt;</nameSchema>
                                             <isContainer>true</isContainer>
-                                            <mainLanguageCode>eng-US</mainLanguageCode>
-                                            <defaultAlwaysAvailable>true</defaultAlwaysAvailable>
+                                            <mainLanguageCode>eng-GB</mainLanguageCode>
+                                            <defaultAlwaysAvailable>false</defaultAlwaysAvailable>
                                             <defaultSortField>PATH</defaultSortField>
                                             <defaultSortOrder>ASC</defaultSortOrder>
-                                        </ContentType>
+                                        </ContentTypeInfo>
                         400:
                             description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
                         401:
@@ -1723,6 +2630,59 @@ version: 2.4
                     description: Publishes a Content Type draft. PUBLISH or POST with header X-HTTP-Method-Override PUBLISH.
                     responses:
                         200:
+                            body:
+                                application/vnd.ez.api.ContentType+xml:
+                                    example: |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <ContentType media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/14">
+                                            <id>14</id>
+                                            <status>DEFINED</status>
+                                            <identifier>copy_of_article_14</identifier>
+                                            <names>
+                                                <value languageCode="eng-GB">Updated Content Type name</value>
+                                            </names>
+                                            <descriptions>
+                                                <value languageCode="eng-GB">This is an updated Content Type description</value>
+                                            </descriptions>
+                                            <creationDate>2019-02-06T10:56:36+01:00</creationDate>
+                                            <modificationDate>2019-02-25T12:15:51+01:00</modificationDate>
+                                            <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                            <Modifier media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                            <Groups media-type="application/vnd.ez.api.ContentTypeGroupRefList+xml" href="/api/ezp/v2/content/types/14/groups"/>
+                                            <Draft media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/14/draft"/>
+                                            <remoteId>d7ae816f22fe929e67a359a2ef6e7cde</remoteId>
+                                            <urlAliasSchema></urlAliasSchema>
+                                            <nameSchema>&lt;short_title|title&gt;</nameSchema>
+                                            <isContainer>true</isContainer>
+                                            <mainLanguageCode>eng-GB</mainLanguageCode>
+                                            <defaultAlwaysAvailable>false</defaultAlwaysAvailable>
+                                            <defaultSortField>PATH</defaultSortField>
+                                            <defaultSortOrder>ASC</defaultSortOrder>
+                                            <FieldDefinitions media-type="application/vnd.ez.api.FieldDefinitionList+xml" href="/api/ezp/v2/content/types/14/fieldDefinitions">
+                                                <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/14/fieldDefinitions/188">
+                                                    <id>188</id>
+                                                    <identifier>title</identifier>
+                                                    <fieldType>ezstring</fieldType>
+                                                    <fieldGroup></fieldGroup>
+                                                    <position>1</position>
+                                                    <isTranslatable>true</isTranslatable>
+                                                    <isRequired>true</isRequired>
+                                                    <isInfoCollector>false</isInfoCollector>
+                                                    <defaultValue>New article</defaultValue>
+                                                    <isSearchable>true</isSearchable>
+                                                    <names>
+                                                        <value languageCode="eng-GB">Title</value>
+                                                    </names>
+                                                    <descriptions/>
+                                                    <fieldSettings/>
+                                                    <validatorConfiguration>
+                                                        <value key="StringLengthValidator">
+                                                            <value key="maxStringLength">255</value>
+                                                            <value key="minStringLength"/></value>
+                                                    </validatorConfiguration>
+                                                </FieldDefinition>
+                                                </FieldDefinitions>
+                                        </ContentType>
                             description: Content Type draft published
                         401:
                             description: Error - The user is not authorized to publish this Content Type draft
@@ -1739,8 +2699,9 @@ version: 2.4
                             description: Error - The user is not authorized to delete this Content Type draft
                         404:
                             description: Error - The Content Type/draft does not exist
-                /fielddefinitions:
+                /fieldDefinitions:
                     post:
+                        # TODO add example of request and response
                         description: Creates a new Field definition for the given Content Type
                         headers:
                             Accept:
@@ -1863,6 +2824,7 @@ version: 2.4
                                 description: Error - A Field definition with same identifier already exists in the given Content Type. The Field definition is of singular type, already existing in the given Content Type. The Field definition ti add is of a type that can't be added to a Content Type that already has content instances
                     /{fieldDefinitionId}:
                         get:
+                            # TODO also works without /draft/ !
                             description: Returns the Field definition given by ID
                             headers:
                                 Accept:
@@ -1873,10 +2835,37 @@ version: 2.4
                             responses:
                                 200:
                                     description: OK - returns the Field definition
+                                    body:
+                                        application/vnd.ez.api.FieldDefinition+xml:
+                                            example: |
+                                                <?xml version="1.0" encoding="UTF-8"?>
+                                                <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/15/draft/fieldDefinitions/195">
+                                                    <id>195</id>
+                                                    <identifier>title</identifier>
+                                                    <fieldType>ezstring</fieldType>
+                                                    <fieldGroup></fieldGroup>
+                                                    <position>1</position>
+                                                    <isTranslatable>true</isTranslatable>
+                                                    <isRequired>true</isRequired>
+                                                    <isInfoCollector>false</isInfoCollector>
+                                                    <defaultValue>New article</defaultValue>
+                                                    <isSearchable>true</isSearchable>
+                                                    <names>
+                                                        <value languageCode="eng-GB">Title</value>
+                                                    </names>
+                                                    <descriptions/>
+                                                    <fieldSettings/>
+                                                    <validatorConfiguration>
+                                                        <value key="StringLengthValidator">
+                                                            <value key="maxStringLength">255</value>
+                                                            <value key="minStringLength"/></value>
+                                                    </validatorConfiguration>
+                                                </FieldDefinition>
                                 401:
                                     description: Error - The user is not authorized to read the Content Type draft
                                 404:
                                     description: Error - The Content Type or draft does not exist
+                        # TODO add request and response example
                         put:
                             description: Updates the attributes of a Field definition
                             headers:
@@ -2010,8 +2999,9 @@ version: 2.4
                             body:
                                 application/vnd.ez.api.ContentTypeGroupRefList+xml:
                                     example: |
-                                        <ContentTypeGroupRefList>
-                                            <ContentTypeGroupRef href="/content/typegroups/7" media-type="application/vnd.ez.api.ContentTypeGroup+xml"/>
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <ContentTypeGroupRefList media-type="application/vnd.ez.api.ContentTypeGroupRefList+xml" href="/api/ezp/v2/content/typegroups/12/types">
+                                            <ContentTypeGroupRef media-type="application/vnd.ez.api.ContentTypeGroup+xml" href="/api/ezp/v2/content/typegroups/3"/>
                                         </ContentTypeGroupRefList>
                         401:
                             description: Error - The user is not authorized to read this Content Type
@@ -2064,13 +3054,17 @@ version: 2.4
                             body:
                                 application/vnd.ez.api.ContentTypeGroupRefList+xml:
                                     example: |
-                                        <ContentTypeGroupRefList>
-                                          <ContentTypeGroupRef href="/content/typegroups/7" media-type="application/vnd.ez.api.ContentTypeGroup+xml">
-                                              <unlink href="/content/type/32/groups/7" method="DELETE"/>
-                                          </ContentTypeGroupRefList>
-                                          <ContentTypeGroupRef href="/content/typegroups/10" media-type="application/vnd.ez.api.ContentTypeGroup+xml">
-                                              <unlink href="/content/type/32/groups/10" method="DELETE"/>
-                                          </ContentTypeGroupRefList>
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <ContentTypeGroupRefList media-type="application/vnd.ez.api.ContentTypeGroupRefList+xml" href="/api/ezp/v2/content/typegroups/15/types">
+                                            <ContentTypeGroupRef media-type="application/vnd.ez.api.ContentTypeGroup+xml" href="/api/ezp/v2/content/typegroups/1">
+                                                <unlink href="/api/ezp/v2/content/types/15/groups/1" method="DELETE"/>
+                                            </ContentTypeGroupRef>
+                                            <ContentTypeGroupRef media-type="application/vnd.ez.api.ContentTypeGroup+xml" href="/api/ezp/v2/content/typegroups/3">
+                                                <unlink href="/api/ezp/v2/content/types/15/groups/3" method="DELETE"/>
+                                            </ContentTypeGroupRef>
+                                            <ContentTypeGroupRef media-type="application/vnd.ez.api.ContentTypeGroup+xml" href="/api/ezp/v2/content/typegroups/2">
+                                                <unlink href="/api/ezp/v2/content/types/15/groups/2" method="DELETE"/>
+                                            </ContentTypeGroupRef>
                                         </ContentTypeGroupRefList>
                         400:
                             description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
@@ -2092,8 +3086,14 @@ version: 2.4
                                 body:
                                     application/vnd.ez.api.ContentTypeGroup+xml:
                                         example: |
-                                            <ContentTypeGroupRefList>
-                                                <ContentTypeGroupRef href="/content/typegroups/10" media-type="application/vnd.ez.api.ContentTypeGroup+xml"/>
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <ContentTypeGroupRefList media-type="application/vnd.ez.api.ContentTypeGroupRefList+xml" href="/api/ezp/v2/content/typegroups/15/types">
+                                                <ContentTypeGroupRef media-type="application/vnd.ez.api.ContentTypeGroup+xml" href="/api/ezp/v2/content/typegroups/1">
+                                                    <unlink href="/api/ezp/v2/content/types/15/groups/1" method="DELETE"/>
+                                                </ContentTypeGroupRef>
+                                                <ContentTypeGroupRef media-type="application/vnd.ez.api.ContentTypeGroup+xml" href="/api/ezp/v2/content/typegroups/2">
+                                                    <unlink href="/api/ezp/v2/content/types/15/groups/2" method="DELETE"/>
+                                                </ContentTypeGroupRef>
                                             </ContentTypeGroupRefList>
                             401:
                                 description: Error - The user is not authorized to delete this Content Type
