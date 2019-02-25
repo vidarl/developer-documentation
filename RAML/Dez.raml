@@ -2428,6 +2428,48 @@ version: 2.4
                         description: Error - There are object instances of this Content Type. The response should contain an ErrorMessage.
                     404:
                         description: Error - The Content Type does not exist
+            /{fieldDefinitionId}:
+                get:
+                    description: Returns the Field definition given by ID
+                    headers:
+                        Accept:
+                            description: If set the Field definition is returned in XML or JSON format
+                            example: |
+                                application/vnd.ez.api.FieldDefinition+xml
+                                application/vnd.ez.api.FieldDefinition+json
+                    responses:
+                        200:
+                            description: OK - returns the Field definition
+                            body:
+                                application/vnd.ez.api.FieldDefinition+xml:
+                                    example: |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/15/fieldDefinitions/195">
+                                            <id>195</id>
+                                            <identifier>title</identifier>
+                                            <fieldType>ezstring</fieldType>
+                                            <fieldGroup></fieldGroup>
+                                            <position>1</position>
+                                            <isTranslatable>true</isTranslatable>
+                                            <isRequired>true</isRequired>
+                                            <isInfoCollector>false</isInfoCollector>
+                                            <defaultValue>New article</defaultValue>
+                                            <isSearchable>true</isSearchable>
+                                            <names>
+                                                <value languageCode="eng-GB">Title</value>
+                                            </names>
+                                            <descriptions/>
+                                            <fieldSettings/>
+                                            <validatorConfiguration>
+                                                <value key="StringLengthValidator">
+                                                    <value key="maxStringLength">255</value>
+                                                    <value key="minStringLength"/></value>
+                                            </validatorConfiguration>
+                                        </FieldDefinition>
+                        401:
+                            description: Error - The user is not authorized to read the Content Type
+                        404:
+                            description: Error - The Content Type does not exist
             /draft:
                 patch:
                     description: Updates metadata of a draft. This method does not handle Field definitions. PATCH or POST with header X-HTTP-Method-Override PATCH.
@@ -2824,7 +2866,6 @@ version: 2.4
                                 description: Error - A Field definition with same identifier already exists in the given Content Type. The Field definition is of singular type, already existing in the given Content Type. The Field definition ti add is of a type that can't be added to a Content Type that already has content instances
                     /{fieldDefinitionId}:
                         get:
-                            # TODO also works without /draft/ !
                             description: Returns the Field definition given by ID
                             headers:
                                 Accept:
