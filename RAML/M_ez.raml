@@ -1341,6 +1341,7 @@ version: 2.4
                             404:
                                 description: Error - the ID or version is not found
                     patch:
+                        # 'xml' index is missing in hash
                         description: A specific draft is updated. PATCH or POST with header X-HTTP-Method-Override PATCH.
                         queryParameters:
                             languages:
@@ -1480,6 +1481,105 @@ version: 2.4
                         responses:
                             201:
                                 description: Created
+                                body:
+                                    application/vnd.ez.api.Version+xml:
+                                        example:  |
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <Version media-type="application/vnd.ez.api.Version+xml" href="/api/ezp/v2/content/objects/61/versions/6">
+                                                <VersionInfo>
+                                                    <id>555</id>
+                                                    <versionNo>6</versionNo>
+                                                    <status>DRAFT</status>
+                                                    <modificationDate>2019-02-22T14:55:11+01:00</modificationDate>
+                                                    <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                                    <creationDate>2019-02-22T14:55:11+01:00</creationDate>
+                                                    <initialLanguageCode>eng-GB</initialLanguageCode>
+                                                    <languageCodes>eng-GB</languageCodes>
+                                                    <VersionTranslationInfo media-type="application/vnd.ez.api.VersionTranslationInfo+xml">
+                                                        <Language>
+                                                            <languageCode>eng-GB</languageCode>
+                                                        </Language>
+                                                    </VersionTranslationInfo>
+                                                    <names>
+                                                        <value languageCode="eng-GB">777</value>
+                                                    </names>
+                                                    <Content media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/61"/>
+                                                </VersionInfo>
+                                                <Fields>
+                                                    <field>
+                                                        <id>298</id>
+                                                        <fieldDefinitionIdentifier>title</fieldDefinitionIdentifier>
+                                                        <languageCode>eng-GB</languageCode>
+                                                        <fieldTypeIdentifier>ezstring</fieldTypeIdentifier>
+                                                        <fieldValue>New article 7</fieldValue>
+                                                    </field>
+                                                    <field>
+                                                        <id>299</id>
+                                                        <fieldDefinitionIdentifier>short_title</fieldDefinitionIdentifier>
+                                                        <languageCode>eng-GB</languageCode>
+                                                        <fieldTypeIdentifier>ezstring</fieldTypeIdentifier>
+                                                        <fieldValue>777</fieldValue>
+                                                    </field>
+                                                    <field>
+                                                        <id>300</id>
+                                                        <fieldDefinitionIdentifier>author</fieldDefinitionIdentifier>
+                                                        <languageCode>eng-GB</languageCode>
+                                                        <fieldTypeIdentifier>ezauthor</fieldTypeIdentifier>
+                                                        <fieldValue>
+                                                            <value>
+                                                                <value key="id">1</value>
+                                                                <value key="name">7777</value>
+                                                                <value key="email"></value>
+                                                            </value>
+                                                        </fieldValue>
+                                                    </field>
+                                                    <field>
+                                                        <id>301</id>
+                                                        <fieldDefinitionIdentifier>intro</fieldDefinitionIdentifier>
+                                                        <languageCode>eng-GB</languageCode>
+                                                        <fieldTypeIdentifier>ezrichtext</fieldTypeIdentifier>
+                                                        <fieldValue>
+                                                            <value key="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                                            &lt;section xmlns=&quot;http://docbook.org/ns/docbook&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:ezxhtml=&quot;http://ez.no/xmlns/ezpublish/docbook/xhtml&quot; xmlns:ezcustom=&quot;http://ez.no/xmlns/ezpublish/docbook/custom&quot; version=&quot;5.0-variant ezpublish-1.0&quot;&gt;&lt;para&gt;77777777777778888&lt;/para&gt;&lt;/section&gt;
+                                            </value>
+                                                            <value key="xhtml5edit">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                                            &lt;section xmlns=&quot;http://ez.no/namespaces/ezpublish5/xhtml5/edit&quot;&gt;&lt;p&gt;77777777777778888&lt;/p&gt;&lt;/section&gt;
+                                            </value>
+                                                        </fieldValue>
+                                                    </field>
+                                                    <field>
+                                                        <id>302</id>
+                                                        <fieldDefinitionIdentifier>body</fieldDefinitionIdentifier>
+                                                        <languageCode>eng-GB</languageCode>
+                                                        <fieldTypeIdentifier>ezrichtext</fieldTypeIdentifier>
+                                                        <fieldValue>
+                                                            <value key="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                                            &lt;section xmlns=&quot;http://docbook.org/ns/docbook&quot; xmlns:xlink=&quot;http://www.w3.org/1999/xlink&quot; xmlns:ezxhtml=&quot;http://ez.no/xmlns/ezpublish/docbook/xhtml&quot; xmlns:ezcustom=&quot;http://ez.no/xmlns/ezpublish/docbook/custom&quot; version=&quot;5.0-variant ezpublish-1.0&quot;&gt;&lt;para&gt;88888888888&lt;/para&gt;&lt;/section&gt;
+                                            </value>
+                                                            <value key="xhtml5edit">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;
+                                            &lt;section xmlns=&quot;http://ez.no/namespaces/ezpublish5/xhtml5/edit&quot;&gt;&lt;p&gt;88888888888&lt;/p&gt;&lt;/section&gt;
+                                            </value>
+                                                        </fieldValue>
+                                                    </field>
+                                                    <field>
+                                                        <id>303</id>
+                                                        <fieldDefinitionIdentifier>enable_comments</fieldDefinitionIdentifier>
+                                                        <languageCode>eng-GB</languageCode>
+                                                        <fieldTypeIdentifier>ezboolean</fieldTypeIdentifier>
+                                                        <fieldValue>false</fieldValue>
+                                                    </field>
+                                                    <field>
+                                                        <id>304</id>
+                                                        <fieldDefinitionIdentifier>image</fieldDefinitionIdentifier>
+                                                        <languageCode>eng-GB</languageCode>
+                                                        <fieldTypeIdentifier>ezobjectrelation</fieldTypeIdentifier>
+                                                        <fieldValue>
+                                                            <value key="destinationContentId"/>
+                                                        </fieldValue>
+                                                    </field>
+                                                </Fields>
+                                                <Relations media-type="application/vnd.ez.api.RelationList+xml" href="/api/ezp/v2/content/objects/61/versions/6/relations"/>
+                                            </Version>
                             401:
                                 description: Error - the user is not authorized to update this object
                             404:
@@ -1594,7 +1694,7 @@ version: 2.4
                                     example:  |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <RelationCreate>
-                                          <Destination href="/content/objects/66"/>
+                                          <Destination href="/api/ezp/v2/content/objects/86"/>
                                         </RelationCreate>
                             responses:
                                 201:
@@ -1602,14 +1702,13 @@ version: 2.4
                                         application/vnd.ez.api.Relation+xml:
                                             example:  |
                                                 <?xml version="1.0" encoding="UTF-8"?>
-                                                <Relation href="/content/object/32/versions/2/relations/66" media-type="application/vnd.ez.api.Relation+xml">
-                                                  <SourceContent href="/content/objects/23"
-                                                    media-type="application/vnd.ez.api.ContentInfo+xml" />
-                                                  <DestinationContent href="/content/objects/66"
-                                                    media-type="application/vnd.ez.api.ContentInfo+xml" />
-                                                  <RelationType>COMMON</RelationType>
+                                                <Relation media-type="application/vnd.ez.api.Relation+xml" href="/api/ezp/v2/content/objects/86/versions/1/relations/1">
+                                                    <SourceContent media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/86"/>
+                                                    <DestinationContent media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/86"/>
+                                                    <RelationType>COMMON</RelationType>
                                                 </Relation>
                         /{id}:
+                        # {relationId}?
                             get:
                                 description: Loads a relation for the given content object
                                 headers:
@@ -1621,6 +1720,15 @@ version: 2.4
                                 responses:
                                     200:
                                         description: OK - loads a relation for the given content object
+                                        body:
+                                            application/vnd.ez.api.Relation+xml:
+                                                example:  |
+                                                    <?xml version="1.0" encoding="UTF-8"?>
+                                                    <Relation media-type="application/vnd.ez.api.Relation+xml" href="/api/ezp/v2/content/objects/86/versions/1/relations/1">
+                                                        <SourceContent media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/86"/>
+                                                        <DestinationContent media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/86"/>
+                                                        <RelationType>COMMON</RelationType>
+                                                    </Relation>
                                     401:
                                         description: Error - the user is not authorized to read this object
                                     404:
@@ -1637,6 +1745,7 @@ version: 2.4
                                     404:
                                         description: Error - content object was not found or the relation was not found in the given version
             /relations:
+                # Could not get any response
                 get:
                     description: Redirects to the relations of the current version
                     responses:
@@ -1648,7 +1757,7 @@ version: 2.4
                           description: Error - the content object was not found
             /locations:
                     post:
-                        description: Creates a new Location for the given content object
+                        description: Creates a new Location for the given Content Object
                         headers:
                             Accept:
                                 description: If set the new Location is returned in XML or JSON format
@@ -1710,7 +1819,7 @@ version: 2.4
                                 example:  |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <LocationCreate>
-                                      <ParentLocation href="/content/locations/1/5/73" />
+                                      <ParentLocation href="/api/ezp/v2/content/locations/1/42" />
                                       <priority>0</priority>
                                       <hidden>false</hidden>
                                       <sortField>PATH</sortField>
@@ -1722,20 +1831,38 @@ version: 2.4
                                     application/vnd.ez.api.Location+xml:
                                         example:  |
                                             <?xml version="1.0" encoding="UTF-8"?>
-                                            <Location href="/content/locations/1/5/73/133" media-type="application/vnd.ez.api.Location+xml">
-                                              <id>133</id>
-                                              <priority>0</priority>
-                                              <hidden>false</hidden>
-                                              <invisible>false</invisible>
-                                              <ParentLocation href="/content/locations/1/5/73" media-type="application/vnd.ez.api.Location+xml"/>
-                                              <pathString>/1/5/73/133</pathString>
-                                              <depth>4</depth>
-                                              <childCount>0</childCount>
-                                              <remoteId>remoteId-qwert567</remoteId>
-                                              <Children href="/content/locations/1/5/73/133/children" media-type="application/vnd.ez.api.LocationList+xml"/>
-                                              <Content href="/content/objects/23" media-type="application/vnd.ez.api.Content+xml"/>
-                                              <sortField>PATH</sortField>
-                                              <sortOrder>ASC</sortOrder>
+                                            <Location media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2/42/69">
+                                                <id>69</id>
+                                                <priority>0</priority>
+                                                <hidden>false</hidden>
+                                                <invisible>false</invisible>
+                                                <ParentLocation media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2/42"/>
+                                                <pathString>/1/2/42/69/</pathString>
+                                                <depth>3</depth>
+                                                <childCount>0</childCount>
+                                                <remoteId>0e8d6b87fe3b1588533b636a8549cc0c</remoteId>
+                                                <Children media-type="application/vnd.ez.api.LocationList+xml" href="/api/ezp/v2/content/locations/1/2/42/69/children"/>
+                                                <Content media-type="application/vnd.ez.api.Content+xml" href="/api/ezp/v2/content/objects/61"/>
+                                                <sortField>PATH</sortField>
+                                                <sortOrder>ASC</sortOrder>
+                                                <UrlAliases media-type="application/vnd.ez.api.UrlAliasRefList+xml" href="/api/ezp/v2/content/locations/1/2/42/69/urlaliases"/>
+                                                <ContentInfo media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/61">
+                                                    <Content media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/61" remoteId="2c90ebb85a849a377a8df1ba775dbba4" id="61">
+                                                        <ContentType media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/2"/>
+                                                        <Name>7777</Name>
+                                                        <Versions media-type="application/vnd.ez.api.VersionList+xml" href="/api/ezp/v2/content/objects/61/versions"/>
+                                                        <CurrentVersion media-type="application/vnd.ez.api.Version+xml" href="/api/ezp/v2/content/objects/61/currentversion"/>
+                                                        <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/1"/>
+                                                        <Locations media-type="application/vnd.ez.api.LocationList+xml" href="/api/ezp/v2/content/objects/61/locations"/>
+                                                        <Owner media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                                        <lastModificationDate>2019-02-22T15:01:46+01:00</lastModificationDate>
+                                                        <publishedDate>2018-11-09T14:50:16+01:00</publishedDate>
+                                                        <mainLanguageCode>eng-GB</mainLanguageCode>
+                                                        <currentVersionNo>5</currentVersionNo>
+                                                        <alwaysAvailable>false</alwaysAvailable>
+                                                        <ObjectStates media-type="application/vnd.ez.api.ContentObjectStates+xml" href="/api/ezp/v2/content/objects/61/objectstates"/>
+                                                    </Content>
+                                                </ContentInfo>
                                             </Location>
                             400:
                                 description: Error - the Input does not match the input schema definition, In this case the response contains an ErrorMessage
@@ -1759,9 +1886,8 @@ version: 2.4
                                     application/vnd.ez.api.LocationList+xml:
                                         example:  |
                                             <?xml version="1.0" encoding="UTF-8"?>
-                                            <LocationList href="/content/objects/23/locations" media-type="application/vnd.ez.api.LocationList+xml">
-                                              <Location href="/content/locations/1/2/56" media-type="application/vnd.ez.api.Location+xml"/>
-                                              <Location href="/content/locations/1/4/73/133" media-type="application/vnd.ez.api.Location+xml"/>
+                                            <LocationList media-type="application/vnd.ez.api.LocationList+xml" href="/api/ezp/v2/content/objects/61/locations">
+                                                <Location media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2/62"/>
                                             </LocationList>
                             401:
                                 description: Error - the user is not authorized to read this object
