@@ -941,7 +941,7 @@ version: 2.4
                         412:
                             description: Error - The current ETag does not match the one provided in the If-Match header
     /urlaliases:
-        # TODO Does not return anything?
+        # TODO Does not return anything, even after creating an alias with POST?
         get:
             description: Returns the list of global URL aliases
             headers:
@@ -1010,7 +1010,7 @@ version: 2.4
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <UrlAlias media-type="application/vnd.ez.api.UrlAlias+xml" href="/api/ezp/v2/content/urlaliases/0-deca3dadca45c3dff7861274b8e67ed7" id="0-deca3dadca45c3dff7861274b8e67ed7" type="LOCATION">
                                     <location media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/59"/>
-                                    <path>/example-urlalias2</path>
+                                    <path>/example-urlalias</path>
                                     <languageCodes>eng-GB</languageCodes>
                                     <alwaysAvailable>true</alwaysAvailable>
                                     <isHistory>false</isHistory>
@@ -1050,7 +1050,6 @@ version: 2.4
                     404:
                         description: Error - The URL alias does not exist
     /urlwildcards:
-        # TODO Does not return anything?
         get:
             description: Returns a list of URL wildcards
             headers:
@@ -1062,9 +1061,19 @@ version: 2.4
             responses:
                 200:
                     description: OK - returns a list of URL wildcards
+                    body:
+                        application/vnd.ez.api.UrlWildcardList+xml:
+                            example: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <UrlWildcardList media-type="application/vnd.ez.api.UrlWildcardList+xml" href="/api/ezp/v2/content/urlwildcards">
+                                    <UrlWildcard media-type="application/vnd.ez.api.UrlWildcard+xml" href="/api/ezp/v2/content/urlwildcards/1" id="1">
+                                        <sourceUrl>/api/ezp/v2/content/location/2</sourceUrl>
+                                        <destinationUrl>/api/ezp/v2/content/location/59</destinationUrl>
+                                        <forward>true</forward>
+                                    </UrlWildcard>
+                                </UrlWildcardList>
                 401:
                     description: Error - The user has no permission to read URL wildcards
-        # TODO add example
         post:
             description: Creates a new URL wildcard
             headers:
@@ -1093,9 +1102,25 @@ version: 2.4
                             </xsd:all>
                           </xsd:complexType>
                         </xsd:schema>
+                    example: |
+                        <?xml version="1.0" encoding="UTF-8"?>
+                        <UrlWildcardCreate>
+                        	<sourceUrl>/api/ezp/v2/content/location/2</sourceUrl>
+                        	<destinationUrl>/api/ezp/v2/content/location/59</destinationUrl>
+                        	<forward>true</forward>
+                        </UrlWildcardCreate>
             responses:
                 201:
                     description: URL wildcard created
+                    body:
+                        application/vnd.ez.api.UrlWildcard+xml:
+                            example: |
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <UrlWildcard media-type="application/vnd.ez.api.UrlWildcard+xml" href="/api/ezp/v2/content/urlwildcards/1" id="1">
+                                    <sourceUrl>/api/ezp/v2/content/location/2</sourceUrl>
+                                    <destinationUrl>/api/ezp/v2/content/location/59</destinationUrl>
+                                    <forward>true</forward>
+                                </UrlWildcard>
                 400:
                     description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
                 401:
@@ -1103,7 +1128,6 @@ version: 2.4
                 403:
                     description: Error - A URL wildcard with the same identifier already exists
         /{wildcardId}:
-            # TODO Can't get example, because /urlwildcards GET does not return URL wildcard numbers
             get:
                 description: Returns the URL wildcard with the given ID
                 headers:
@@ -1115,6 +1139,15 @@ version: 2.4
                 responses:
                     200:
                         description: OK - returns the URL wildcard
+                        body:
+                            application/vnd.ez.api.UrlWildcard+xml:
+                                example: |
+                                    <?xml version="1.0" encoding="UTF-8"?>
+                                    <UrlWildcard media-type="application/vnd.ez.api.UrlWildcard+xml" href="/api/ezp/v2/content/urlwildcards/1" id="1">
+                                        <sourceUrl>/api/ezp/v2/content/location/2</sourceUrl>
+                                        <destinationUrl>/api/ezp/v2/content/location/59</destinationUrl>
+                                        <forward>true</forward>
+                                    </UrlWildcard>
                     401:
                         description: Error - The user is not authorized to read URL wildcards
                     404:
@@ -1763,22 +1796,21 @@ version: 2.4
                                   </xsd:complexType>
                                   <xsd:element name="ContentTypeCreate" type="vnd.ez.api.ContentTypeCreate"></xsd:element>
                                 </xsd:schema>
-                            # TODO example doesn't work, possibly related to Content Type translate
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <ContentTypeCreate>
                                     <identifier>newContentType</identifier>
                                     <names>
-                                        <value languageCode="eng-US">New Content Type</value>
+                                        <value languageCode="eng-GB">New Content Type</value>
                                     </names>
                                     <descriptions>
-                                        <value languageCode="eng-US">This is a description</value>
+                                        <value languageCode="eng-GB">This is a description</value>
                                     </descriptions>
                                     <remoteId>remoteId-qwert548</remoteId>
                                     <urlAliasSchema>&lt;title&gt;</urlAliasSchema>
                                     <nameSchema>&lt;title&gt;</nameSchema>
                                     <isContainer>true</isContainer>
-                                    <mainLanguageCode>eng-US</mainLanguageCode>
+                                    <mainLanguageCode>eng-GB</mainLanguageCode>
                                     <defaultAlwaysAvailable>true</defaultAlwaysAvailable>
                                     <defaultSortField>PATH</defaultSortField>
                                     <defaultSortOrder>ASC</defaultSortOrder>
@@ -1794,29 +1826,10 @@ version: 2.4
                                         <defaultValue>New Title</defaultValue>
                                         <isSearchable>true</isSearchable>
                                         <names>
-                                            <value languageCode="eng-US">Title</value>
+                                            <value languageCode="eng-GB">Title</value>
                                         </names>
                                         <descriptions>
-                                            <value languageCode="eng-US">This is the title</value>
-                                        </descriptions>
-                                    </FieldDefinition>
-                                    <FieldDefinition>
-                                        <identifier>summary</identifier>
-                                        <fieldType>ezxmltext</fieldType>
-                                        <fieldGroup>content</fieldGroup>
-                                        <position>2</position>
-                                        <isTranslatable>true</isTranslatable>
-                                        <isRequired>false</isRequired>
-                                        <isInfoCollector>false</isInfoCollector>
-                                        <defaultValue>
-                                            <value key="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;section/&gt;</value>
-                                        </defaultValue>
-                                        <isSearchable>true</isSearchable>
-                                        <names>
-                                            <value languageCode="eng-US">Summary</value>
-                                        </names>
-                                        <descriptions>
-                                            <value languageCode="eng-US">This is the summary</value>
+                                            <value languageCode="eng-GB">This is the title</value>
                                         </descriptions>
                                     </FieldDefinition>
                                     </FieldDefinitions>
@@ -1826,34 +1839,35 @@ version: 2.4
                             description: Content Type created
                             body:
                                 application/vnd.ez.api.ContentType+xml:
-                                    # TODO verify when request example is fixed
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
-                                        <ContentType href="/content/types/32/draft" media-type="application/vnd.ez.api.ContentType+xml">
-                                            <id>32</id>
+                                        <ContentType media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/20/draft">
+                                            <id>20</id>
                                             <status>DRAFT</status>
                                             <identifier>newContentType</identifier>
                                             <names>
-                                                <value languageCode="eng-US">New Content Type</value>
+                                                <value languageCode="eng-GB">New Content Type</value>
                                             </names>
                                             <descriptions>
-                                                <value languageCode="eng-US">This is a description</value>
+                                                <value languageCode="eng-GB">This is a description</value>
                                             </descriptions>
-                                            <creationDate>2001-01-01T16:37:00</creationDate>
-                                            <modificationDate>2001-01-01T16:37:00</modificationDate>
-                                            <Creator href="/user/users/13" media-type="application/vnd.ez.api.User+xml"/>
-                                            <Modifier href="/user/users/13" media-type="application/vnd.ez.api.User+xml"/>
+                                            <creationDate>2019-02-26T09:39:58+01:00</creationDate>
+                                            <modificationDate>2019-02-26T09:39:58+01:00</modificationDate>
+                                            <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                            <Modifier media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                            <Groups media-type="application/vnd.ez.api.ContentTypeGroupRefList+xml" href="/api/ezp/v2/content/types/20/groups"/>
+                                            <Draft media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/20/draft"/>
                                             <remoteId>remoteId-qwert548</remoteId>
                                             <urlAliasSchema>&lt;title&gt;</urlAliasSchema>
                                             <nameSchema>&lt;title&gt;</nameSchema>
                                             <isContainer>true</isContainer>
-                                            <mainLanguageCode>eng-US</mainLanguageCode>
+                                            <mainLanguageCode>eng-GB</mainLanguageCode>
                                             <defaultAlwaysAvailable>true</defaultAlwaysAvailable>
                                             <defaultSortField>PATH</defaultSortField>
                                             <defaultSortOrder>ASC</defaultSortOrder>
-                                            <FieldDefinitions href="/content/types/32/draft/fielddefinitions" media-type="application/vnd.ez.api.FieldDefinitionList+xml">
-                                                <FieldDefinition href="/content/types/32/draft/fielddefinitions/34" media-type="application/vnd.ez.api.FieldDefinition+xml">
-                                                    <id>34</id>
+                                            <FieldDefinitions media-type="application/vnd.ez.api.FieldDefinitionList+xml" href="/api/ezp/v2/content/types/20/draft/fieldDefinitions">
+                                                <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/20/draft/fieldDefinitions/223">
+                                                    <id>223</id>
                                                     <identifier>title</identifier>
                                                     <fieldType>ezstring</fieldType>
                                                     <fieldGroup>content</fieldGroup>
@@ -1864,31 +1878,17 @@ version: 2.4
                                                     <defaultValue>New Title</defaultValue>
                                                     <isSearchable>true</isSearchable>
                                                     <names>
-                                                        <value languageCode="eng-US">Title</value>
+                                                        <value languageCode="eng-GB">Title</value>
                                                     </names>
                                                     <descriptions>
-                                                        <value languageCode="eng-US">This is the title</value>
+                                                        <value languageCode="eng-GB">This is the title</value>
                                                     </descriptions>
-                                                </FieldDefinition>
-                                                <FieldDefinition href="/content/types/32/draft/fielddefinitions/36" media-type="application/vnd.ez.api.FieldDefinition+xml">
-                                                    <id>36</id>
-                                                    <identifier>summary</identifier>
-                                                    <fieldType>ezxmltext</fieldType>
-                                                    <fieldGroup>content</fieldGroup>
-                                                    <position>2</position>
-                                                    <isTranslatable>true</isTranslatable>
-                                                    <isRequired>false</isRequired>
-                                                    <isInfoCollector>false</isInfoCollector>
-                                                    <defaultValue>
-                                                        <value key="xml">&lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;&lt;section/&gt;</value>
-                                                    </defaultValue>
-                                                    <isSearchable>true</isSearchable>
-                                                    <names>
-                                                        <value languageCode="eng-US">Summary</value>
-                                                    </names>
-                                                    <descriptions>
-                                                        <value languageCode="eng-US">This is the summary</value>
-                                                    </descriptions>
+                                                    <fieldSettings/>
+                                                    <validatorConfiguration>
+                                                        <value key="StringLengthValidator">
+                                                            <value key="minStringLength">0</value>
+                                                            <value key="maxStringLength"/></value>
+                                                    </validatorConfiguration>
                                                 </FieldDefinition>
                                             </FieldDefinitions>
                                         </ContentType>
@@ -2261,7 +2261,6 @@ version: 2.4
                     401:
                         description: Error - The user is not authorized to copy this Content Type
             post:
-                # TODO: add request and response example
                 description: Creates a draft and updates it with the given data
                 headers:
                     Accept:
@@ -2408,9 +2407,41 @@ version: 2.4
                               </xsd:complexType>
                               <xsd:element name="ContentTypeUpdate" type="vnd.ez.api.ContentTypeUpdate"></xsd:element>
                             </xsd:schema>
+                        example: |
+                            <?xml version="1.0" encoding="UTF-8"?>
+                            <ContentTypeUpdate>
+                                <defaultAlwaysAvailable>true</defaultAlwaysAvailable>
+                            </ContentTypeUpdate>
                 responses:
                     201:
                         description: Draft created
+                            body:
+                                application/vnd.ez.api.ContentTypeInfo+xml:
+                                    example: |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <ContentTypeInfo media-type="application/vnd.ez.api.ContentTypeInfo+xml" href="/api/ezp/v2/content/types/3/draft">
+                                            <id>3</id>
+                                            <status>DRAFT</status>
+                                            <identifier>user_group</identifier>
+                                            <names>
+                                                <value languageCode="eng-GB">User group</value>
+                                            </names>
+                                            <descriptions/>
+                                            <creationDate>2002-06-18T11:21:38+02:00</creationDate>
+                                            <modificationDate>2019-02-25T14:41:53+01:00</modificationDate>
+                                            <Creator media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                            <Modifier media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                            <Groups media-type="application/vnd.ez.api.ContentTypeGroupRefList+xml" href="/api/ezp/v2/content/types/3/groups"/>
+                                            <Draft media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/3/draft"/>
+                                            <remoteId>25b4268cdcd01921b808a0d854b877ef</remoteId>
+                                            <urlAliasSchema></urlAliasSchema>
+                                            <nameSchema>&lt;name&gt;</nameSchema>
+                                            <isContainer>true</isContainer>
+                                            <mainLanguageCode>eng-GB</mainLanguageCode>
+                                            <defaultAlwaysAvailable>true</defaultAlwaysAvailable>
+                                            <defaultSortField>PATH</defaultSortField>
+                                            <defaultSortOrder>ASC</defaultSortOrder>
+                                        </ContentTypeInfo>
                     400:
                         description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
                     401:
@@ -2743,7 +2774,6 @@ version: 2.4
                             description: Error - The Content Type/draft does not exist
                 /fieldDefinitions:
                     post:
-                        # TODO add example of request and response
                         description: Creates a new Field definition for the given Content Type
                         headers:
                             Accept:
@@ -2855,9 +2885,47 @@ version: 2.4
 
                                       <xsd:element name="FieldDefinitionInput" type="vnd.ez.api.FieldDefinitionCreate" />
                                     </xsd:schema>
+                                example: |
+                                    <?xml version="1.0" encoding="UTF-8"?>
+                                    <FieldDefinitionCreate>
+                                        <identifier>name</identifier>
+                                        <fieldType>ezstring</fieldType>
+                                        <isRequired>true</isRequired>
+                                        <validatorConfiguration>
+                                        <value key="StringLengthValidator">
+                                            <value key="maxStringLength">32</value>
+                                            <value key="minStringLength">8</value>
+                                        </value>
+                                    </validatorConfiguration>
+                                    </FieldDefinitionCreate>
                         responses:
                             201:
                                 description: Field definition created
+                                body:
+                                    application/vnd.ez.api.FieldDefinition+xml:
+                                        example: |
+                                            <?xml version="1.0" encoding="UTF-8"?>
+                                            <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/14/draft/fieldDefinitions/221">
+                                                <id>221</id>
+                                                <identifier>name2</identifier>
+                                                <fieldType>ezstring</fieldType>
+                                                <fieldGroup></fieldGroup>
+                                                <position>0</position>
+                                                <isTranslatable>true</isTranslatable>
+                                                <isRequired>true</isRequired>
+                                                <isInfoCollector>false</isInfoCollector>
+                                                <defaultValue/>
+                                                <isSearchable>true</isSearchable>
+                                                <names/>
+                                                <descriptions/>
+                                                <fieldSettings/>
+                                                <validatorConfiguration>
+                                                    <value key="StringLengthValidator">
+                                                        <value key="maxStringLength">32</value>
+                                                        <value key="minStringLength">8</value>
+                                                    </value>
+                                                </validatorConfiguration>
+                                            </FieldDefinition>
                             400:
                                 description: Error - The input does not match the input schema definition or validation on the field definition fails. In this case the response contains an ErrorMessage
                             401:
@@ -2906,7 +2974,7 @@ version: 2.4
                                     description: Error - The user is not authorized to read the Content Type draft
                                 404:
                                     description: Error - The Content Type or draft does not exist
-                        # TODO add request and response example
+                        # REVIEW No route found
                         put:
                             description: Updates the attributes of a Field definition
                             headers:
