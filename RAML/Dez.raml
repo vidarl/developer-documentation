@@ -335,7 +335,6 @@ version: 2.4
                         description: Error - The provided parent Location does not exist
                     404:
                         description: Error - The provided item does not exist in Trash
-            # Listed as content/trash/items/{Id} in the source file, but the endpoint does not seem to exist
             delete:
                 description: Deletes the provided item from Trash
                 responses:
@@ -941,7 +940,6 @@ version: 2.4
                         412:
                             description: Error - The current ETag does not match the one provided in the If-Match header
     /urlaliases:
-        # TODO Does not return anything, even after creating an alias with POST?
         get:
             description: Returns the list of global URL aliases
             headers:
@@ -953,6 +951,13 @@ version: 2.4
             responses:
                 200:
                     description: OK - returns the list of URL aliases
+                    body:
+                        application/vnd.ez.api.UrlAliasRefList+xml:
+                            example:
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <UrlAliasRefList media-type="application/vnd.ez.api.UrlAliasRefList+xml" href="/api/ezp/v2/content/urlaliases">
+                                    <UrlAlias media-type="application/vnd.ez.api.UrlAlias+xml" href="/api/ezp/v2/content/urlaliases/0-2cecdff5f90b8595d76b68c417b09f36"/>
+                                </UrlAliasRefList>
                 401:
                     description: Error - The user has no permission to read URL aliases
         post:
@@ -1024,7 +1029,6 @@ version: 2.4
                 403:
                     description: Error - A URL alias with the same identifier already exists
         /{urlAliasId}:
-            # TODO Can't get example, because /urlaliases GET does not return URL alias numbers
             get:
                 description: Returns the URL alias with the given ID
                 headers:
@@ -1036,6 +1040,19 @@ version: 2.4
                 responses:
                     200:
                         description: OK - returns the URL alias
+                        body:
+                            application/vnd.ez.api.UrlAlias+xml:
+                                example: |
+                                    <?xml version="1.0" encoding="UTF-8"?>
+                                    <UrlAlias media-type="application/vnd.ez.api.UrlAlias+xml" href="/api/ezp/v2/content/urlaliases/0-2cecdff5f90b8595d76b68c417b09f36" id="0-2cecdff5f90b8595d76b68c417b09f36" type="RESOURCE">
+                                        <resource>content/view/full</resource>
+                                        <path>/example-global</path>
+                                        <languageCodes>eng-GB</languageCodes>
+                                        <alwaysAvailable>true</alwaysAvailable>
+                                        <isHistory>false</isHistory>
+                                        <forward>true</forward>
+                                        <custom>true</custom>
+                                    </UrlAlias>
                     401:
                         description: Error - The user is not authorized to read URL aliases
                     404:
@@ -1916,7 +1933,6 @@ version: 2.4
                     description: One of (asc|desc)
             headers:
                 Accept:
-                    # REVIEW The same is returned with ContentTypeInfoList and ContentTypeList
                     description: If set the list of Content Type info objects or Content Types (including Field definitions) is returned in XML or JSON format
                     example: |
                         application/vnd.ez.api.ContentTypeInfoList+xml
@@ -2974,8 +2990,7 @@ version: 2.4
                                     description: Error - The user is not authorized to read the Content Type draft
                                 404:
                                     description: Error - The Content Type or draft does not exist
-                        # REVIEW No route found
-                        put:
+                        patch:
                             description: Updates the attributes of a Field definition
                             headers:
                                 Accept:
@@ -3076,9 +3091,39 @@ version: 2.4
 
                                           <xsd:element name="FieldDefinitionInput" type="vnd.ez.api.FieldDefinitionUpdate" />
                                         </xsd:schema>
+                                    example: |
+                                        <?xml version="1.0" encoding="UTF-8"?>
+                                        <FieldDefinitionUpdate>
+                                            <fieldGroup>new_field_group</fieldGroup>
+                                            <position>10</position>
+                                        </FieldDefinitionUpdate>
                             responses:
                                 200:
                                     description: OK - attributes updated
+                                    body:
+                                        application/vnd.ez.api.FieldDefinition+xml:
+                                            example: |
+                                                <?xml version="1.0" encoding="UTF-8"?>
+                                                <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/15/draft/fieldDefinitions/197">
+                                                    <id>197</id>
+                                                    <identifier>author</identifier>
+                                                    <fieldType>ezauthor</fieldType>
+                                                    <fieldGroup>new_field_group</fieldGroup>
+                                                    <position>10</position>
+                                                    <isTranslatable>true</isTranslatable>
+                                                    <isRequired>false</isRequired>
+                                                    <isInfoCollector>false</isInfoCollector>
+                                                    <defaultValue/>
+                                                    <isSearchable>false</isSearchable>
+                                                    <names>
+                                                        <value languageCode="eng-GB">Author</value>
+                                                    </names>
+                                                    <descriptions/>
+                                                    <fieldSettings>
+                                                        <value key="defaultAuthor">1</value>
+                                                    </fieldSettings>
+                                                    <validatorConfiguration/>
+                                                </FieldDefinition>
                                 400:
                                     description: Error - The input does not match the input schema definition. In this case the response contains an ErrorMessage
                                 401:

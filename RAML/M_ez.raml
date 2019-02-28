@@ -2730,7 +2730,7 @@ version: 2.4
                     description: Error - the user has no permission to read user groups
         /root:
             get:
-                # REVIEW 404 error "Could not find location with path string /1/5"
+                # Currently does not work
                 description: Redirects to the root user group
                 responses:
                     301:
@@ -4253,32 +4253,6 @@ version: 2.4
                         example:  |
                             application/vnd.ez.api.RoleInput+json
                             application/vnd.ez.api.RoleInput+xml
-                body:
-                    # REVIEW the body is ignored?
-                    application/vnd.ez.api.RoleInput+xml:
-                        schema: |
-                            <?xml version="1.0" encoding="UTF-8"?>
-                            <xsd:schema version="1.0" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
-                              xmlns="http://ez.no/API/Values" targetNamespace="http://ez.no/API/Values">
-                              <xsd:complexType name="vnd.ez.api.RoleInput">
-                                <xsd:all>
-                                  <xsd:element name="identifier" type="xsd:string">
-                                    <xsd:annotation>
-                                      <xsd:documentation>
-                                        String identifier of the role
-                                      </xsd:documentation>
-                                    </xsd:annotation>
-                                  </xsd:element>
-                                </xsd:all>
-                              </xsd:complexType>
-                              <xsd:element name="RoleInput" type="vnd.ez.api.RoleInput"/>
-                            </xsd:schema>
-                    application/vnd.ez.api.RoleDraft+xml:
-                        example:  |
-                            <?xml version="1.0" encoding="UTF-8"?>
-                            <RoleInput>
-                              <identifier>MyRole</identifier>
-                            </RoleInput>
                 responses:
                     201:
                         body:
@@ -4518,7 +4492,7 @@ version: 2.4
                         401:
                             description: Error - the user is not authorized to delete this Content Type
                 post:
-                    # REVIEW Cache key &quot;ez-content-type-/content/types/13-0&quot; contains reserved characters {}()/\@:
+                    # Currently does not work
                     description: Creates a policy
                     headers:
                         Accept:
@@ -4595,7 +4569,7 @@ version: 2.4
                             description: Error - the Role does not exist
                 /{id}:
                     patch:
-                        # REVIEW Cache key &quot;ez-content-type-/content/types/14-0&quot; contains reserved characters {}()/\@:
+                        # Currently does not work
                         description: Updates a policy. PATCH or POST with header X-HTTP-Method-Override PATCH
                         headers:
                             Accept:
