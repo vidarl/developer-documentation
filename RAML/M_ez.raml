@@ -1644,21 +1644,16 @@ version: 2.4
                                         application/vnd.ez.api.RelationList+xml:
                                             example:  |
                                                 <?xml version="1.0" encoding="UTF-8"?>
-                                                <Relations href="/content/object/32/versions/2/relations" media-type="application/vnd.ez.api.RelationList+xml">
-                                                    <Relation href="/content/object/32/versions/2/relations/43" media-type="application/vnd.ez.api.Relation+xml">
-                                                      <SourceContent href="/content/objects/23"
-                                                        media-type="application/vnd.ez.api.ContentInfo+xml" />
-                                                      <DestinationContent href="/content/objects/45"
-                                                        media-type="application/vnd.ez.api.ContentInfo+xml" />
-                                                      <RelationType>COMMON</RelationType>
+                                                <Relations media-type="application/vnd.ez.api.RelationList+xml" href="/api/ezp/v2/content/objects/61/versions/6/relations">
+                                                    <Relation media-type="application/vnd.ez.api.Relation+xml" href="/api/ezp/v2/content/objects/61/versions/6/relations/2">
+                                                        <SourceContent media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/61"/>
+                                                        <DestinationContent media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/86"/>
+                                                        <RelationType>COMMON</RelationType>
                                                     </Relation>
-                                                    <Relation href="/content/object/32/versions/2/relations/98" media-type="application/vnd.ez.api.Relation+xml">
-                                                      <SourceContent href="/content/objects/23"
-                                                        media-type="application/vnd.ez.api.ContentInfo+xml" />
-                                                      <DestinationContent href="/content/objects/87"
-                                                        media-type="application/vnd.ez.api.ContentInfo+xml" />
-                                                      <sourceFieldDefinitionIdentifier>body</sourceFieldDefinitionIdentifier>
-                                                      <RelationType>EMBED</RelationType>
+                                                    <Relation media-type="application/vnd.ez.api.Relation+xml" href="/api/ezp/v2/content/objects/61/versions/6/relations/3">
+                                                        <SourceContent media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/61"/>
+                                                        <DestinationContent media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/61"/>
+                                                        <RelationType>COMMON</RelationType>
                                                     </Relation>
                                                 </Relations>
                                 401:
@@ -1921,6 +1916,7 @@ version: 2.4
                     description: Error - imageId doesn't match any image OR variationIdentifier doesn't match any known variation
     /locations:
         get:
+            # did not get 307
             description: Loads the Location for a given ID (x), remote ID or URL alias
             queryParameters:
                 id:
@@ -1932,11 +1928,49 @@ version: 2.4
             responses:
                 307:
                     description: Temporary redirect
+                200:
+                    body:
+                        application/vnd.ez.api.Location+xml:
+                            example:
+                                <?xml version="1.0" encoding="UTF-8"?>
+                                <Location media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2/61">
+                                    <id>61</id>
+                                    <priority>0</priority>
+                                    <hidden>false</hidden>
+                                    <invisible>false</invisible>
+                                    <ParentLocation media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2"/>
+                                    <pathString>/1/2/61/</pathString>
+                                    <depth>2</depth>
+                                    <childCount>0</childCount>
+                                    <remoteId>2cfa66027e3806b113d994c9c26d3a66</remoteId>
+                                    <Children media-type="application/vnd.ez.api.LocationList+xml" href="/api/ezp/v2/content/locations/1/2/61/children"/>
+                                    <Content media-type="application/vnd.ez.api.Content+xml" href="/api/ezp/v2/content/objects/60"/>
+                                    <sortField>NAME</sortField>
+                                    <sortOrder>ASC</sortOrder>
+                                    <UrlAliases media-type="application/vnd.ez.api.UrlAliasRefList+xml" href="/api/ezp/v2/content/locations/1/2/61/urlaliases"/>
+                                    <ContentInfo media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/60">
+                                        <Content media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/60" remoteId="f9198276543bfe5e1dfc01a9a8d0c7ee" id="60">
+                                            <ContentType media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/2"/>
+                                            <Name>666</Name>
+                                            <Versions media-type="application/vnd.ez.api.VersionList+xml" href="/api/ezp/v2/content/objects/60/versions"/>
+                                            <CurrentVersion media-type="application/vnd.ez.api.Version+xml" href="/api/ezp/v2/content/objects/60/currentversion"/>
+                                            <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/1"/>
+                                            <Locations media-type="application/vnd.ez.api.LocationList+xml" href="/api/ezp/v2/content/objects/60/locations"/>
+                                            <Owner media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                            <lastModificationDate>2018-11-09T14:49:52+01:00</lastModificationDate>
+                                            <publishedDate>2018-11-09T14:49:52+01:00</publishedDate>
+                                            <mainLanguageCode>eng-GB</mainLanguageCode>
+                                            <currentVersionNo>1</currentVersionNo>
+                                            <alwaysAvailable>false</alwaysAvailable>
+                                            <ObjectStates media-type="application/vnd.ez.api.ContentObjectStates+xml" href="/api/ezp/v2/content/objects/60/objectstates"/>
+                                        </Content>
+                                    </ContentInfo>
+                                </Location>
                 404:
                     description: Error - the Location with the given ID (remoteId or urlAlias) does not exist
         /{path}:
             get:
-                description: Loads the Location for the given path
+                description: Loads the Location for the given path e.g. '/content/locations/1/2/61'
                 headers:
                     Accept:
                         description: If set the new Location is returned in XML or JSON format
@@ -1951,21 +1985,38 @@ version: 2.4
                             application/vnd.ez.api.Location+xml:
                                 example:
                                     <?xml version="1.0" encoding="UTF-8"?>
-                                    <Location href="/content/locations/1/5/73/133" media-type="application/vnd.ez.api.Location+xml">
-                                      <id>133</id>
-                                      <priority>0</priority>
-                                      <hidden>false</hidden>
-                                      <invisible>false</invisible>
-                                      <ParentLocation href="/content/locations/1/5/73" media-type="application/vnd.ez.api.Location+xml"/>
-                                      <pathString>/1/5/73/133</pathString>
-                                      <depth>4</depth>
-                                      <childCount>0</childCount>
-                                      <remoteId>remoteId-qwert567</remoteId>
-                                      <Children href="/content/locations/1/5/73/133/children" media-type="application/vnd.ez.api.LocationList+xml"/>
-                                      <Content href="/content/objects/23" media-type="application/vnd.ez.api.Content+xml"/>
-                                      <sortField>PATH</sortField>
-                                      <sortOrder>ASC</sortOrder>
-                                      <UrlAliases media-type="application/vnd.ez.api.UrlAliasRefList+xml" href="/api/ezp/v2/content/locations/1/4/73/133/urlaliases"/>
+                                    <Location media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2/61">
+                                        <id>61</id>
+                                        <priority>0</priority>
+                                        <hidden>false</hidden>
+                                        <invisible>false</invisible>
+                                        <ParentLocation media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2"/>
+                                        <pathString>/1/2/61/</pathString>
+                                        <depth>2</depth>
+                                        <childCount>0</childCount>
+                                        <remoteId>2cfa66027e3806b113d994c9c26d3a66</remoteId>
+                                        <Children media-type="application/vnd.ez.api.LocationList+xml" href="/api/ezp/v2/content/locations/1/2/61/children"/>
+                                        <Content media-type="application/vnd.ez.api.Content+xml" href="/api/ezp/v2/content/objects/60"/>
+                                        <sortField>NAME</sortField>
+                                        <sortOrder>ASC</sortOrder>
+                                        <UrlAliases media-type="application/vnd.ez.api.UrlAliasRefList+xml" href="/api/ezp/v2/content/locations/1/2/61/urlaliases"/>
+                                        <ContentInfo media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/60">
+                                            <Content media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/60" remoteId="f9198276543bfe5e1dfc01a9a8d0c7ee" id="60">
+                                                <ContentType media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/2"/>
+                                                <Name>666</Name>
+                                                <Versions media-type="application/vnd.ez.api.VersionList+xml" href="/api/ezp/v2/content/objects/60/versions"/>
+                                                <CurrentVersion media-type="application/vnd.ez.api.Version+xml" href="/api/ezp/v2/content/objects/60/currentversion"/>
+                                                <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/1"/>
+                                                <Locations media-type="application/vnd.ez.api.LocationList+xml" href="/api/ezp/v2/content/objects/60/locations"/>
+                                                <Owner media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                                <lastModificationDate>2018-11-09T14:49:52+01:00</lastModificationDate>
+                                                <publishedDate>2018-11-09T14:49:52+01:00</publishedDate>
+                                                <mainLanguageCode>eng-GB</mainLanguageCode>
+                                                <currentVersionNo>1</currentVersionNo>
+                                                <alwaysAvailable>false</alwaysAvailable>
+                                                <ObjectStates media-type="application/vnd.ez.api.ContentObjectStates+xml" href="/api/ezp/v2/content/objects/60/objectstates"/>
+                                            </Content>
+                                        </ContentInfo>
                                     </Location>
                     401:
                         description: Error - the user is not authorized to read this location
@@ -1975,12 +2026,12 @@ version: 2.4
                 description: Moves the Location to another parent. The destination can also be /content/trash where the Location is put into the trash. (NOTE - Be aware that the user might not have access to the item any longer after it has been moved, for example when read access is limited by subtree). MOVE or POST with header X-HTTP-Method-Override MOVE
                 headers:
                     Destination:
-                        description: A parent Location resource to which the Location is moved
+                        description: A parent Location resource to which the Location is moved e.g. '/api/ezp/v2/content/locations/1/63'
                 responses:
                     201:
-                        description: Created. If destination is /content/trash and content only has one Location (NOTE Like on normal subtree moves, be aware that the user might not have access to the item any longer after it has been moved to trash)
+                        description: Created. If destination is /api/ezp/v2/content/trash and content only has one Location (NOTE Like on normal subtree moves, be aware that the user might not have access to the item any longer after it has been moved to trash)
                     204:
-                        description: No Content. If destination is /content/trash and content still has other locations (no trash item is created).
+                        description: No Content. If destination is /api/ezp/v2/content/trash and content still has other locations (no trash item is created).
                     401:
                         description: Error - the user is not authorized to move this location
                     404:
@@ -1989,7 +2040,7 @@ version: 2.4
                 description: Copies the subtree to another parent. COPY or POST with header X-HTTP-Method-Override COPY
                 headers:
                     Destination:
-                        description: A parent Location resource to which the Location is moved
+                        description: A parent Location resource to which the Location is moved e.g. '/api/ezp/v2/content/locations/1/63'
                 responses:
                     201:
                         description: Created. Copied the subtree to another parent.
@@ -1998,7 +2049,7 @@ version: 2.4
                     404:
                         description: Error - the Location with the given ID does not exist
             delete:
-                description: Deletes the complete subtree for the given path. Every content object is deleted which does not have any other location. Otherwise the deleted Location is removed from the content object. The children a recursively deleted.
+                description: Deletes the complete subtree for the given path. Every content object is deleted which does not have any other location. Otherwise the deleted Location is removed from the content object. The children are recursively deleted.
                 responses:
                     204:
                         description: No Content - deleted.
@@ -2028,15 +2079,18 @@ version: 2.4
                                 application/vnd.ez.api.LocationList+xml:
                                     example:  |
                                         <?xml version="1.0" encoding="UTF-8"?>
-                                        <LocationList href="/content/locations/1/2/54" media-type="application/vnd.ez.api.LocationList+xml">
-                                          <Location href="/content/locations/1/2/54/134" media-type="application/vnd.ez.api.Location+xml"/>
-                                          <Location href="/content/locations/1/4/54/143" media-type="application/vnd.ez.api.Location+xml"/>
+                                        <LocationList media-type="application/vnd.ez.api.LocationList+xml" href="/api/ezp/v2/content/locations/1/63/children">
+                                            <Location media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2/63/60"/>
+                                            <Location media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2/63/61"/>
+                                            <Location media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2/63/62"/>
+                                            <Location media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2/63/67"/>
                                         </LocationList>
                         401:
                             description: Error - the user is not authorized to read this object
                         404:
                             description: Error - the object with the given ID does not exist
-        /{contentId}:
+        /{locationId}:
+            # it is locationID not contentId
             patch:
                 description: Updates the location, this method can also be used to hide/unhide a Location via the hidden field in the LocationUpdate. PATCH or POST with header X-HTTP-Method-Override PATCH
                 headers:
@@ -2092,7 +2146,7 @@ version: 2.4
                               <priority>3</priority>
                               <hidden>true</hidden>
                               <remoteId>remoteId-qwert999</remoteId>
-                              <sortField>CLASS</sortField>
+                              <sortField>NAME</sortField>
                               <sortOrder>DESC</sortOrder>
                             </LocationUpdate>
                 responses:
@@ -2101,20 +2155,38 @@ version: 2.4
                             application/vnd.ez.api.Location+xml:
                                 example:  |
                                     <?xml version="1.0" encoding="UTF-8"?>
-                                    <location href="/content/locations/1/5/73/133" media-type="application/vnd.ez.api.Location+xml">
-                                      <id>133</id>
-                                      <priority>3</priority>
-                                      <hidden>true</hidden>
-                                      <invisible>true</invisible>
-                                      <ParentLocation href="/content/locations/1/5/73" media-type="application/vnd.ez.api.Location+xml"/>
-                                      <pathString>/1/5/73/133</pathString>
-                                      <depth>4</depth>
-                                      <childCount>0</childCount>
-                                      <remoteId>remoteId-qwert999</remoteId>
-                                      <Children href="/content/locations/1/5/73/133/children" media-type="application/vnd.ez.api.LocationList+xml"/>
-                                      <Content href="/content/objects/23" media-type="application/vnd.ez.api.Content+xml"/>
-                                      <sortField>CLASS</sortField>
-                                      <sortOrder>ASC</sortOrder>
+                                    <Location media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2/59">
+                                        <id>59</id>
+                                        <priority>3</priority>
+                                        <hidden>true</hidden>
+                                        <invisible>true</invisible>
+                                        <ParentLocation media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2"/>
+                                        <pathString>/1/2/59/</pathString>
+                                        <depth>2</depth>
+                                        <childCount>0</childCount>
+                                        <remoteId>remoteId-qwert999</remoteId>
+                                        <Children media-type="application/vnd.ez.api.LocationList+xml" href="/api/ezp/v2/content/locations/1/2/59/children"/>
+                                        <Content media-type="application/vnd.ez.api.Content+xml" href="/api/ezp/v2/content/objects/58"/>
+                                        <sortField>NAME</sortField>
+                                        <sortOrder>DESC</sortOrder>
+                                        <UrlAliases media-type="application/vnd.ez.api.UrlAliasRefList+xml" href="/api/ezp/v2/content/locations/1/2/59/urlaliases"/>
+                                        <ContentInfo media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/58">
+                                            <Content media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/58" remoteId="694087e1c1e3785bf9c0411e568f8e2e" id="58">
+                                                <ContentType media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/2"/>
+                                                <Name>444</Name>
+                                                <Versions media-type="application/vnd.ez.api.VersionList+xml" href="/api/ezp/v2/content/objects/58/versions"/>
+                                                <CurrentVersion media-type="application/vnd.ez.api.Version+xml" href="/api/ezp/v2/content/objects/58/currentversion"/>
+                                                <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/1"/>
+                                                <Locations media-type="application/vnd.ez.api.LocationList+xml" href="/api/ezp/v2/content/objects/58/locations"/>
+                                                <Owner media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                                <lastModificationDate>2018-11-09T14:48:34+01:00</lastModificationDate>
+                                                <publishedDate>2018-11-09T14:48:34+01:00</publishedDate>
+                                                <mainLanguageCode>eng-GB</mainLanguageCode>
+                                                <currentVersionNo>1</currentVersionNo>
+                                                <alwaysAvailable>false</alwaysAvailable>
+                                                <ObjectStates media-type="application/vnd.ez.api.ContentObjectStates+xml" href="/api/ezp/v2/content/objects/58/objectstates"/>
+                                            </Content>
+                                        </ContentInfo>
                                     </Location>
                     401:
                         description: Error - the user is not authorized to update this location
@@ -2124,7 +2196,7 @@ version: 2.4
                 description: Swaps the content of the Location with the content of the given location. SWAP or POST with header X-HTTP-Method-Override SWAP
                 headers:
                     Destination:
-                        description: A parent Location resource to which the Location is moved
+                        description: A parent Location resource to which the Location is moved e.g. '/api/ezp/v2/content/locations/1/63'
                 responses:
                     204:
                         description: No Content. Swapped the content of the Location with the content of the given location
@@ -2134,6 +2206,7 @@ version: 2.4
                         description: Error - the Location with the given ID does not exist
     /views:
         post:
+            deprecated?
             description: Executes a query and returns view including the results. The View input reflects the criteria model of the public API. Will respond with a 301, as the resource has been moved to /views (Platform 1.0)
             headers:
                 Accept:
@@ -2167,6 +2240,7 @@ version: 2.4
                 400:
                     description: Error - the Input does not match the input schema definition, In this case the response contains an ErrorMessage
         get:
+            # deprecated?
             description: Returns a list of view URIs. The list includes public view and private view of the authenticated user.
             headers:
                 Accept:
@@ -2178,6 +2252,7 @@ version: 2.4
                 200:
                     description: OK - list of view URIs
         /{identifier}:
+            # deprecated?
             get:
                 description: Returns the view
                 headers:
@@ -2254,10 +2329,10 @@ version: 2.4
                         application/vnd.ez.api.Section+xml:
                             example:  |
                                 <?xml version="1.0" encoding="UTF-8"?>
-                                <Section href="/content/sections/5" media-type="application/vnd.ez.api.Section+xml">
-                                  <sectionId>5</sectionId>
-                                  <identifier>restricted</identifier>
-                                  <name>Restricted</name>
+                                <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/7">
+                                    <sectionId>7</sectionId>
+                                    <identifier>restricted</identifier>
+                                    <name>Restricted</name>
                                 </Section>
         get:
             description: Returns a list of all sections
@@ -2278,33 +2353,48 @@ version: 2.4
                         application/vnd.ez.api.SectionList+xml:
                             example:  |
                                 <?xml version="1.0" encoding="UTF-8"?>
-                                <SectionList href="/content/sections" media-type="application/vnd.ez.api.SectionList+xml">
-                                  <Section href="/content/sections/1" media-type="application/vnd.ez.api.Section+xml">
-                                    <sectionId>1</sectionId>
-                                    <identifier>standard</identifier>
-                                    <name>Standard</name>
-                                  </Section>
-                                  <Section href="/content/sections/2" media-type="application/vnd.ez.api.Section+xml">
-                                    <sectionId>2</sectionId>
-                                    <identifier>users</identifier>
-                                    <name>Users</name>
-                                  </Section>
-                                  <Section href="/content/sections/3" media-type="application/vnd.ez.api.Section+xml">
-                                    <sectionId>3</sectionId>
-                                    <identifier>media</identifier>
-                                    <name>Media</name>
-                                  </Section>
-                                  <Section href="/content/sections/4" media-type="application/vnd.ez.api.Section+xml">
-                                    <sectionId>4</sectionId>
-                                    <identifier>setup</identifier>
-                                    <name>Setup</name>
-                                  </Section>
+                                <SectionList media-type="application/vnd.ez.api.SectionList+xml" href="/api/ezp/v2/content/sections">
+                                    <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/1">
+                                        <sectionId>1</sectionId>
+                                        <identifier>standard</identifier>
+                                        <name>Standard</name>
+                                    </Section>
+                                    <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/2">
+                                        <sectionId>2</sectionId>
+                                        <identifier>users</identifier>
+                                        <name>Users</name>
+                                    </Section>
+                                    <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/3">
+                                        <sectionId>3</sectionId>
+                                        <identifier>media</identifier>
+                                        <name>Media</name>
+                                    </Section>
+                                    <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/4">
+                                        <sectionId>4</sectionId>
+                                        <identifier>setup</identifier>
+                                        <name>Setup</name>
+                                    </Section>
+                                    <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/5">
+                                        <sectionId>5</sectionId>
+                                        <identifier>design</identifier>
+                                        <name>Design</name>
+                                    </Section>
+                                    <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/6">
+                                        <sectionId>6</sectionId>
+                                        <identifier>form</identifier>
+                                        <name>Form</name>
+                                    </Section>
+                                    <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/7">
+                                        <sectionId>7</sectionId>
+                                        <identifier>restricted</identifier>
+                                        <name>Restricted</name>
+                                    </Section>
                                 </SectionList>
                 401:
                     description: Error - Iif the user has no permission to read the sections
-        /{contentId}:
+        /{sectionId}:
             get:
-                description: Returns the Section given by ID
+                description: Returns the Section given by Section ID
                 headers:
                     Accept:
                         description: If set the Section is returned in XML or JSON format
@@ -2319,10 +2409,10 @@ version: 2.4
                             application/vnd.ez.api.Section+xml:
                                 example:  |
                                     <?xml version="1.0" encoding="UTF-8"?>
-                                    <Section href="/content/sections/3" media-type="application/vnd.ez.api.Section+xml">
-                                      <sectionId>3</sectionId>
-                                      <identifier>media</identifier>
-                                      <name>Media</name>
+                                    <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/5">
+                                        <sectionId>5</sectionId>
+                                        <identifier>design</identifier>
+                                        <name>Design</name>
                                     </Section>
                     401:
                         description: Error - the user is not authorized to read this section
@@ -2356,9 +2446,25 @@ version: 2.4
                             	</xsd:all>
                               </xsd:complexType>
                             </xsd:schema>
+                    application/vnd.ez.api.SectionInput+xml:
+                        example:  |
+                            <?xml version="1.0" encoding="UTF-8"?>
+                            <SectionInput>
+                              <identifier>template</identifier>
+                              <name>Template</name>
+                            </SectionInput>
                 responses:
                     200:
                         description: OK - Section updated
+                        body:
+                            application/vnd.ez.api.Section+xml:
+                                example: |
+                                    <?xml version="1.0" encoding="UTF-8"?>
+                                    <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/7">
+                                        <sectionId>7</sectionId>
+                                        <identifier>template</identifier>
+                                        <name>Template</name>
+                                    </Section>
                     400:
                         description: Error - the Input does not match the input schema definition, In this case the response contains an ErrorMessage
                     401:
@@ -2370,6 +2476,7 @@ version: 2.4
             delete:
                 description: The given Section is deleted
                 headers:
+                # a little obvious?
                     Accept:
                         description: If set in the case of an error the error message is returned in XML or JSON format
                         example:  |
@@ -2377,7 +2484,7 @@ version: 2.4
                             application/vnd.ez.api.ErrorMessage+json
                 responses:
                     204:
-                        description: No content - given Section is deleted
+                        description: No Content - given Section is deleted
                     401:
                         description: Error - the user is not authorized to delete this section
                     404:
