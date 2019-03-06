@@ -255,9 +255,8 @@ version: 2.4
                     description: Error - the user is not authorized to given location
                 404:
                     description: Error - a given Location not exists / is not bookmarked
-/content:
+/:
     get:
-        # Listed as /content in the source file, but the endpoint does not seem to exist, as example works without /content as http://ezplatformee.local:8080/api/ezp/v2
         description: List the root resources of the eZ Platform installation.
         headers:
             Accept:
@@ -410,6 +409,7 @@ version: 2.4
                                     }
                                 }
                             }
+/content:
     /objects:
         post:
             description: Creates a new content draft assigned to the authenticated user. If a different userId is given in the input it is assigned to the given user but this required special rights for the authenticated user (this is useful for content staging where the transfer process does not have to authenticate with the user which created the content object in the source server). The user has to publish the content if it should be visible.
@@ -611,7 +611,6 @@ version: 2.4
                 404:
                     description: Error - a parent Location is specified in the request body and it does not exist
         get:
-            # same as /{contentId} below?
             description: Loads the content for a given remote ID
             queryParameters:
                 remoteId:
@@ -1341,7 +1340,7 @@ version: 2.4
                             404:
                                 description: Error - the ID or version is not found
                     patch:
-                        # 'xml' index is missing in hash
+                        # 'xml' index is missing in hash - bug - reported
                         description: A specific draft is updated. PATCH or POST with header X-HTTP-Method-Override PATCH.
                         queryParameters:
                             languages:
@@ -1702,8 +1701,7 @@ version: 2.4
                                                     <DestinationContent media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/86"/>
                                                     <RelationType>COMMON</RelationType>
                                                 </Relation>
-                        /{id}:
-                        # {relationId}?
+                        /{relationId}:
                             get:
                                 description: Loads a relation for the given content object
                                 headers:
@@ -1740,7 +1738,6 @@ version: 2.4
                                     404:
                                         description: Error - content object was not found or the relation was not found in the given version
             /relations:
-                # Could not get any response
                 get:
                     description: Redirects to the relations of the current version
                     responses:
@@ -1916,7 +1913,6 @@ version: 2.4
                     description: Error - imageId doesn't match any image OR variationIdentifier doesn't match any known variation
     /locations:
         get:
-            # did not get 307
             description: Loads the Location for a given ID (x), remote ID or URL alias
             queryParameters:
                 id:
@@ -1927,7 +1923,7 @@ version: 2.4
                     description: One of the URL  Aliases of the location. If present the Location with given URL  Alias is returned
             responses:
                 307:
-                    description: Temporary redirect
+                    description: Temporary redirect to main resource URL.
                 200:
                     body:
                         application/vnd.ez.api.Location+xml:
@@ -2090,7 +2086,6 @@ version: 2.4
                         404:
                             description: Error - the object with the given ID does not exist
         /{locationId}:
-            # it is locationID not contentId
             patch:
                 description: Updates the location, this method can also be used to hide/unhide a Location via the hidden field in the LocationUpdate. PATCH or POST with header X-HTTP-Method-Override PATCH
                 headers:
@@ -2206,8 +2201,7 @@ version: 2.4
                         description: Error - the Location with the given ID does not exist
     /views:
         post:
-            deprecated?
-            description: Executes a query and returns view including the results. The View input reflects the criteria model of the public API. Will respond with a 301, as the resource has been moved to /views (Platform 1.0)
+            description: Executes a query and returns view including the results. The View input reflects the criteria model of the public API. Will respond with a 301, as the resource has been moved to /views (Platform 1.0) - DEPRECATED
             headers:
                 Accept:
                     description: The view in XML or JSON format
@@ -2240,8 +2234,7 @@ version: 2.4
                 400:
                     description: Error - the Input does not match the input schema definition, In this case the response contains an ErrorMessage
         get:
-            # deprecated?
-            description: Returns a list of view URIs. The list includes public view and private view of the authenticated user.
+            description: Returns a list of view URIs. The list includes public view and private view of the authenticated user. - DEPRECATED
             headers:
                 Accept:
                     description: The view link list in XML or JSON format
@@ -2252,9 +2245,8 @@ version: 2.4
                 200:
                     description: OK - list of view URIs
         /{identifier}:
-            # deprecated?
             get:
-                description: Returns the view
+                description: Returns the view - DEPRECATED
                 headers:
                     Accept:
                         description: The view excluding results in XML or JSON format
@@ -2267,7 +2259,7 @@ version: 2.4
                     401:
                         description: Error - the view is not public and from another user
             delete:
-                description: The given view is deleted
+                description: The given view is deleted - DEPRECATED
                 responses:
                     204:
                         description: No content - the given view is deleted
@@ -2277,7 +2269,7 @@ version: 2.4
                         description: Error - the view does not exist
             /results:
                 get:
-                    description: Returns result of the view
+                    description: Returns result of the view - DEPRECATED
                     headers:
                         Accept:
                             description: The view excluding results in XML or JSON format
@@ -2475,13 +2467,13 @@ version: 2.4
                        description: Error - the current ETag does not match with the provided one in the If-Match header
             delete:
                 description: The given Section is deleted
-                headers:
+                #headers:
                 # a little obvious?
-                    Accept:
-                        description: If set in the case of an error the error message is returned in XML or JSON format
-                        example:  |
-                            application/vnd.ez.api.ErrorMessage+xml
-                            application/vnd.ez.api.ErrorMessage+json
+                    #Accept:
+                        #description: If set in the case of an error the error message is returned in XML or JSON format
+                        #example:  |
+                            #application/vnd.ez.api.ErrorMessage+xml
+                            #application/vnd.ez.api.ErrorMessage+json
                 responses:
                     204:
                         description: No Content - given Section is deleted
@@ -2491,7 +2483,7 @@ version: 2.4
                         description: Error - the Section does not exist
 /views:
     post:
-    # check Missing &lt;Query&gt; attribute for &lt;ViewInput&gt;
+    # inspect -> Network  - wyklikac sub-items list
         description: Executes a query and returns view including the results the View input reflects the criteria model of the public API
         headers:
             Accept:
