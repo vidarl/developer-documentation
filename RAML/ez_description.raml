@@ -3,14 +3,234 @@
 title: eZ Platform API documentation (Test)
 version: 2.4
 
+BookmarkList:
+    description: List of bookmarks.
+    type: object
+    count: Count bookmarks owned by user.
+        description:
+        type: integer
+    items:
+        description: BookmarkList constructor.
+        type: integer
+        Location:
+            description: This class represents a location in the repository.
+               type: class
 
-ContentService:
-    description: This class provides service methods for managing content.
-    example: Examples/content.php
-    parameters:
-        loadContentInfo:
-            description: Loads a content info object. To load fields use loadContent
-        loadContentInfoList:
-            description:
-        loadContentInfoByRemoteId:
-        loadVersionInfo:
+Location:
+    description: This class represents a location in the repository.
+        type: class
+        id:
+            description: The id of the Location
+            type: mixed
+        status:
+            description: The status of the location. A location gets the status DRAFT on newly created content which is not published. When content is published the location gets the status STATUS_PUBLISHED
+            values: |
+                const STATUS_DRAFT = 0;
+                const STATUS_PUBLISHED = 1;
+            type: integer
+        priority:
+            description: Location priority. Position of the Location among its siblings when sorted using priority sort order.
+            type: integer
+        hidden:
+            description: Indicates that the Location entity has been explicitly marked as hidden.
+            type: boolean
+        invisible:
+            description: Indicates that the Location is implicitly marked as hidden by a parent Location.
+            type: boolean
+        remoteId:
+            description: Remote ID, universally unique identifier.
+            type: string
+        ContentInfo:
+            description: This class provides all version independent information of the Content object.
+            type: class
+        draft:
+            description: Returns true if current location is a draft.
+            type: boolean
+        parentLocationId:
+            description: Parent ID.
+            type: mixed Location ID
+        pathString:
+            description: The materialized path of the location entry.
+            example: /1/2/
+            type: string
+        depth:
+            description: Depth location has in the location tree.
+            type: integer
+        sortField:
+            description: Specifies which property the child locations should be sorted on.
+            type: integer
+            SORT_FIELD_MAP:
+                description: Map for Location sort fields to their respective SortClauses - class name/identifier and modified subnode
+                values: |
+                    const SORT_FIELD_PATH = 1;
+                    const SORT_FIELD_PUBLISHED = 2;
+                    const SORT_FIELD_MODIFIED = 3;
+                    const SORT_FIELD_SECTION = 4;
+                    const SORT_FIELD_DEPTH = 5;
+                    const SORT_FIELD_PRIORITY = 8;
+                    const SORT_FIELD_NAME = 9;
+                    const SORT_FIELD_NODE_ID = 11;
+                    const SORT_FIELD_CONTENTOBJECT_ID = 12;
+        sortOrder:
+            description: Specifies whether the sort order should be ascending or descending.
+            type: integer
+            SORT_ORDER_MAP:
+                description: Map for Location sort order to their respective Query SORT constants.
+                values: |
+                    const SORT_ORDER_DESC = 0;
+                    const SORT_ORDER_ASC = 1;
+        Content:
+            description: Represents a content object in a specific version
+            type: class
+
+ContentInfo:
+    description: This class provides all version independent information of the Content object.
+    type: class
+    id:
+        description: The unique id of the Content object.
+        type: mixed
+    contentTypeId:
+        description: The Content Type id of the Content object.
+        type: mixed
+    name:
+        description: The computed name (via name schema) in the main language of the Content object.
+        type: string
+    sectionId:
+        description: The section to which the Content object is assigned.
+        type: mixed
+    currentVersionNo:
+        description: Current Version number is the version number of the published version or the version number of a newly created draft (which is 1).
+        type: integer
+    published:
+        description: True if there exists a published version, false otherwise.
+        type: boolean
+    ownerId:
+        description: The owner of the Content object.
+        type: mixed
+    modificationDate:
+        description: Content modification date.
+        type: DateTime
+    publishedDate:
+        description: Content publication date.
+        type: DateTime
+    alwaysAvailable:
+        description: Indicates if the Content object is shown in the mainlanguage if its not present in an other requested language.
+        type: boolean
+    remoteId:
+        description: Remote identifier used as a custom identifier for the object.
+        type: string
+    mainLanguageCode:
+        description: The main language code of the Content object.
+        type: string
+    mainLocationId:
+        description: Identifier of the main location. If the Content object has multiple locations, mainLocationId will point to the main one.
+        type: mixed
+    status:
+        description: Status of the content.
+        type: integer
+        values: |
+            const STATUS_DRAFT = 0;
+            const STATUS_PUBLISHED = 1;
+            const STATUS_TRASHED = 2;
+Content:
+    description: Content Id matcher class
+    type: class
+    VersionInfo:
+        description: Returns the VersionInfo for this version.
+        type: abstract public function
+    Name:
+        description: Shorthand method for getVersionInfo()->getName().
+        type: public function
+    FieldValue:
+        description: Returns a field value for the given value.
+        type: abstract public function
+    Fields:
+        description: This method returns the complete fields collection.
+        type: abstract public function
+    FieldsByLanguage:
+        description: This method returns the fields for a given language and non translatable fields.
+        type: abstract public function
+    Field:
+        description: This method returns the field for a given field definition identifier and language.
+        type: abstract public function
+    ContentType:
+        descritpion: Content Type
+        type: class
+
+ContentType:
+    descritpion: Content Type
+    type: abstract class
+    id:
+        description: Content type ID.
+        type: mixed
+    status:
+        description: The status of the content type.
+        values: |
+            const STATUS_DEFINED = 0; Status constant for defined (aka "published") Type
+            const STATUS_DRAFT = 1; Status constant for draft (aka "temporary") Type
+            const STATUS_MODIFIED = 2; Status constant for modified (aka "deferred for publishing") Type
+    identifier:
+        description: String identifier of a content type.
+        type: string
+    creationDate:
+        description: Creation date of the content type.
+        type: DateTime
+    modificationDate:
+        description: Modification date of the content type.
+        type: DateTime
+    creatorId:
+        descritpion: Creator user id of the content type.
+        type: mixed
+    modifierId:
+        description: Modifier user id of the content type.
+        type: mixed
+    remoteId:
+        description: Unique remote ID of the content type.
+        type: string
+    urlAliasSchema:
+        description: URL alias schema. If nothing is provided, $nameSchema will be used instead.
+        type: string
+    nameSchema:
+        description: Name schema. Can be composed of FieldDefinition identifier place holders.
+        type: string
+    isContainer:
+        description: A flag used to hint if content of this type may have children or not. It is highly recommended to respect this flag and not create/move content below non-containers. But this flag is not considered as part of the content model and the API will not in any way enforce this flag to be respected.
+        type: boolean
+    defaultAlwaysAvailable:
+        description: If an instance of a content type is created the always available flag is set by default to this value.
+        type: boolean
+    defaultSortField:
+        descritpion: Specifies which property the child locations should be sorted on by default when created.
+        SORT_FIELD_MAP:
+            description: Map for Location sort fields to their respective SortClauses - class name/identifier and modified subnode
+            type: integer
+            values: |
+                const SORT_FIELD_PATH = 1;
+                const SORT_FIELD_PUBLISHED = 2;
+                const SORT_FIELD_MODIFIED = 3;
+                const SORT_FIELD_SECTION = 4;
+                const SORT_FIELD_DEPTH = 5;
+                const SORT_FIELD_PRIORITY = 8;
+                const SORT_FIELD_NAME = 9;
+                const SORT_FIELD_NODE_ID = 11;
+                const SORT_FIELD_CONTENTOBJECT_ID = 12;
+    defaultSortOrder:
+        description: Specifies whether the sort order should be ascending or descending by default when created.
+        SORT_ORDER_MAP:
+            description: Map for Location sort order to their respective Query SORT constants.
+            type: integer
+            values: |
+                const SORT_ORDER_DESC = 0;
+                const SORT_ORDER_ASC = 1;
+    languageCodes:
+        description: List of language codes used by translations.
+        type: string
+    ContentTypeGroups:
+        description: This method returns the content type groups this content type is assigned to.
+        type: abstract public function
+    FieldDefinitions:
+        description: This method returns the content type field definitions from this type.
+        type: abstract public function
+    FieldDefinition:
+        description: This method returns the field definition for the given identifier.
+        type: abstract public function
