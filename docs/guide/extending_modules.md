@@ -145,6 +145,21 @@ system:
                         limit: 50
 ```
 
+#### Defineing  allowed Content Types
+
+You can configure permissions to filter `content_on_the_fly.allowed_content_types` table.
+It will allow you to specify what Content Types are excluded from `Content/Create` with Content Type limitation.
+
+```yaml
+system:
+    default:
+        universal_discovery_widget_module:
+            configuration:
+                default:
+                    allowed_content_types: []
+```
+
+
 ## Sub-items List
 
 The Sub-items List module is meant to be used as a part of the editorial interface of eZ Platform.
