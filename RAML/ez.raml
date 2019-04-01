@@ -626,8 +626,8 @@ version: 2.4
                 description: Loads the Content Object for the given ID. Depending on the Accept header the current version is embedded (i.e the current published version or if not exists the draft of the authenticated user)
                 queryParameters:
                      languages:
-                        description: Restricts the output of translatable fields to the given languages
-                        type: comma separated list
+                        description: Restricts the output of translatable fields to the given languages. Comma separated list
+                        type: string
                 headers:
                     Accept:
                         description: Content - 	if set all informations for the content object including the embedded current version are returned in XML or JSON format. ContentInfo - if set all informations for the content object (excluding the current version) are returned in XML or JSON format
@@ -1216,14 +1216,14 @@ version: 2.4
                         description: Loads a specific version of a content object. This method returns fields and relations
                         queryParameters:
                             fields:
-                                description: Fields which should be returned in the response
-                                type: Comma separated list
+                                description: Fields which should be returned in the response. Comma separated list.
+                                type: string
                             responseGroups:
                                 description: Alternative comma separated lists of predefined field groups
-                                type: Comma separated lists
+                                type: string
                             languages:
-                                description: Restricts the output of translatable fields to the given languages
-                                type: Comma separated list
+                                description: Restricts the output of translatable fields to the given languages. Comma separated list
+                                type: string
                         headers:
                             If-None-Match:
                                 description: Only return the version if the given ETag is the not current one otherwise a 304 is returned.
@@ -1345,8 +1345,8 @@ version: 2.4
                         description: A specific draft is updated. PATCH or POST with header X-HTTP-Method-Override PATCH.
                         queryParameters:
                             languages:
-                                description: Restricts the output of translatable fields to the given languages
-                                type: Comma separated list
+                                description: Restricts the output of translatable fields to the given languages. Comma separated list
+                                type: string
                         headers:
                             Accept:
                                 description: If set the updated version is returned in XML or JSON format
