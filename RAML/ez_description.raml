@@ -59,25 +59,25 @@ types:
         description: "Content Id matcher class"
         type: object
         properties:
-            VersionInfo:
+            getVersionInfo:
                 description: "Returns the VersionInfo for this version."
-                type: object
-            Name:
+                type: VersionInfo
+            getName:
                 description: "Shorthand method for getVersionInfo()->getName(). Return the name of the domain object in a given language."
                 type: string
-            FieldValue:
+            getFieldValue:
                 description: "Returns a field value for the given value."
                 type: string
-            Fields:
+            getFields:
                 description: "This method returns the complete fields collection."
                 type: Field[]
-            FieldsByLanguage:
+            getFieldsByLanguage:
                 description: "This method returns the fields for a given language and non translatable fields."
                 type: Field[]
-            Field:
+            getField:
                 description: "This method returns the field for a given field definition identifier and language."
                 type: Field
-            ContentType:
+            getContentType:
                 descritpion: "Content Type value"
                 type: ContentType
     ContentType:
@@ -129,13 +129,13 @@ types:
             languageCodes:
                 description: "List of language codes used by translations."
                 type: string
-            ContentTypeGroups:
+            getContentTypeGroups:
                 description: "This method returns the content type groups this content type is assigned to."
                 type: ContentTypeGroup[]
-            FieldDefinitions:
+            getFieldDefinitions:
                 description: "This method returns the content type field definitions from this type."
                 type: FieldDefinition[]
-            FieldDefinition:
+            getFieldDefinition:
                 description: "This method returns the field definition for the given identifier."
                 type: FieldDefinition
     ContentInfo:
@@ -273,4 +273,43 @@ types:
         type: object
         properties:
             construct:
-
+    VersionInfo:
+        description: "This class holds version information data. It also contains the corresponding {@link Content} to which the version belongs to."
+        type: object
+        properties:
+            id:
+                description: "Version ID."
+                type: integer
+            versionNo:
+                description: "Version number. In contrast to {@link $id}, this is the version number, which only increments in scope of a single Content object."
+                type: integer
+            getContentInfo:
+                description: "Content of the content this version belongs to."
+                type: ContentInfo
+            modificationDate:
+                description: "The last modified date of this version."
+                type: DateTime
+            creatorId:
+                description: "Creator user ID. Creator of the version, in the search API this is referred to as the modifier of the published content."
+                type: integer
+            creationDate:
+                description: "Content creation date."
+                type: DateTime
+            status:
+                description: "One of: VersionInfo::STATUS_DRAFT=0, VersionInfo::STATUS_PUBLISHED=1, VersionInfo::STATUS_ARCHIVED=3."
+                type: integer
+            initialLanguageCode:
+                description: "The language code which is used for labeling a translation."
+                type: string
+            languageCodes:
+                description: "List of languages in this version. Reflects which languages fields exists in for this version."
+                type: string[]
+            isDraft:
+                description: "Returns true if version is a draft. Returns status self::STATUS_DRAFT."
+                type: boolean
+            isPublished:
+                description: "Returns true if version is published. Returns status self::STATUS_PUBLISHED"
+                type: boolean
+            isArchived:
+                description: "Returns true if version is archived. Returns status self::STATUS_ARCHIVED"
+                type: boolean
