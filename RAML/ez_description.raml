@@ -9,52 +9,6 @@ types:
             items:
                 description: "List of bookmarked locations."
                 type: Location[]
-    Location:
-        description: "This class represents a location in the repository."
-        type: object
-        properties:
-            id:
-                description: "The id of the Location"
-                type: integer
-            status:
-                description: "The status of the location. A location gets the status DRAFT = 0 on newly created content which is not published. When content is published the location gets the status STATUS_PUBLISHED = 1"
-                type: integer
-            priority:
-                description: "Location priority. Position of the Location among its siblings when sorted using priority sort order."
-                type: integer
-            hidden:
-                description: "Indicates that the Location entity has been explicitly marked as hidden."
-                type: boolean
-            invisible:
-                description: "Indicates that the Location is implicitly marked as hidden by a parent Location."
-                type: boolean
-            remoteId:
-                description: "Remote ID, universally unique identifier."
-                type: string
-            ContentInfo:
-                description: "This class provides all version independent information of the Content object."
-                type: class
-            draft:
-                description: "Returns true if current location is a draft."
-                type: boolean
-            parentLocationId:
-                description: Parent ID.
-                type: integer
-            pathString:
-                description: "The materialized path of the location entry e.g. /1/2/"
-                type: string
-            depth:
-                description: Depth location has in the location tree.
-                type: integer
-            sortField:
-                description: "Specifies which property the child locations should be sorted on. Map for Location sort fields to their respective SortClauses - class name/identifier and modified subnode. One of the fallowing values: const SORT_FIELD_PATH = 1; const SORT_FIELD_PUBLISHED = 2; const SORT_FIELD_MODIFIED = 3; const SORT_FIELD_SECTION = 4; const SORT_FIELD_DEPTH = 5; const SORT_FIELD_PRIORITY = 8; const SORT_FIELD_NAME = 9; const SORT_FIELD_NODE_ID = 11; const SORT_FIELD_CONTENTOBJECT_ID = 12;"
-                type: integer
-            sortOrder:
-                description: "Specifies whether the sort order should be ascending or descending. Map for Location sort order to their respective Query SORT constants. One of the fallowing values: const SORT_ORDER_DESC = 0; const SORT_ORDER_ASC = 1"
-                type: integer
-            Content:
-                description: "Represents a content object in a specific version"
-                type: Content
     Content:
         description: "Content Id matcher class"
         type: object
@@ -80,6 +34,112 @@ types:
             getContentType:
                 descritpion: "Content Type value"
                 type: ContentType
+    ContentCreateStruct:
+        description: "This class is used for creating a new content object."
+        type: object
+        properties:
+            contentType:
+                descritpion: "The content type for which the new content is created. Required."
+                type: ContentType
+            sectionId:
+                descritpion: "The section the content is assigned to. If not set the section of the parent is used or a default section."
+                type: integer
+            ownerId:
+                descritpion: "The owner of the content. If not given the current authenticated user is set as owner."
+                type: integer
+            alwaysAvailable:
+                descritpion: "Indicates if the content object is shown in the mainlanguage if its not present in an other requested language."
+                type: boolean
+            remoteId:
+                descritpion: "Remote identifier used as a custom identifier for the object. Needs to be a unique Content->remoteId string value."
+                type: string
+            mainLanguageCode:
+                descritpion: "The main language code for the content. This language will also be used for as initial language for the first created version. It is also used as default language for added fields. Required."
+                type: string
+            modificationDate:
+                descritpion: "Modification date. If not given the current timestamp is used."
+                type: DateTime
+    ContentInfo:
+        description: "This class provides all version independent information of the Content object."
+        type: object
+        properties:
+            id:
+                description: "The unique id of the Content object."
+                type: integer
+            contentTypeId:
+                description: "The Content Type id of the Content object."
+                type: integer
+            name:
+                description: "The computed name (via name schema) in the main language of the Content object."
+                type: string
+            sectionId:
+                description: "The section to which the Content object is assigned."
+                type: integer
+            currentVersionNo:
+                description: "Current Version number is the version number of the published version or the version number of a newly created draft (which is 1)."
+                type: integer
+            published:
+                description: "True if there exists a published version, false otherwise."
+                type: boolean
+            ownerId:
+                description: "The owner of the Content object."
+                type: integer
+            modificationDate:
+                description: "Content modification date."
+                type: DateTime
+            publishedDate:
+                description: "Content publication date."
+                type: DateTime
+            alwaysAvailable:
+                description: "Indicates if the Content object is shown in the main language if its not present in an other requested language."
+                type: boolean
+            remoteId:
+                description: "Remote identifier used as a custom identifier for the object."
+                type: string
+            mainLanguageCode:
+                description: "The main language code of the Content object."
+                type: string
+            mainLocationId:
+                description: "Identifier of the main location. If the Content object has multiple locations, mainLocationId will point to the main one."
+                type: integer
+            status:
+                description: "Status of the content. Possible values: const STATUS_DRAFT = 0;const STATUS_PUBLISHED = 1; const STATUS_TRASHED = 2"
+                type: integer
+    ContentMetadataUpdateStruct:
+        description: "With this class data can be provided to update version independent fields of the content. It is used in content update methods. At least one property in this class must be set."
+        type: object
+        properties:
+            ownerId:
+                description: "If set this value changes the owner id of the content object."
+                type: integer
+            publishedDate:
+                description: "If set this value overrides the publication date of the content. (Used in staging scenarios)."
+                type: DateTime
+            modificationDate:
+                description: "If set this value overrides the modification date. (Used for staging scenarios)."
+                type: DateTime
+            mainLanguageCode:
+                description: "If set the main language of the content object is changed."
+                type: string
+            alwaysAvailable:
+                description: "If set this value changes the always available flag."
+                type: boolean
+            remoteId:
+                description: "If set this value changes the remoteId. Needs to be a unique Content->remoteId string value."
+                type: string
+            mainLocationId:
+                description: "If set  main location is changed to this value. If the content object has multiple locations, $mainLocationId will point to the main one."
+                type: integer
+            name:
+                description: "If set, will change the content's 'always-available' name."
+                type: string
+    ContentStruct:
+        description: "Base struct for content create/update structs."
+        type: object
+        properties:
+            setField:
+                description: "Adds a field to the field collection. This method could also be implemented by a magic setter so that $fields[$fieldDefIdentifier][$language] = $value or without language $fields[$fieldDefIdentifier] = $value is an equivalent call."
+                type: string
     ContentType:
         descritpion: "Content Type"
         type: object
@@ -138,52 +198,6 @@ types:
             getFieldDefinition:
                 description: "This method returns the field definition for the given identifier."
                 type: FieldDefinition
-    ContentInfo:
-        description: "This class provides all version independent information of the Content object."
-        type: object
-        properties:
-            id:
-                description: "The unique id of the Content object."
-                type: integer
-            contentTypeId:
-                description: "The Content Type id of the Content object."
-                type: integer
-            name:
-                description: "The computed name (via name schema) in the main language of the Content object."
-                type: string
-            sectionId:
-                description: "The section to which the Content object is assigned."
-                type: integer
-            currentVersionNo:
-                description: "Current Version number is the version number of the published version or the version number of a newly created draft (which is 1)."
-                type: integer
-            published:
-                description: "True if there exists a published version, false otherwise."
-                type: boolean
-            ownerId:
-                description: "The owner of the Content object."
-                type: integer
-            modificationDate:
-                description: "Content modification date."
-                type: DateTime
-            publishedDate:
-                description: "Content publication date."
-                type: DateTime
-            alwaysAvailable:
-                description: "Indicates if the Content object is shown in the main language if its not present in an other requested language."
-                type: boolean
-            remoteId:
-                description: "Remote identifier used as a custom identifier for the object."
-                type: string
-            mainLanguageCode:
-                description: "The main language code of the Content object."
-                type: string
-            mainLocationId:
-                description: "Identifier of the main location. If the Content object has multiple locations, mainLocationId will point to the main one."
-                type: integer
-            status:
-                description: "Status of the content. Possible values: const STATUS_DRAFT = 0;const STATUS_PUBLISHED = 1; const STATUS_TRASHED = 2"
-                type: integer
     ContentTypeGroup:
         description: "This class represents a content type group value."
         type: object
@@ -206,6 +220,40 @@ types:
             modifierId:
                 description: "Modifier user id."
                 type: integer
+    ContentUpdateStruct:
+        description: "This class is used for updating the fields of a content object draft."
+        type: object
+        properties:
+            initialLanguageCode:
+                description: "The language code of the version. This code is used as the language code of the translation (which is shown in the admin interface). It is also used as default language for added fields."
+                type: string
+            creatorId:
+                description: "Creator user ID. Creator of the version, in the search API this is referred to as the modifier of the published content."
+                type: integer
+    DateTime: TODO Ask Adam
+        description: "Representation of date and time."
+        type: object
+        properties:
+            construct:
+    Field:
+        description: "This class represents a field of a content object."
+        type: object
+        properties:
+            id:
+                description: "The field id."
+                type: integer
+            fieldDefIdentifier:
+                description: "The field definition identifier."
+                type: string
+            value:
+                description: "A field type value or a value type which can be converted by the corresponding field type."
+                type: any
+            languageCode:
+                description: "The language code."
+                type: string
+            fieldTypeIdentifier:
+                description: "Field type identifier."
+                type: string
     FieldDefinition:
         description: "This class represents a field definition."
         type: object
@@ -249,30 +297,185 @@ types:
             mainLanguageCode:
                 description: "Based on mainLanguageCode of contentType."
                 type: string
-    Field:
-        description: "This class represents a field of a content object."
+    Language:
+        description: "This class represents a language in the repository."
+        type: object
+        properties:
+            ALL:
+                description: "Constant for use in API's to specify that you want to load all languages."
+                type: array
+            id:
+                description: "The language id (auto generated)."
+                type: integer
+            languageCode:
+                description: "The languageCode code."
+                type: string
+            name:
+                description: "Human readable name of the language."
+                type: string
+            enabled:
+                description: "Indicates if the language is enabled or not."
+                type: boolean
+    LanguageCreateStruct:
+        description: "This class represents a value for creating a language."
+        type: object
+        properties:
+            languageCode:
+                description: "The languageCode code. Needs to be a unique."
+                type: string
+            name:
+                description: "Human readable name of the language."
+                type: string
+            enabled:
+                description: "Indicates if the language is enabled or not."
+                type: boolean
+    Location:
+        description: "This class represents a location in the repository."
         type: object
         properties:
             id:
-                description: "The field id."
+                description: "The id of the Location"
                 type: integer
-            fieldDefIdentifier:
-                description: "The field definition identifier."
+            status:
+                description: "The status of the location. A location gets the status DRAFT = 0 on newly created content which is not published. When content is published the location gets the status STATUS_PUBLISHED = 1"
+                type: integer
+            priority:
+                description: "Location priority. Position of the Location among its siblings when sorted using priority sort order."
+                type: integer
+            hidden:
+                description: "Indicates that the Location entity has been explicitly marked as hidden."
+                type: boolean
+            invisible:
+                description: "Indicates that the Location is implicitly marked as hidden by a parent Location."
+                type: boolean
+            explicitlyHidden:
+                description: "Indicates that the Location entity has been explicitly marked as hidden."
+                type: boolean
+            remoteId:
+                description: "Remote ID, universally unique identifier."
                 type: string
-            value:
-                description: "A field type value or a value type which can be converted by the corresponding field type."
-                type: any
-            languageCode:
-                description: "The language code."
+            getContentInfo:
+                description: "This class provides all version independent information of the Content object."
+                type: ContentInfo
+            isDraft:
+                description: "Returns true if current location is a draft."
+                type: boolean
+            parentLocationId:
+                description: Parent ID.
+                type: integer
+            pathString:
+                description: "The materialized path of the location entry e.g. /1/2/"
                 type: string
-            fieldTypeIdentifier:
-                description: "Field type identifier."
-                type: string
-    DateTime: TODO Ask Adam
-        description: "Representation of date and time."
+            depth:
+                description: "Depth location has in the location tree."
+                type: integer
+            sortField:
+                description: "Specifies which property the child locations should be sorted on. Map for Location sort fields to their respective SortClauses - class name/identifier and modified subnode. One of the fallowing values: const SORT_FIELD_PATH = 1; const SORT_FIELD_PUBLISHED = 2; const SORT_FIELD_MODIFIED = 3; const SORT_FIELD_SECTION = 4; const SORT_FIELD_DEPTH = 5; const SORT_FIELD_PRIORITY = 8; const SORT_FIELD_NAME = 9; const SORT_FIELD_NODE_ID = 11; const SORT_FIELD_CONTENTOBJECT_ID = 12;"
+                type: integer
+            sortOrder:
+                description: "Specifies whether the sort order should be ascending or descending. Map for Location sort order to their respective Query SORT constants. One of the fallowing values: const SORT_ORDER_DESC = 0; const SORT_ORDER_ASC = 1"
+                type: integer
+            Content:
+                description: "Represents a content object in a specific version"
+                type: Content
+            getSortClauses:
+                description: "Get SortClause objects built from Locations's sort options."
+                type: SortClause[]
+    LocationCreateStruct:
+        description: This class is used to create a new Location for a content object.
         type: object
         properties:
-            construct:
+            priority:
+                description: "Location priority. Position of the Location among its siblings when sorted using priority sort order."
+                type: integer
+            hidden:
+                description: "ndicates that the Location entity has been explicitly marked as hidden."
+                type: boolean
+            remoteId:
+                description: "An universally unique string identifier. Needs to be a unique Location->remoteId string value."
+                type: integer
+            sortField:
+                description: "Specifies which property the child locations should be sorted on. Valid values are found at {@link Location::SORT_FIELD_*}"
+                type: integer
+            sortOrder:
+                description: "Specifies whether the sort order should be ascending or descending.  Valid values are {@link Location::SORT_ORDER_*}"
+                type: integer
+            parentLocationId:
+                description: "The id of the parent location under which the new location should be created. Required."
+                type: integer
+    LocationList:
+        description: "This class represents a queried location list holding a totalCount and a partial list of locations (by offset/limit parameters and permission filters)."
+        type: object
+        properties:
+            totalCount:
+                description: "The total count of found locations (filtered by permissions)."
+                type: integer
+            locations:
+                description: "The partial list of locations controlled by offset/limit."
+                type: Location[]
+    LocationQuery:
+        description: "This class is used to perform a Location query."
+        type: object
+    LocationUpdateStruct:
+        description: "This class is used for updating location meta data."
+        type: object
+        properties:
+            priority:
+                description: "If set the location priority is changed to the new value."
+                type: integer
+            remoteId:
+                description: "If set the location gets a new remoteId. Needs to be a unique Location->remoteId string value."
+                type: integer
+            sortField:
+                description: "If set the sortField is changed. The sort field specifies which property the child locations should be sorted on. Valid values are found at {@link Location::SORT_FIELD_*}."
+                type: integer
+            sortOrder:
+                description: "If set the sortOrder is changed. The sort order specifies whether the sort order should be ascending or descending. Valid values are {@link Location::SORT_ORDER_*}."
+                type: integer
+    Query:
+        description: "This class is used to perform a Content query."
+        type: object
+        properties:
+            filter:
+                description: "The Query filter. Can contain multiple criterion, as items of a logical one (by default AND)"
+                type: Criterion
+            query:
+                description: ""
+                type: Criterion
+            sortClauses:
+                description: ""
+                type:
+            facetBuilders:
+                description: ""
+                type:
+            offset:
+                description: ""
+                type:
+            limit:
+                description: ""
+                type:
+            spellcheck:
+                description: ""
+                type:
+            performCount:
+                description: ""
+                type:
+    SortClause:
+        description: "This class is the base for SortClause classes, used to set sorting of content queries."
+        type: object
+        properties:
+            direction:
+                description: "Sort direction. One of Query::SORT_ASC or Query::SORT_DESC;."
+                type: string
+            target:
+                description: "Sort target, high level: section_identifier, attribute_value, etc."
+                type: string
+            targetData:
+                description: "Extra target data, required by some sort clauses, field for instance."
+                type: Target
+    Target:
+        description: "Struct that stores extra target information for a SortClause object."
+        type: object
     VersionInfo:
         description: "This class holds version information data. It also contains the corresponding {@link Content} to which the version belongs to."
         type: object
