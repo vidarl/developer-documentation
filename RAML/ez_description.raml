@@ -198,6 +198,55 @@ types:
             getFieldDefinition:
                 description: "This method returns the field definition for the given identifier."
                 type: FieldDefinition
+    ContentTypeCreateStruct:
+        description: "This class is used for creating content types."
+        type: object
+        properties:
+            identifier:
+                description: "String unique identifier of a type. Required."
+                type: string
+            mainLanguageCode:
+                description: "Main language Code. Required."
+                type: string
+            remoteId:
+                description: "The remote id."
+                type: string
+            urlAliasSchema:
+                description: "URL alias schema."
+                type: string
+            nameSchema:
+                description: "Name schema."
+                type: string
+            isContainer:
+                description: "Determines if the type is a container."
+                type: boolean
+            defaultSortField:
+                description: "Specifies which property the child locations should be sorted on by default when created."
+                type: integer
+            defaultSortOrder:
+                description: "Specifies whether the sort order should be ascending or descending by default when created."
+                type: integer
+            defaultAlwaysAvailable:
+                description: "If an instance of a content type is created the always available flag is set by default this this value."
+                type: boolean
+            names:
+                description: "An array of names with languageCode keys. Required. - at least one name in the main language is required."
+                type: array
+            descriptions:
+                description: "An array of descriptions with languageCode keys."
+                type: array
+            addFieldDefinition:
+                description: "Adds a new field definition."
+                type: FieldDefinitionCreateStruct
+            creatorId:
+                description: "If set this value overrides the current user as creator."
+                type: integer
+            creationDate:
+                description: "f set this value overrides the current time for creation."
+                type: DateTime
+    ContentTypeDraft:
+        description: "This class represents a draft of a content type."
+        type: object
     ContentTypeGroup:
         description: "This class represents a content type group value."
         type: object
@@ -220,6 +269,76 @@ types:
             modifierId:
                 description: "Modifier user id."
                 type: integer
+    ContentTypeGroupCreateStruct:
+        description: "This class is used for creating a content type group."
+        type: object
+        properties:
+            creatorId:
+                description: "If set this value overrides the current user as creator."
+                type: integer
+            creationDate:
+                description: "If set this value overrides the current time for creation."
+                type: DateTime
+    ContentTypeGroupStruct:
+        description: "This class is used for updating a content type group."
+        type: object
+        properties:
+            identifier:
+                description: Readable and unique string identifier of a group.
+                type: string
+    ContentTypeGroupUpdateStruct:
+        description: "This class is used for updating a content type group."
+        type: object
+        properties:
+            modifierId:
+                description: "If set this value overrides the current user as modifier."
+                type: integer
+            modificationDate:
+                description: "If set this value overrides the current time for modified."
+                type: DateTime
+    ContentTypeUpdateStruct:
+        description: "This class is used for updating a content type."
+        type: object
+        properties:
+            identifier:
+                description: "If set the unique identifier of a type is changed to this value."
+                type: string
+            remoteId:
+                description: "If set the remote ID is changed to this value."
+                type: string
+            urlAliasSchema:
+                description: "If set the URL alias schema is changed to this value."
+                type: string
+            nameSchema:
+                description: "f set the name schema is changed to this value."
+                type: string
+            isContainer:
+                description: "If set the container fllag is set to this value."
+                type: boolean
+            mainLanguageCode:
+                description: "If set the main language is changed to this value."
+                type: integer
+            defaultSortField:
+                description: "If set the default sort field is changed to this value."
+                type: integer
+            defaultSortOrder:
+                description: "If set the default sort order is set to this value."
+                type: integer
+            defaultAlwaysAvailable:
+                description: "If set the default always available flag is set to this value."
+                type: boolean
+            modifierId:
+                description: "If set this value overrides the current user as creator."
+                type: integer
+            modificationDate:
+                description: "If set this value overrides the current time for creation."
+                type: DateTime
+            names:
+                description: "If set this array of names with languageCode keys replace the complete name collection."
+                type: array
+            descriptions:
+                description: "If set this array of descriptions with languageCode keys replace the complete description collection."
+                type: array
     ContentUpdateStruct:
         description: "This class is used for updating the fields of a content object draft."
         type: object
@@ -326,10 +445,10 @@ types:
             isInfoCollector:
                 description: "The flag if this field is used for information collection."
                 type: boolean
-            ValidatorConfiguration:
+            getValidatorConfiguration:
                 description: "This method returns the validator configuration of this field definition supported by the field type."
                 type: any
-            FieldSettings:
+            getFieldSettings:
                 description: "This method returns settings for the field definition supported by the field type."
                 type: any
             defaultValue:
@@ -341,6 +460,89 @@ types:
             mainLanguageCode:
                 description: "Based on mainLanguageCode of contentType."
                 type: string
+    FieldDefinitionCreateStruct:
+        description: "This class is used to create a field definition."
+        type: object
+        properties:
+            fieldTypeIdentifier:
+                description: "String identifier of the field type. Required."
+                type: string
+            identifier:
+                description: "Readable string identifier of a field definition. Needs to be unique within the context of the Content Type this is added to. Required."
+                type: string
+            names:
+                description: "An array of names with languageCode keys."
+                type: array
+            descriptions:
+                description: "An array of descriptions with languageCode keys."
+                type: array
+            fieldGroup:
+                description: "Field group name."
+                type: string
+            position:
+                description: "The position of the field definition in the content type if not set the field is added at the end."
+                type: integer
+            isTranslatable:
+                description: "Indicates if the field is translatable."
+                type: boolean
+            isRequired:
+                description: "Indicates if the field is required."
+                type: boolean
+            isInfoCollector:
+                description: "Indicates if this attribute is used for information collection."
+                type: boolean
+            validatorConfiguration:
+                description: "The validator configuration supported by the field type."
+                type: any
+            fieldSettings:
+                description: "The settings supported by the field type."
+                type: any
+            defaultValue:
+                description: "Default value of the field."
+                type: any
+            isSearchable:
+                description: "Indicates if th the content is searchable by this attribute."
+                type: boolean
+    FieldDefinitionUpdateStruct:
+        description: "This class is used to update a field definition."
+        type: object
+        properties:
+            identifier:
+                description: "If set the identifier of a field definition is changed to this value. Needs to be unique within the context of the Content Type this is added to."
+                type: string
+            names:
+                description: "If set this array of names with languageCode keys replace the complete name collection."
+                type: array
+            descriptions:
+                description: "If set this array of descriptions with languageCode keys replace the complete description collection."
+                type: array
+            fieldGroup:
+                description: "If set the field group is changed to this name."
+                type: string
+            position:
+                description: "If set the position of the field in the content type."
+                type: integer
+            isTranslatable:
+                description: "If set translatable flag is set to this value."
+                type: boolean
+            isRequired:
+                description: "If set the required flag is set to this value."
+                type: boolean
+            isInfoCollector:
+                description: "If set the information collector flag is set to this value."
+                type: boolean
+            validatorConfiguration:
+                description: "If set this validator configuration supported by the field type replaces the existing one."
+                type: any
+            fieldSettings:
+                description: "If set this settings supported by the field type replaces the existing ones."
+                type: any
+            defaultValue:
+                description: "If set the default value for this field is changed to the given value."
+                type: any
+            isSearchable:
+                description: "If set the the searchable flag is set to this value."
+                type: boolean
     Language:
         description: "This class represents a language in the repository."
         type: object
