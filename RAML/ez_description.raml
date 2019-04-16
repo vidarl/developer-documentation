@@ -230,11 +230,55 @@ types:
             creatorId:
                 description: "Creator user ID. Creator of the version, in the search API this is referred to as the modifier of the published content."
                 type: integer
+    Criterion:
+        description: Criterion implementations.
+        type: object
+        properties:
+            operator:
+                description: "The operator used by the Criterion."
+                type: string
+            value:
+                description: "The value(s) matched by the criteria."
+                type: array
+            target:
+                description: "The target used by the criteria (field, metadata...)."
+                type: string
+            valueData:
+                description: "Additional value data, required by some criterions, MapLocationDistance for instance."
+                type: Value
+            construct:
+                description: "Performs operator validation based on the Criterion specifications returned by {@see getSpecifications()}."
+                type: string
+            getSpecifications:
+                description: "Criterion description function. Returns the combination of the Criterion's supported operator/value, as an array of objects."
+                type: Specifications[]
+            getValueTypeCheckCallback:
+                description: "Returns a callback that checks the values types depending on the operator specifications."
+                type: integer
     DateTime: TODO Ask Adam
         description: "Representation of date and time."
         type: object
         properties:
             construct:
+    FacetBuilder:
+        description: "This class is the base class for facet builders."
+        type: object
+        properties:
+            name:
+                description: "The name of the facet."
+                type: string
+            global:
+                description: "If true the facet runs in a global mode not restricted by the query."
+                type: boolean
+            filter:
+                description: "An additional facet filter that will further filter the documents the facet will be executed on."
+                type: Criterion
+            limit:
+                description: "Number of facets (terms) returned."
+                type: integer
+            minCount:
+                description: "Specifies the minimum count. Only facet groups with more or equal results are returned."
+                type: integer
     Field:
         description: "This class represents a field of a content object."
         type: object
@@ -437,29 +481,77 @@ types:
         type: object
         properties:
             filter:
-                description: "The Query filter. Can contain multiple criterion, as items of a logical one (by default AND)"
+                description: "The Query filter. Can contain multiple criterion, as items of a logical one (by default AND)."
                 type: Criterion
             query:
-                description: ""
+                description: "The Query query. Can contain multiple criterion, as items of a logical one (by default AND)."
                 type: Criterion
             sortClauses:
-                description: ""
-                type:
+                description: "Query sorting clauses."
+                type: SortClause[]
             facetBuilders:
-                description: ""
-                type:
+                description: "An array of facet builders. Search engines may ignore any, or given facet builders they don't support and will just return search result facets supported by the engine. API consumer should dynamically iterate over returned facets for further use."
+                type: FacetBuilder[]
             offset:
-                description: ""
-                type:
+                description: "Query offset. Sets the offset for search hits, used for paging the results."
+                type: integer
             limit:
-                description: ""
-                type:
+                description: "Query limit. Limit for number of search hits to return. If value is `0`, search query will not return any search hits, useful for doing a count."
+                type: integer
             spellcheck:
-                description: ""
-                type:
+                description: "If true spellcheck suggestions are returned."
+                type: boolean
             performCount:
-                description: ""
-                type:
+                description: "If true, search engine should perform count even if that means extra lookup."
+                type: boolean
+    Relation:
+        description: "Class representing a relation between content."
+        type: object
+        properties:
+            id:
+                description: "Id of the relation."
+                type: integer
+            sourceFieldDefinitionIdentifier:
+                description: "Source Content Type Field Definition Id. For relation not of type RelationType::COMMON this field denotes the field definition id of the attribute where the relation is anchored."
+                type: string
+            getSourceContentInfo:
+                description: "The content of the source content of the relation."
+                type: ContentInfo
+            getDestinationContentInfo:
+                description: "The content of the destination content of the relation."
+                type: ContentInfo
+            type:
+                description: "The relation type bitmask. Relations: Relation::COMMON = 1, Relation::EMBED = 2, Relation::LINK = 4, Relation::FIELD = 8, Relation::ASSET = 16"
+                type: integer
+    Section:
+        description: "This class represents a section."
+        type:  object
+        peoperties:
+            id:
+                description: "Id of the section."
+                type: integer
+            identifier:
+                description: "Unique identifier of the section."
+                type: string
+            name:
+                description: "Name of the section."
+                type: string
+    SectionCreateStruct:
+        description: "This class represents a section."
+        type: object
+    SectionStruct:
+        description: "This class is used for updating section meta data."
+        type: object
+        properties:
+            identifier:
+                description: "If set the Unique identifier of the section is changes. Needs to be a unique Section->identifier string value."
+                type: string
+            name:
+                description: "If set the name of the section is changed."
+                type: string
+    SectionUpdateStruct:
+        description: "This class is used to provide data for updating a section. At least one property has to set."
+        type: object
     SortClause:
         description: "This class is the base for SortClause classes, used to set sorting of content queries."
         type: object
@@ -473,8 +565,97 @@ types:
             targetData:
                 description: "Extra target data, required by some sort clauses, field for instance."
                 type: Target
+            construct:
+                description: "Constructs a new SortClause on $sortTarget in direction $sortDirection."
+                type: string
+    Specifications:
+        description: "This class is used by Criteria to describe which operators they support. Instances of this class are returned in an array by the {@see Criterion::getSpecifications()} method."
+        type: object
+        properties:
+            operator:
+                description: "Specified operator, as one of the Operator::* constants."
+                type: string
+            valueFormat:
+                description: "Format supported for the Criterion value, either {@see self::FORMAT_SINGLE} for single or {@see self::FORMAT_ARRAY} for multiple."
+                type: string
+            valueTypes:
+                description: "Accepted values types, specifying what type of variables are accepted as a value. Criterion input value type description constants: const TYPE_INTEGER = 1; const TYPE_STRING = 2; const TYPE_BOOLEAN = 4"
+                type: integer
+            valueCount:
+                description: "Limitation on the number of items as the value. Only usable if {@see $valueFormat} is {@see self::FORMAT_ARRAY}."
+                type: integer
+            construct:
+                description: "Creates a new Specifications object."
+                type: string
     Target:
-        description: "Struct that stores extra target information for a SortClause object."
+        description: "Struct that stores extra target information for a SortClause object. "
+        type: object
+    TrashItem:
+        description: "This class represents a trash item, which is actually a trashed location."
+        type: object
+        properties:
+            trashed:
+                description: "Trashed timestamp."
+                type: DateTime
+    URLAlias:
+        description: "This class represents a url alias in the repository."
+        type: object
+        properties:
+            id:
+                description: "A unique identifier for the alias."
+                type: integer
+            type:
+                description: "The type of the URL Alias i.e. one of URLAlias::LOCATION=0, URLAlias::RESOURCE=1, URLAlias::VIRTUAL=2."
+                type: integer
+            destination:
+                description: "If type = URLAlias::LOCATION it is a Location id otherwise a string (e.g. /content/search)."
+                type: any
+            path:
+                description: "The full path of the alias."
+                type:
+            languageCodes:
+                description: "The languageCodes for which this path is valid."
+                type: string[]
+            alwaysAvailable:
+                description: "Fallback indicator for other languages."
+                type: boolean
+            isHistory:
+                description: "Indicates that this alias was autogenerated for an in the meanwhile archived version of the content."
+                type: boolean
+            isCustom:
+                description: "If false this alias was autogenerated otherwise manually created."
+                type: boolean
+            forward:
+                description: "Indicates if the url should be redirected."
+                type: boolean
+    URLWildcard:
+        description: "This class represents a url alias in the repository."
+        type: object
+        properties:
+            id:
+                description: "The unique id."
+                type: integer
+            sourceUrl:
+                description: "The source url."
+                type: string
+            destinationUrl:
+                description: "The destination url containing placeholders e.g. /destination/{1}."
+                type: string
+            forward:
+                description: "Indicates if the url is redirected or not."
+                type: boolean
+    URLWildcardTranslationResult:
+        description: "This class represents a result of a translated url wildcard which is not an URLAlias."
+        type: object
+        properties:
+            uri:
+                description: "The found resource uri."
+                type: string
+            forward:
+                description: "Indicates if the url is redirected or not."
+                type: boolean
+    Value:
+        description: "Struct that stores extra value information for a Criterion object."
         type: object
     VersionInfo:
         description: "This class holds version information data. It also contains the corresponding {@link Content} to which the version belongs to."
