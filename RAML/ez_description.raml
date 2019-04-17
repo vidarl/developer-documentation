@@ -726,6 +726,108 @@ types:
            items:
                 description: "List of notifications."
                 type: Notification[]
+    ObjectState:
+        description: "This class represents a object state value."
+        type: object
+        properties:
+            id:
+                description: "Primary key."
+                type: integer
+            identifier:
+                description: "Readable string identifier of the object state."
+                type: string
+            priority:
+                description: "Priority for ordering."
+                type: integer
+            languageCodes:
+                description: "The available language codes for names an descriptions."
+                type: string[]
+            getObjectStateGroup:
+                description: "The object state group this object state belongs to."
+                type: ObjectStateGroup
+    ObjectStateCreateStruct:
+        description: "This class represents a value for creating object states."
+        type: object
+        properties:
+            identifier:
+                description: "Readable unique string identifier of a group. Required."
+                type: string
+            priority:
+                description: "Priority for ordering. If not set the object state is created as the last one."
+                type: integer
+            defaultLanguageCode:
+                description: "The default language code. Required."
+                type: string
+            names:
+                description: "An array of names with languageCode keys. Required, at least one name in the main language is required."
+                type: string[]
+            descriptions:
+                description: "An array of descriptions with languageCode keys."
+                type: string[]
+    ObjectStateGroup:
+        description: "This class represents an object state group value."
+        type: object
+        properties:
+            id:
+                description: "Primary key."
+                type: integer
+            identifier:
+                description: "Readable string identifier of a group."
+                type: string
+            defaultLanguageCode:
+                description: "The default language code."
+                type: string
+            languageCodes:
+                description: "The available language codes for names an descriptions."
+                type: string[]
+    ObjectStateGroupCreateStruct:
+        description: "This class represents a value for creating object state groups."
+        type: object
+        properties:
+            identifier:
+                description: "Readable unique string identifier of a group. Required."
+                type: string
+            defaultLanguageCode:
+                description: "The default language code. Required."
+                type: string
+            names:
+                description: "An array of names with languageCode keys. Required - at least one name in the main language is required"
+                type: string[]
+            descriptions:
+                description: "An array of descriptions with languageCode keys."
+                type: string[]
+    ObjectStateGroupUpdateStruct:
+        description: "This class represents a value for updating object state groups."
+        type: object
+        properties:
+            identifier:
+                description: "Readable unique string identifier of a group."
+                type: string
+            defaultLanguageCode:
+                description: "The default language code."
+                type: string
+            names:
+                description: "An array of names with languageCode keys."
+                type: string[]
+            descriptions:
+                description: "An array of descriptions with languageCode keys."
+                type: string[]
+    ObjectStateUpdateStruct:
+        description: "This class represents a value for updating object states."
+        type: object
+        properties:
+            identifier:
+                description: "Readable unique string identifier of a group."
+                type: string
+            defaultLanguageCode:
+                description: "The default language code."
+                type: string
+            names:
+                description: "An array of names with languageCode keys."
+                type: string[]
+            descriptions:
+                description: "An array of descriptions with languageCode keys."
+                type: string[]
     Query:
         description: "This class is used to perform a Content query."
         type: object
