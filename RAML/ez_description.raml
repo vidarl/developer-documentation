@@ -694,6 +694,19 @@ types:
             sortOrder:
                 description: "If set the sortOrder is changed. The sort order specifies whether the sort order should be ascending or descending. Valid values are {@link Location::SORT_ORDER_*}."
                 type: integer
+    Message:
+        description: "Class for translatable messages, which only occur in singular form. The message might include replacements, in the form %[A-Za-z]%. Those are replaced by the values provided. A raw % can be escaped like %%."
+        type: object
+        properties:
+            message:
+                description: "Message string. Might use replacements like %foo%, which are replaced by the values specified in the values array."
+                type: string
+            values:
+                description: "Translation value objects. May not contain any numbers, which might result in requiring plural forms. Use Plural for that."
+                type: array
+            construct:
+                description: "Construct singular only message from string and optional value array."
+                type: string
     Notification:
         description: "This class represents a notification value."
         type: object
@@ -828,6 +841,22 @@ types:
             descriptions:
                 description: "An array of descriptions with languageCode keys."
                 type: string[]
+    Plural:
+        description: "Class for translatable messages, which may contain plural forms. The message might include replacements, in the form %[A-Za-z]%. Those are replaced by the values provided. A raw % can be escaped like %%."
+        type: object
+        properties:
+            singular:
+                description: "Singular string. Might use replacements like %foo%, which are replaced by the values specified in the values array."
+                type: string
+            plural:
+                description: "Message string. Might use replacements like %foo%, which are replaced by the values specified in the values array."
+                type: string
+            values:
+                description: "Translation value objects. May not contain any numbers, which might result in requiring plural forms. Use MessagePlural for that."
+                type: array
+            construct:
+                description: "Construct plural message from singular, plural and value array."
+                type: string
     Query:
         description: "This class is used to perform a Content query."
         type: object
