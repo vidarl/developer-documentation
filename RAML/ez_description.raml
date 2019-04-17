@@ -349,8 +349,24 @@ types:
             creatorId:
                 description: "Creator user ID. Creator of the version, in the search API this is referred to as the modifier of the published content."
                 type: integer
+    CreateStruct:
+        description: "This class is used for creating a notification."
+        type: object
+        properties:
+            ownerId:
+                description: "Owner ID."
+                type: integer
+            type:
+                description: "Type."
+                type: string
+            isPending:
+                description: "If the notification is pending."
+                type: boolean
+            data:
+                description: "Notification data."
+                type: array
     Criterion:
-        description: Criterion implementations.
+        description: "Criterion implementations."
         type: object
         properties:
             operator:
@@ -678,6 +694,38 @@ types:
             sortOrder:
                 description: "If set the sortOrder is changed. The sort order specifies whether the sort order should be ascending or descending. Valid values are {@link Location::SORT_ORDER_*}."
                 type: integer
+    Notification:
+        description: "This class represents a notification value."
+        type: object
+        properties:
+            id:
+                description: "ID."
+                type: integer
+            ownerId:
+                description: "Owner ID."
+                type: integer
+            isPending:
+                description: "If the notification is pending."
+                type: boolean
+            type:
+                description: "Type."
+                type: string
+            created:
+                description: "Creation date."
+                type: DateTimeInterface
+            data:
+                description: "Data."
+                type: array
+    NotificationList:
+        description: "This class represents a notifications list."
+        type: object
+        properties:
+           totalCount:
+                description: "Number of notifications."
+                type: integer
+           items:
+                description: "List of notifications."
+                type: Notification[]
     Query:
         description: "This class is used to perform a Content query."
         type: object
