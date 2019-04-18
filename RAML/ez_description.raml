@@ -1105,6 +1105,9 @@ types:
     Target:
         description: "Struct that stores extra target information for a SortClause object. "
         type: object
+    Translation:
+        description: "Base class for translation messages extends ValueObject."
+        type: object
     TrashItem:
         description: "This class represents a trash item, which is actually a trashed location."
         type: object
@@ -1292,6 +1295,36 @@ types:
             contentMetadataUpdateStruct:
                 description: "The update structure for the profile meta data."
                 type: ContentMetadataUpdateStruct
+    UserPreference:
+        description: "This class represents a user preference value."
+        type: object
+        properties:
+            name:
+                description: "Name of user preference e.g. timezone."
+                value: string
+            value:
+                description: "Value of user preference e.g. America/New_York."
+                value: string
+    UserPreferenceList:
+        description: "List of user preferences."
+        type: object
+        properties:
+            totalCount:
+                description: "The total number of user preferences."
+                value: integer
+            items:
+                description: "List of user preferences."
+                value: UserPreference[]
+    UserPreferenceSetStruct:
+        description: "This class creates user preferences."
+        type: object
+        properties:
+            name:
+                description: "Name of user preference e.g. timezone."
+                value: string
+            value:
+                description: "Value of user preference e.g. America/New_York."
+                value: string
     UserRoleAssignment:
         description: "This class represents a user to role assignment."
         type: object
@@ -1324,7 +1357,7 @@ types:
                 type: boolean
             maxLogin:
                 description: "Max number of time user is allowed to login. If set the maximal number of logins is changed to this value."
-                type:
+                type: integer
             contentUpdateStruct:
                 description: "The update structure for the profile content."
                 type: ContentUpdateStruct
@@ -1334,6 +1367,16 @@ types:
     Value:
         description: "Struct that stores extra value information for a Criterion object."
         type: object
+    ValueObject:
+        description: "The base class for all value objects and structs. Supports readonly properties by marking them as protected."
+        type: object
+        properties:
+            construct:
+                description: "Construct object optionally with a set of properties. Readonly properties values must be set using $properties as they are not writable anymore after object has been created."
+                type: array
+            getProperties:
+                description: "Function where list of properties are returned."
+                type: array
     VersionInfo:
         description: "This class holds version information data. It also contains the corresponding {@link Content} to which the version belongs to."
         type: object
