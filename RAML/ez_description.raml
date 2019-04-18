@@ -904,6 +904,16 @@ types:
             type:
                 description: "The relation type bitmask. Relations: Relation::COMMON = 1, Relation::EMBED = 2, Relation::LINK = 4, Relation::FIELD = 8, Relation::ASSET = 16"
                 type: integer
+    SearchResult:
+        description: "The total number of URLs."
+        type:  object
+        peoperties:
+            totalCount:
+                description: "The total number of URLs."
+                type: integer
+            items:
+                description: "The value objects found for the query."
+                type: URL[]
     Section:
         description: "This class represents a section."
         type:  object
@@ -978,6 +988,28 @@ types:
             trashed:
                 description: "Trashed timestamp."
                 type: DateTime
+    URL:
+        description: "This class represents a url in the repository."
+        type: object
+        properties:
+            id:
+                description: "The unique id of the URL."
+                type: integer
+            url:
+                description: "URL itself e.g. 'http://ez.no'."
+                type: string
+            isValid:
+                description: "Is URL valid?"
+                type: boolean
+            lastChecked:
+                description: "Date of last check."
+                type: DateTimeInterface
+            created:
+                description: "Creation date."
+                type: DateTimeInterface
+            modified:
+                description: "Modified date."
+                type: DateTimeInterface
     URLAlias:
         description: "This class represents a url alias in the repository."
         type: object
@@ -1009,6 +1041,45 @@ types:
             forward:
                 description: "Indicates if the url should be redirected."
                 type: boolean
+    URLQuery:
+        description: "This class is used to perform a URL query."
+        type: object
+        properties:
+            filter:
+                description: "The Query filter."
+                type: Criterion
+            sortClauses:
+                description: "Query sorting clauses."
+                type: SortClause[]
+            offset:
+                description: "Query offset. Sets the offset for search hits, used for paging the results."
+                type: integer
+            limit:
+                description: "Query limit. Limit for number of search hits to return. If value is `0`, search query will not return any search hits, useful for doing a count."
+                type: integer
+    UsageSearchResult:
+        description: "This class is used to find usage search results."
+        type: object
+        properties:
+            totalCount:
+                description: "The total number of content objects using URL."
+                type: integer
+            items:
+                description: "The value objects found for the query."
+                type: ContentInfo[]
+    URLUpdateStruct:
+        description: "Structure used to update URL data."
+        type: object
+        properties:
+            url:
+                description: "URL itself e.g. 'http://ez.no'."
+                type: string
+            isValid:
+                description: "Is URL valid?"
+                type: boolean
+            lastChecked:
+                description: "Modified date."
+                type: DateTimeInterface
     URLWildcard:
         description: "This class represents a url alias in the repository."
         type: object
