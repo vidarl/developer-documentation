@@ -591,6 +591,16 @@ types:
             enabled:
                 description: "Indicates if the language is enabled or not."
                 type: boolean
+    Limitation:
+        description: "This class represents a Limitation applied to a policy."
+        type: object
+        properties:
+            getIdentifier:
+                description: "Returns the limitation identifier (one of the defined constants) or a custom limitation. Constants: CONTENTTYPE = 'Class'; LANGUAGE = 'Language'; LOCATION = 'Node'; OWNER = 'Owner'; PARENTOWNER = 'ParentOwner'; PARENTCONTENTTYPE = 'ParentClass'; PARENTDEPTH = 'ParentDepth'; SECTION = 'Section'; NEWSECTION = 'NewSection'; SITEACCESS = 'SiteAccess'; STATE = 'State'; NEWSTATE = 'NewState'; SUBTREE = 'Subtree'; USERGROUP = 'Group'; PARENTUSERGROUP = 'ParentGroup'; STATUS = 'Status'."
+                type: string
+            limitationValues:
+                description: "A read-only list of IDs or identifiers for which the limitation should be applied. The value of this property must conform to a hash, which means that it may only consist of array and scalar values, but must not contain objects or resources."
+                type: any
     Location:
         description: "This class represents a location in the repository."
         type: object
@@ -841,6 +851,16 @@ types:
             descriptions:
                 description: "An array of descriptions with languageCode keys."
                 type: string[]
+    PasswordValidationContext:
+        description: "Context of the password validation."
+        type: object
+        properties:
+            contentType:
+                description: "Content type of the password owner."
+                type: ContentType
+            user:
+                description: "Owner of the password."
+                type: User
     Plural:
         description: "Class for translatable messages, which may contain plural forms. The message might include replacements, in the form %[A-Za-z]%. Those are replaced by the values provided. A raw % can be escaped like %%."
         type: object
@@ -857,6 +877,55 @@ types:
             construct:
                 description: "Construct plural message from singular, plural and value array."
                 type: string
+    Policy:
+        description: "This class represents a policy value."
+        type: object
+        properties:
+            id:
+                description: "ID of the policy."
+                type: integer
+            roleId:
+                description: "The ID of the role this policy belongs to."
+                type: integer
+            module:
+                description: "Name of module, associated with the Policy e.g. content."
+                type: string
+            function:
+                description: "Name of the module function Or all functions with '*' e.g. read."
+                type: string
+            getLimitations:
+                description: "Limitations."
+                type: Limitation[]
+    PolicyCreateStruct:
+        description: "This class is used to create a policy."
+        type: object
+        properties:
+            module:
+                description: "Name of module, associated with the Policy e.g. content."
+                type: string
+            function:
+                description: "Name of the module function Or all functions with '*' e.g. read."
+                type: string
+    PolicyDraft:
+        description: "Original policy ID the policy was created from."
+        type: object
+        properties:
+            originalId:
+                description: "Original policy ID the policy was created from. Used when role status is Role::STATUS_DRAFT."
+                type: integer
+    PolicyStruct:
+        description: "This class is used to edit a policy."
+        type: object
+        properties:
+            getLimitations:
+                description: "Returns list of limitations added to policy."
+                type: Limitation[]
+            addLimitation:
+                description: "Adds a limitation with the given identifier and list of values."
+                type: Limitation
+    PolicyUpdateStruct:
+        description: "This class is used for updating a policy. The limitations of the policy are replaced with those which are added in instances of this class."
+        type: object
     Query:
         description: "This class is used to perform a Content query."
         type: object
@@ -904,6 +973,61 @@ types:
             type:
                 description: "The relation type bitmask. Relations: Relation::COMMON = 1, Relation::EMBED = 2, Relation::LINK = 4, Relation::FIELD = 8, Relation::ASSET = 16"
                 type: integer
+    Role:
+        description: "This class represents a role."
+        type:  object
+        peoperties:
+            id:
+                description: "ID of the user role."
+                type: integer
+            identifier:
+                description: "Readable string identifier of a role."
+                type: string
+            status:
+                description: "The status of the role. One of Role::STATUS_DEFINED=0; Role::STATUS_DRAFT=1."
+                type: integer
+            getPolicies:
+                description: "Returns the list of policies of this role."
+                type: Policy[]
+    RoleAssignment:
+        description: "This value object represents an assignment od a user or user group to a role including a limitation."
+        type:  object
+        peoperties:
+            id:
+                description: "The unique id of the role assignment."
+                type: integer
+            getRoleLimitation:
+                description: "Returns the limitation of the role assignment."
+                type: RoleLimitation
+            getRole:
+                description: "Returns the role to which the user or user group is assigned to."
+                type: Role
+    RoleCreateStruct:
+        description: "This class is used to create a new role."
+        type:  object
+        peoperties:
+            identifier:
+                description: "Readable string identifier of a role."
+                type: string
+            getPolicies:
+                description: "Returns policies associated with the role."
+                type: PolicyCreateStruct[]
+            addPolicy:
+                description: "Adds a policy to this role."
+                type: PolicyCreateStruct
+    RoleDraft:
+        description: "This class represents a draft of a role, extends Role."
+        type:  object
+    RoleLimitation:
+        description: "Role limitation extends Limitation."
+        type:  object
+    RoleUpdateStruct:
+        description: "This class is used to update a role."
+        type:  object
+        peoperties:
+            identifier:
+                description: "Readable string identifier of a role."
+                type: string
     SearchResult:
         description: "The total number of URLs."
         type:  object
@@ -1106,6 +1230,107 @@ types:
             forward:
                 description: "Indicates if the url is redirected or not."
                 type: boolean
+    User:
+        description: "This class represents a user value."
+        type: object
+        properties:
+            login:
+                description: "User login."
+                type: string
+            email:
+                description: "User E-Mail address."
+                type: string
+            enabled:
+                description: "Flag to signal if user is enabled or not. User can not login if false."
+                type: boolean
+            maxLogin:
+                description: "Max number of time user is allowed to login."
+                type: integer
+            getUserId:
+                description: "The User id of the User."
+                type: integer
+    UserCreateStruct:
+        description: "This class is used to create a new user in the repository."
+        type: object
+        properties:
+            login:
+                description: "User login. Required."
+                type: string
+            email:
+                description: "User E-Mail address. Required."
+                type: string
+            password:
+                description: "The plain password. Required."
+                type: string
+            enabled:
+                description: "Indicates if the user is enabled after creation."
+                type: boolean
+    UserGroup:
+        description: "This class represents a user group."
+        type: object
+        properties:
+            parentId:
+                description: "The parent id of the user group."
+                type: integer
+    UserGroupCreateStruct:
+        description: "This class is used to create a new user group in the repository, extends ContentCreateStruct."
+        type: object
+    UserGroupRoleAssignment:
+        description: "This class represents a user group to role assignment."
+        type: object
+        properties:
+            getUserGroup:
+                description: "Returns the user group to which the role is assigned to."
+                type: UserGroup
+    UserGroupUpdateStruct:
+        description: "This class is used to update a user group in the repository."
+        type: object
+        properties:
+            contentUpdateStruct:
+                description: "The update structure for the profile content."
+                type: ContentUpdateStruct
+            contentMetadataUpdateStruct:
+                description: "The update structure for the profile meta data."
+                type: ContentMetadataUpdateStruct
+    UserRoleAssignment:
+        description: "This class represents a user to role assignment."
+        type: object
+        properties:
+            getUser:
+                description: "Returns the user to which the role is assigned to."
+                type: User
+    UserTokenUpdateStruct:
+        description: "This class is used to update a user token in the repository."
+        type: object
+        properties:
+            hashKey:
+                description: "Hash key date for user account."
+                type: string
+            time:
+                description: "Time to which the token is valid."
+                type: DateTime
+    UserUpdateStruct:
+        description: "This class is used to update a user in the repository."
+        type: object
+        properties:
+            email:
+                description: "If set the email address is updated with this value."
+                type: string
+            password:
+                description: "If set the password is updated with this plain password."
+                type: string
+            enabled:
+                description: "Flag to signal if user is enabled or not. If set the enabled status is changed to this value."
+                type: boolean
+            maxLogin:
+                description: "Max number of time user is allowed to login. If set the maximal number of logins is changed to this value."
+                type:
+            contentUpdateStruct:
+                description: "The update structure for the profile content."
+                type: ContentUpdateStruct
+            contentMetadataUpdateStruct:
+                description: "The update structure  for the profile meta data."
+                type: ContentMetadataUpdateStruct
     Value:
         description: "Struct that stores extra value information for a Criterion object."
         type: object
