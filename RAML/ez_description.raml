@@ -1,3 +1,9 @@
+#%RAML 1.0
+---
+documentation:
+    title: eZ Platform description (Test)
+    content: Welcome to eZ Platform Documentation.
+
 types:
     BookmarkList:
         description: "List of bookmarked locations."
@@ -390,11 +396,9 @@ types:
             getValueTypeCheckCallback:
                 description: "Returns a callback that checks the values types depending on the operator specifications."
                 type: integer
-    DateTime: TODO Ask Adam
+    DateTime:
         description: "Representation of date and time."
         type: object
-        properties:
-            construct:
     FacetBuilder:
         description: "This class is the base class for facet builders."
         type: object
