@@ -612,9 +612,24 @@ types:
             limitationValues:
                 description: 'A read-only list of IDs or identifiers for which the limitation should be applied. The value of this property must conform to a hash, which means that it may only consist of array and scalar values, but must not contain objects or resources.'
                 type: any
+    Ref:
+        type: object
+        properties:
+            _media-type:
+              type: string
+            _href:
+              type: string
+
+    BaseObject:
+        type: object
+        properties:
+            _media-type:
+              type: string
+            _href:
+              type: string
     Location:
         description: 'This class represents a location in the repository.'
-        type: object
+        type: BaseObject
         properties:
             id:
                 description: 'The id of the Location'
@@ -634,36 +649,57 @@ types:
             explicitlyHidden:
                 description: 'Indicates that the Location entity has been explicitly marked as hidden.'
                 type: boolean
+#           TODO: Powinno byc w odpowiedzi
+#            explicitlyHidden:
+#                description: "Indicates that the Location entity has been explicitly marked as hidden."
+#                type: boolean
             remoteId:
                 description: 'Remote ID, universally unique identifier.'
                 type: string
-            getContentInfo:
+            ContentInfo:
                 description: 'This class provides all version independent information of the Content object.'
                 type: ContentInfo
             isDraft:
-                description: 'Returns true if current location is a draft.'
+                description: "Returns true if current location is a draft."
                 type: boolean
             parentLocationId:
-                description: 'Parent ID.'
+                description: Parent ID.
                 type: integer
+            ParentLocation:
+                description: Parent location.
+                type: Ref
+            Children:
+                description: ''
+                type: Ref
             pathString:
                 description: 'The materialized path of the location entry e.g. /1/2/'
                 type: string
             depth:
                 description: 'Depth location has in the location tree.'
                 type: integer
-            sortField:
-                description: 'Specifies which property the child locations should be sorted on. Map for Location sort fields to their respective SortClauses - class name/identifier and modified subnode. One of the fallowing values: const SORT_FIELD_PATH = 1; const SORT_FIELD_PUBLISHED = 2; const SORT_FIELD_MODIFIED = 3; const SORT_FIELD_SECTION = 4; const SORT_FIELD_DEPTH = 5; const SORT_FIELD_PRIORITY = 8; const SORT_FIELD_NAME = 9; const SORT_FIELD_NODE_ID = 11; const SORT_FIELD_CONTENTOBJECT_ID = 12;'
+            childCount:
+                description: "Depth location has in the location tree."
                 type: integer
+            sortField:
+                description: "Specifies which property the child locations should be sorted on. Map for Location sort fields to their respective SortClauses - class name/identifier and modified subnode. One of the fallowing values: PATH"
+                type: enum
+                # TODO: Brakujace wartości
+                # https://github.com/ezsystems/ezpublish-kernel/blob/e2d26faa54715675fc8f1eef3defbe192973bf5b/eZ/Publish/Core/REST/Common/Output/ValueObjectVisitor.php#L157-L182
+                values: ['PATH', 'PUBLISHED' ]
             sortOrder:
                 description: 'Specifies whether the sort order should be ascending or descending. Map for Location sort order to their respective Query SORT constants. One of the fallowing values: const SORT_ORDER_DESC = 0; const SORT_ORDER_ASC = 1'
-                type: integer
+                type: enum
+                values: [ 'ASC', 'DESC' ]
             Content:
                 description: 'Represents a content object in a specific version'
                 type: Content
             getSortClauses:
                 description: 'Get SortClause objects built from Locations's sort options.'
                 type: SortClause[]
+                type: Ref
+            UrlAliases:
+                description: ''
+                type: Ref
     LocationCreateStruct:
         description: This class is used to create a new Location for a content object.
         type: object
@@ -1078,6 +1114,10 @@ types:
     RoleLimitation:
         description: 'Role limitation extends Limitation.'
         type:  object
+    SectionLimitation:
+        type: RoleLimitation
+    SubtreeLimitation:
+        type: RoleLimitation
     RoleUpdateStruct:
         description: 'This class is used to update a role.'
         type:  object
@@ -1165,6 +1205,11 @@ types:
     Translation:
         description: 'Base class for translation messages extends ValueObject.'
         type: object
+    Trash:
+      type: BaseObject
+      properties:
+          TrashItem:
+              type: TrashItem[]
     TrashItem:
         description: 'This class represents a trash item, which is actually a trashed location.'
         type: object
@@ -1172,6 +1217,12 @@ types:
             trashed:
                 description: 'Trashed timestamp.'
                 type: DateTime
+        type: Location
+#         TODO: Powinno byc w odpowiedzi:
+#        properties:
+#            trashed:
+#                description: "Trashed timestamp."
+#                type: DateTime
     URL:
         description: 'This class represents a URL in the repository.'
         type: object
