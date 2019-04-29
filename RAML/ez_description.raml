@@ -5,6 +5,13 @@ documentation:
     content: Welcome to eZ Platform Documentation.
 
 types:
+    BaseObject:
+        type: object
+        properties:
+            _media-type:
+              type: string
+            _href:
+              type: string
     BookmarkList:
         description: 'List of bookmarked locations.'
         type: object
@@ -17,8 +24,57 @@ types:
                 type: Location[]
     Content:
         description: 'Content Id matcher class'
-        type: object
+        type: BaseObject
         properties:
+            _remoteId:
+                description: 'Remote ID of the Content Type.'
+                type: string
+            _id:
+                description: 'Unique ID of yhe Content Type.'
+                type: integer
+            ContentType:
+                description: 'Content Type.'
+                type: BaseObject
+            Name:
+                description: 'Name of a Content.'
+                type: string
+            Versions:
+                description: ''
+                type: BaseObject
+            CurrentVersion:
+                description: ''
+                type: BaseObject
+            Section:
+                description: ''
+                type: BaseObject
+            Locations:
+                description: ''
+                type: BaseObject
+            Owner:
+                description: ''
+                type: BaseObject
+            lastModificationDate:
+                description: ''
+                type: DateTime
+            publishedDate:
+                description: ''
+                type: DateTime
+            mainLanguageCode:
+                description: ''
+                type:
+            currentVersionNo:
+                description: ''
+                type:
+            alwaysAvailable:
+                description: ''
+                type: boolean
+            status:
+                description: ''
+                type: enum
+            ObjectStates:
+                description: ''
+                type:
+
             getVersionInfo:
                 description: 'Returns the VersionInfo for this version.'
                 type: VersionInfo
@@ -69,50 +125,53 @@ types:
                 type: DateTime
     ContentInfo:
         description: 'This class provides all version independent information of the Content object.'
-        type: object
+        type: BaseObject
         properties:
-            id:
-                description: 'The unique id of the Content object.'
-                type: integer
-            contentTypeId:
-                description: 'The Content Type id of the Content object.'
-                type: integer
-            name:
-                description: 'The computed name (via name schema) in the main language of the Content object.'
-                type: string
-            sectionId:
-                description: 'The section to which the Content object is assigned.'
-                type: integer
-            currentVersionNo:
-                description: 'Current Version number is the version number of the published version or the version number of a newly created draft (which is 1).'
-                type: integer
-            published:
-                description: 'True if there exists a published version, false otherwise.'
-                type: boolean
-            ownerId:
-                description: 'The owner of the Content object.'
-                type: integer
-            modificationDate:
-                description: 'Content modification date.'
-                type: DateTime
-            publishedDate:
-                description: 'Content publication date.'
-                type: DateTime
-            alwaysAvailable:
-                description: 'Indicates if the Content object is shown in the main language if its not present in an other requested language.'
-                type: boolean
-            remoteId:
-                description: 'Remote identifier used as a custom identifier for the object.'
-                type: string
-            mainLanguageCode:
-                description: 'The main language code of the Content object.'
-                type: string
-            mainLocationId:
-                description: 'Identifier of the main location. If the Content object has multiple locations, mainLocationId will point to the main one.'
-                type: integer
-            status:
-                description: 'Status of the content. Possible values: const STATUS_DRAFT = 0;const STATUS_PUBLISHED = 1; const STATUS_TRASHED = 2'
-                type: integer
+            Content: 'Content Id matcher class'
+                description:
+                type: Content
+#            id:
+#                description: 'The unique id of the Content object.'
+#                type: integer
+#            contentTypeId:
+#                description: 'The Content Type id of the Content object.'
+#                type: integer
+#            name:
+#                description: 'The computed name (via name schema) in the main language of the Content object.'
+#                type: string
+#            sectionId:
+#                description: 'The section to which the Content object is assigned.'
+#                type: integer
+#            currentVersionNo:
+#                description: 'Current Version number is the version number of the published version or the version number of a newly created draft (which is 1).'
+#                type: integer
+#            published:
+#                description: 'True if there exists a published version, false otherwise.'
+#                type: boolean
+#            ownerId:
+#                description: 'The owner of the Content object.'
+#                type: integer
+#            modificationDate:
+#                description: 'Content modification date.'
+#                type: DateTime
+#            publishedDate:
+#                description: 'Content publication date.'
+#                type: DateTime
+#            alwaysAvailable:
+#                description: 'Indicates if the Content object is shown in the main language if its not present in an other requested language.'
+#                type: boolean
+#            remoteId:
+#                description: 'Remote identifier used as a custom identifier for the object.'
+#                type: string
+#            mainLanguageCode:
+#                description: 'The main language code of the Content object.'
+#                type: string
+#            mainLocationId:
+#                description: 'Identifier of the main location. If the Content object has multiple locations, mainLocationId will point to the main one.'
+#                type: integer
+#            status:
+#                description: 'Status of the content. Possible values: const STATUS_DRAFT = 0;const STATUS_PUBLISHED = 1; const STATUS_TRASHED = 2'
+#                type: integer
     ContentMetadataUpdateStruct:
         description: 'With this class data can be provided to update version independent fields of the content. It is used in content update methods. At least one property in this class must be set.'
         type: object
@@ -392,9 +451,6 @@ types:
             valueData:
                 description: 'Additional value data, required by some criterions, MapLocationDistance for instance.'
                 type: Value
-            construct:
-                description: 'Performs operator validation based on the Criterion specifications returned by {@see getSpecifications()}.'
-                type: string
             getSpecifications:
                 description: 'Criterion description function. Returns the combination of the Criterion's supported operator/value, as an array of objects.'
                 type: Specifications[]
@@ -612,30 +668,12 @@ types:
             limitationValues:
                 description: 'A read-only list of IDs or identifiers for which the limitation should be applied. The value of this property must conform to a hash, which means that it may only consist of array and scalar values, but must not contain objects or resources.'
                 type: any
-    Ref:
-        type: object
-        properties:
-            _media-type:
-              type: string
-            _href:
-              type: string
-
-    BaseObject:
-        type: object
-        properties:
-            _media-type:
-              type: string
-            _href:
-              type: string
     Location:
         description: 'This class represents a location in the repository.'
         type: BaseObject
         properties:
             id:
                 description: 'The id of the Location'
-                type: integer
-            status:
-                description: 'The status of the location. A location gets the status DRAFT = 0 on newly created content which is not published. When content is published the location gets the status STATUS_PUBLISHED = 1'
                 type: integer
             priority:
                 description: 'Location priority. Position of the Location among its siblings when sorted using priority sort order.'
@@ -646,12 +684,9 @@ types:
             invisible:
                 description: 'Indicates that the Location is implicitly marked as hidden by a parent Location.'
                 type: boolean
-            explicitlyHidden:
-                description: 'Indicates that the Location entity has been explicitly marked as hidden.'
-                type: boolean
 #           TODO: Powinno byc w odpowiedzi
 #            explicitlyHidden:
-#                description: "Indicates that the Location entity has been explicitly marked as hidden."
+#                description: 'Indicates that the Location entity has been explicitly marked as hidden.'
 #                type: boolean
             remoteId:
                 description: 'Remote ID, universally unique identifier.'
@@ -659,12 +694,6 @@ types:
             ContentInfo:
                 description: 'This class provides all version independent information of the Content object.'
                 type: ContentInfo
-            isDraft:
-                description: "Returns true if current location is a draft."
-                type: boolean
-            parentLocationId:
-                description: Parent ID.
-                type: integer
             ParentLocation:
                 description: Parent location.
                 type: Ref
@@ -678,10 +707,10 @@ types:
                 description: 'Depth location has in the location tree.'
                 type: integer
             childCount:
-                description: "Depth location has in the location tree."
+                description: 'Depth location has in the location tree.'
                 type: integer
             sortField:
-                description: "Specifies which property the child locations should be sorted on. Map for Location sort fields to their respective SortClauses - class name/identifier and modified subnode. One of the fallowing values: PATH"
+                description: 'Specifies which property the child locations should be sorted on. Map for Location sort fields to their respective SortClauses - class name/identifier and modified subnode. One of the fallowing values: PATH'
                 type: enum
                 # TODO: Brakujace wartości
                 # https://github.com/ezsystems/ezpublish-kernel/blob/e2d26faa54715675fc8f1eef3defbe192973bf5b/eZ/Publish/Core/REST/Common/Output/ValueObjectVisitor.php#L157-L182
@@ -692,10 +721,6 @@ types:
                 values: [ 'ASC', 'DESC' ]
             Content:
                 description: 'Represents a content object in a specific version'
-                type: Content
-            getSortClauses:
-                description: 'Get SortClause objects built from Locations's sort options.'
-                type: SortClause[]
                 type: Ref
             UrlAliases:
                 description: ''
@@ -762,9 +787,6 @@ types:
             values:
                 description: 'Translation value objects. May not contain any numbers, which might result in requiring plural forms. Use Plural for that.'
                 type: array
-            construct:
-                description: 'Construct singular only message from string and optional value array.'
-                type: string
     Notification:
         description: 'This class represents a notification value.'
         type: object
@@ -812,7 +834,7 @@ types:
                 type: integer
             ObjectStateGroup:
                 description: 'The object state group this object state belongs to.'
-                type: basicobject TODO
+                type: BaseObject
             languageCodes:
                 description: 'The available language codes for names an descriptions.'
                 type: string[]
@@ -852,9 +874,8 @@ types:
                 type: string[]
     ObjectStateGroup:
         description: 'This class represents an object state group value.'
-        type: object
+        type: BaseObject
         properties:
-            basicobject: TODO
             id:
                 description: 'Primary key.'
                 type: integer
@@ -869,7 +890,7 @@ types:
                 type: string[]
             ObjectStates:
                 description: 'Object States.'
-                type: basic object TODO
+                type: BaseObject
             Names:
                 description: 'List of names.'
                 type: object
@@ -903,9 +924,8 @@ types:
                 type: string[]
     ObjectStateGroupList:
         description: 'List of object state groups.'
-        type: object
+        type: BaseObject
         properties:
-            Basicobject: TODO
             ObjectStateGroup:
                 description: 'This class represents an object state group value.'
                 type: ObjectStateGroup
@@ -967,9 +987,6 @@ types:
             values:
                 description: 'Translation value objects. May not contain any numbers, which might result in requiring plural forms. Use MessagePlural for that.'
                 type: array
-            construct:
-                description: 'Construct plural message from singular, plural and value array.'
-                type: string
     Policy:
         description: 'This class represents a policy value.'
         type: object
@@ -1047,6 +1064,13 @@ types:
             performCount:
                 description: 'If true, search engine should perform count even if that means extra lookup.'
                 type: boolean
+    Ref:
+        type: object
+        properties:
+            _media-type:
+              type: string
+            _href:
+              type: string
     Relation:
         description: 'Class representing a relation between content.'
         type: object
@@ -1177,9 +1201,6 @@ types:
             targetData:
                 description: 'Extra target data, required by some sort clauses, field for instance.'
                 type: Target
-            construct:
-                description: 'Constructs a new SortClause on $sortTarget in direction $sortDirection.'
-                type: string
     Specifications:
         description: 'This class is used by Criteria to describe which operators they support. Instances of this class are returned in an array by the {@see Criterion::getSpecifications()} method.'
         type: object
@@ -1196,9 +1217,6 @@ types:
             valueCount:
                 description: 'Limitation on the number of items as the value. Only usable if {@see $valueFormat} is {@see self::FORMAT_ARRAY}.'
                 type: integer
-            construct:
-                description: 'Creates a new Specifications object.'
-                type: string
     Target:
         description: 'Struct that stores extra target information for a SortClause object. '
         type: object
@@ -1212,16 +1230,11 @@ types:
               type: TrashItem[]
     TrashItem:
         description: 'This class represents a trash item, which is actually a trashed location.'
-        type: object
-        properties:
-            trashed:
-                description: 'Trashed timestamp.'
-                type: DateTime
         type: Location
 #         TODO: Powinno byc w odpowiedzi:
 #        properties:
 #            trashed:
-#                description: "Trashed timestamp."
+#                description: 'Trashed timestamp.'
 #                type: DateTime
     URL:
         description: 'This class represents a URL in the repository.'
@@ -1489,9 +1502,6 @@ types:
         description: 'The base class for all value objects and structs. Supports readonly properties by marking them as protected.'
         type: object
         properties:
-            construct:
-                description: 'Construct object optionally with a set of properties. Readonly properties values must be set using $properties as they are not writable anymore after object has been created.'
-                type: array
             getProperties:
                 description: 'Function where list of properties are returned.'
                 type: array
