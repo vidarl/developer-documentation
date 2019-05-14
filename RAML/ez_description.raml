@@ -23,7 +23,7 @@ types:
                 description: 'List of bookmarked locations.'
                 type: Location[]
     Content:
-        description: 'Content Id matcher class'
+        description: 'Content Id matcher class.'
         type: BaseObject
         properties:
             _remoteId:
@@ -61,7 +61,7 @@ types:
                 type: DateTime
             mainLanguageCode:
                 description: 'The main language code of the Content object.'
-                type:
+                type: string
             currentVersionNo:
                 description: 'Current version number is the version number of the published version or the version number of a newly created draft (which is 1).'
                 type: integer
@@ -465,7 +465,7 @@ types:
                 type: boolean
             mainLanguageCode:
                 description: 'If set the main language is changed to this value.'
-                type: integer
+                type: string
             defaultSortField:
                 description: 'If set the default sort field is changed to this value.'
                 type: integer
@@ -564,18 +564,18 @@ types:
             id:
                 description: 'The field id.'
                 type: integer
-            fieldDefIdentifier:
+            fieldDefinitionIdentifier:
                 description: 'The field definition identifier.'
                 type: string
-            value:
-                description: 'A field type value or a value type which can be converted by the corresponding field type.'
-                type: any
             languageCode:
                 description: 'The language code.'
                 type: string
             fieldTypeIdentifier:
                 description: 'Field type identifier.'
                 type: string
+            fieldValue:
+                description: 'A field type value or a value type which can be converted by the corresponding field type.'
+                type: any
     FieldDefinition:
         description: 'This class represents a field definition.'
         type: BaseObject
@@ -807,7 +807,7 @@ types:
                 description: 'Represents a content object in a specific version'
                 type: Ref
             UrlAliases:
-                description: ''
+                description: 'URL aliases'
                 type: Ref
     LocationCreateStruct:
         description: This class is used to create a new Location for a content object.
@@ -1502,6 +1502,51 @@ types:
         description: 'This class represents a user value.'
         type: BaseObject
         properties:
+            _id:
+                description: 'Unique ID of the Content Type.'
+                type: integer
+            _remoteId:
+                description: 'Remote ID of the Content Type.'
+                type: string
+            ContentType:
+                description: 'Content Type.'
+                type: BaseObject
+            name:
+                description: 'Name of the domain object in a given language.'
+                type: string
+            Versions:
+                description: 'Returns the VersionInfo for this version.'
+                type: BaseObject
+            Section:
+                description: 'The section to which the Content object is assigned.'
+                type: BaseObject
+            MainLocation:
+                description: 'Main Location of the object.'
+                type: BaseObject
+            Locations:
+                description: 'Locations of the object.'
+                type: BaseObject
+            Groups:
+                description: 'Group user of the content type.'
+                type: BaseObject
+            Owner:
+                description: 'The owner of the Content object.'
+                type: BaseObject
+            publishDate:
+                description: 'Content publication date.'
+                type: DateTime
+            lastModificationDate:
+                description: 'Content modification date.'
+                type: DateTime
+            mainLanguageCode:
+                description: 'The main language code of the Content object.'
+                type: string
+            alwaysAvailable:
+                description: 'Indicates if the Content object is shown in the main language if its not present in an other requested language.'
+                type: boolean
+            Version:
+                description: 'Returns the VersionInfo for this version.'
+                type: Version
             login:
                 description: 'User login.'
                 type: string
@@ -1511,6 +1556,12 @@ types:
             enabled:
                 description: 'Flag to signal if user is enabled or not. User can not login if false.'
                 type: boolean
+            UserGroups:
+                description: 'User groups.'
+                type: BaseObject
+            Roles:
+                description: 'Roles.'
+                type: BaseObject
 #            maxLogin:
 #                description: 'Max number of time user is allowed to login.'
 #                type: integer
@@ -1655,6 +1706,22 @@ types:
             getProperties:
                 description: 'Function where list of properties are returned.'
                 type: array
+    Version:
+        description: 'Returns the VersionInfo for this version.'
+        type: BaseObject
+        properties:
+            VersionInfo:
+                description: 'VersionInfo for this version.'
+                type: VersionInfo
+            Fields:
+                description: 'Fields.'
+                type: Field
+            Relations:
+                description: 'Relations of the user.'
+                type: BaseObject
+                properties:
+                    Relation:
+                        type: Relation[]
     VersionInfo:
         description: 'This class holds version information data. It also contains the corresponding {@link Content} to which the version belongs to.'
         type: object
@@ -1665,33 +1732,49 @@ types:
             versionNo:
                 description: 'Version number. In contrast to {@link $id}, this is the version number, which only increments in scope of a single Content object.'
                 type: integer
-            getContentInfo:
-                description: 'Content of the content this version belongs to.'
-                type: ContentInfo
+            status:
+                description: 'One of: VersionInfo::STATUS_DRAFT=0, VersionInfo::STATUS_PUBLISHED=1, VersionInfo::STATUS_ARCHIVED=3.'
+                type: enum
             modificationDate:
                 description: 'The last modified date of this version.'
                 type: DateTime
-            creatorId:
-                description: 'Creator user ID. Creator of the version, in the search API this is referred to as the modifier of the published content.'
-                type: integer
+            Creator:
+                description: 'Creator of the version, in the search API this is referred to as the modifier of the published content.'
+                type: BaseObject
             creationDate:
                 description: 'Content creation date.'
                 type: DateTime
-            status:
-                description: 'One of: VersionInfo::STATUS_DRAFT=0, VersionInfo::STATUS_PUBLISHED=1, VersionInfo::STATUS_ARCHIVED=3.'
-                type: integer
             initialLanguageCode:
                 description: 'The language code which is used for labeling a translation.'
                 type: string
             languageCodes:
                 description: 'List of languages in this version. Reflects which languages fields exists in for this version.'
                 type: string[]
-            isDraft:
-                description: 'Returns true if version is a draft. Returns status self::STATUS_DRAFT.'
-                type: boolean
-            isPublished:
-                description: 'Returns true if version is published. Returns status self::STATUS_PUBLISHED'
-                type: boolean
-            isArchived:
-                description: 'Returns true if version is archived. Returns status self::STATUS_ARCHIVED'
-                type: boolean
+            VersionTranslationInfo:
+                description: 'Translation information.'
+#                type: TODO check with Adam how to describe
+#                        "VersionTranslationInfo": {
+#                            "_media-type": "application/vnd.ez.api.VersionTranslationInfo+json",
+#                            "Language": [
+#                                {
+#                                    "languageCode": "eng-GB"
+#                                }
+#                            ]
+            names:
+                description: 'Names.'
+                type: Value
+            Content:
+                description: 'Represents a content object in a specific version'
+                type: BaseObject
+
+#           TODO: not in the response
+#            isDraft:
+#                description: 'Returns true if version is a draft. Returns status self::STATUS_DRAFT.'
+#                type: boolean
+#            isPublished:
+#                description: 'Returns true if version is published. Returns status self::STATUS_PUBLISHED'
+#                type: boolean
+#            isArchived:
+#                description: 'Returns true if version is archived. Returns status self::STATUS_ARCHIVED'
+#                type: boolean
+
