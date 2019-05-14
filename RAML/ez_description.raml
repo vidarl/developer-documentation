@@ -1,8 +1,8 @@
 #%RAML 1.0
 ---
-documentation:
-    title: eZ Platform description (Test)
-    content: Welcome to eZ Platform Documentation.
+title: eZ Platform (Test)
+baseUri: http://localhost/
+version: 2.5
 
 types:
     BaseObject:
@@ -105,8 +105,8 @@ types:
         description: 'This class provides all version independent information of the Content object.'
         type: BaseObject
         properties:
-            Content: 'Content Id matcher class'
-                description:
+            Content:
+                description: 'Content Id matcher class'
                 type: Content
 #            id:
 #                description: 'The unique id of the Content object.'
@@ -176,13 +176,14 @@ types:
                 description: 'If set  main location is changed to this value. If the content object has multiple locations, $mainLocationId will point to the main one.'
                 type: integer
             name:
-                description: 'If set, will change the content's 'always-available' name.'
+                description: "If set, will change the content's 'always-available' name."
                 type: string
     ContentObjectStates:
         description: 'Base struct for content create/update structs.'
         type: BaseObject
         properties:
-            ObjectState: 'Object state value.'
+            ObjectState:
+                description: 'Object state value.'
                 type: BaseObject
     ContentStruct:
         description: 'Base struct for content create/update structs.'
@@ -245,7 +246,7 @@ types:
                 type: boolean
             defaultSortField:
                 descritpion: 'Specifies which property the child locations should be sorted on by default when created. Map for Location sort fields to their respective SortClauses - class name/identifier and modified subnode. One of the fallowing values: const SORT_FIELD_PATH = 1; const SORT_FIELD_PUBLISHED = 2; const SORT_FIELD_MODIFIED = 3; const SORT_FIELD_SECTION = 4; const SORT_FIELD_DEPTH = 5; const SORT_FIELD_PRIORITY = 8; const SORT_FIELD_NAME = 9; const SORT_FIELD_NODE_ID = 11; const SORT_FIELD_CONTENTOBJECT_ID = 12;'
-                    type: enum
+                type: enum
             defaultSortOrder:
                 description: 'Specifies whether the sort order should be ascending or descending by default when created. Map for Location sort order to their respective Query SORT constants. Possible values: const SORT_ORDER_DESC = 0; const SORT_ORDER_ASC = 1'
                 type: enum
@@ -434,7 +435,7 @@ types:
                 type: boolean
             defaultSortField:
                 descritpion: 'Specifies which property the child locations should be sorted on by default when created. Map for Location sort fields to their respective SortClauses - class name/identifier and modified subnode. One of the fallowing values: const SORT_FIELD_PATH = 1; const SORT_FIELD_PUBLISHED = 2; const SORT_FIELD_MODIFIED = 3; const SORT_FIELD_SECTION = 4; const SORT_FIELD_DEPTH = 5; const SORT_FIELD_PRIORITY = 8; const SORT_FIELD_NAME = 9; const SORT_FIELD_NODE_ID = 11; const SORT_FIELD_CONTENTOBJECT_ID = 12;'
-                    type: enum
+                type: enum
             defaultSortOrder:
                 description: 'Specifies whether the sort order should be ascending or descending by default when created. Map for Location sort order to their respective Query SORT constants. Possible values: const SORT_ORDER_DESC = 0; const SORT_ORDER_ASC = 1'
                 type: enum
@@ -530,7 +531,7 @@ types:
                 description: 'Additional value data, required by some criterions, MapLocationDistance for instance.'
                 type: Value
             getSpecifications:
-                description: 'Criterion description function. Returns the combination of the Criterion's supported operator/value, as an array of objects.'
+                description: "Criterion description function. Returns the combination of the Criterion's supported operator/value, as an array of objects."
                 type: Specifications[]
             getValueTypeCheckCallback:
                 description: 'Returns a callback that checks the values types depending on the operator specifications.'
@@ -715,7 +716,7 @@ types:
         type: object
         properties:
             ALL:
-                description: 'Constant for use in API's to specify that you want to load all languages.'
+                description: "Constant for use in API's to specify that you want to load all languages."
                 type: array
             id:
                 description: 'The language id (auto generated).'
@@ -1085,7 +1086,7 @@ types:
                 description: 'Name of module, associated with the Policy e.g. content.'
                 type: string
             function:
-                description: 'Name of the module function Or all functions with '*' e.g. read.'
+                description: "Name of the module function Or all functions with '*' e.g. read."
                 type: string
             Limitations:
                 description: 'Limitations.'
@@ -1098,7 +1099,7 @@ types:
                 description: 'Name of module, associated with the Policy e.g. content.'
                 type: string
             function:
-                description: 'Name of the module function Or all functions with '*' e.g. read.'
+                description: 'Name of the module function Or all functions with "*" e.g. read.'
                 type: string
     PolicyDraft:
         description: 'Original policy ID the policy was created from.'
@@ -1140,7 +1141,7 @@ types:
                 description: 'Query sorting clauses.'
                 type: SortClause[]
             facetBuilders:
-                description: 'An array of facet builders. Search engines may ignore any, or given facet builders they don't support and will just return search result facets supported by the engine. API consumer should dynamically iterate over returned facets for further use.'
+                description: "An array of facet builders. Search engines may ignore any, or given facet builders they don't support and will just return search result facets supported by the engine. API consumer should dynamically iterate over returned facets for further use."
                 type: FacetBuilder[]
             offset:
                 description: 'Query offset. Sets the offset for search hits, used for paging the results.'
@@ -1696,7 +1697,7 @@ types:
             _languageCode:
                 description: 'Language code'
                 type: string
-            '#text': TODO - check this name with Adam
+            '#text':
                 description: 'Content Type description.'
                 type: string
     ValueObject:
