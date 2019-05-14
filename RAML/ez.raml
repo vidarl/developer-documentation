@@ -2,7 +2,7 @@
 ---
 title: eZ Platform (Test)
 baseUri: http://localhost/
-version: 2.4
+version: 2.5
 
 /bookmark:
     get:
@@ -5636,7 +5636,7 @@ version: 2.4
                     queryParameters:
                         group:
                             description: The uri of the group to which the Content Type should be linked
-                            type: uri
+                            type: string
                     headers:
                         Accept:
                             description: If set the updated Content Type Group list is returned in XML or JSON format
@@ -6639,12 +6639,12 @@ version: 2.4
                         description: Offset of the result set
                 headers:
                     Accept:
-                    description: UserList - if set the user list returned in XML or JSON format. UserRefList - if set the link list of users returned in XML or JSON format
-                    example: |
-                        application/vnd.ez.api.UserList+xml
-                        application/vnd.ez.api.UserList+json
-                        application/vnd.ez.api.UserRefList+xml
-                        application/vnd.ez.api.UserRefList+json
+                      description: UserList - if set the user list returned in XML or JSON format. UserRefList - if set the link list of users returned in XML or JSON format
+                      example: |
+                          application/vnd.ez.api.UserList+xml
+                          application/vnd.ez.api.UserList+json
+                          application/vnd.ez.api.UserRefList+xml
+                          application/vnd.ez.api.UserRefList+json
                 responses:
                     200:
                         description: OK - the users of the group with the given ID
