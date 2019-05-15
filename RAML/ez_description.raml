@@ -83,19 +83,19 @@ types:
                 required: true
                 type: ContentType
             sectionId:
-                descritpion: 'The section the content is assigned to. If not set the section of the parent is used or a default section.'
+                description: 'The section the content is assigned to. If not set the section of the parent is used or a default section.'
                 type: integer
             ownerId:
-                descritpion: 'The owner of the content. If not given the current authenticated user is set as owner.'
+                description: 'The owner of the content. If not given the current authenticated user is set as owner.'
                 type: integer
             alwaysAvailable:
-                descritpion: 'Indicates if the content object is shown in the main language if its not present in an other requested language.'
+                description: 'Indicates if the content object is shown in the main language if its not present in an other requested language.'
                 type: boolean
             remoteId:
-                descritpion: 'Remote identifier used as a custom identifier for the object. Needs to be a unique Content->remoteId string value.'
+                description: 'Remote identifier used as a custom identifier for the object. Needs to be a unique Content->remoteId string value.'
                 type: string
             mainLanguageCode:
-                descritpion: 'The main language code for the content. This language will also be used for as initial language for the first created version. It is also used as default language for added fields.'
+                description: 'The main language code for the content. This language will also be used for as initial language for the first created version. It is also used as default language for added fields.'
                 required: true
                 type: string
             modificationDate:
@@ -1202,7 +1202,7 @@ types:
     RoleAssignment:
         description: 'This value object represents an assignment od a user or user group to a role including a limitation.'
         type:  object
-        peoperties:
+        properties:
             id:
                 description: 'The unique id of the role assignment.'
                 type: integer
@@ -1215,7 +1215,7 @@ types:
     RoleCreateStruct:
         description: 'This class is used to create a new role.'
         type:  object
-        peoperties:
+        properties:
             identifier:
                 description: 'Readable string identifier of a role.'
                 type: string
@@ -1238,7 +1238,7 @@ types:
     RoleUpdateStruct:
         description: 'This class is used to update a role.'
         type:  object
-        peoperties:
+        properties:
             identifier:
                 description: 'Readable string identifier of a role.'
                 type: string
@@ -1251,7 +1251,7 @@ types:
     SearchResult:
         description: 'The total number of URLs.'
         type:  object
-        peoperties:
+        properties:
             totalCount:
                 description: 'The total number of URLs.'
                 type: integer
@@ -1261,7 +1261,7 @@ types:
     Section:
         description: 'This class represents a section.'
         type:  object
-        peoperties:
+        properties:
             id:
                 description: 'Id of the section.'
                 type: integer
@@ -1552,7 +1552,7 @@ types:
                 description: 'User login.'
                 type: string
             email:
-                description: 'User E-Mail address.'
+                description: 'User e-mail address.'
                 type: string
             enabled:
                 description: 'Flag to signal if user is enabled or not. User can not login if false.'
@@ -1627,30 +1627,30 @@ types:
         properties:
             name:
                 description: 'Name of user preference e.g. timezone.'
-                value: string
+                type: string
             value:
                 description: 'Value of user preference e.g. America/New_York.'
-                value: string
+                type: string
     UserPreferenceList:
         description: 'List of user preferences.'
         type: object
         properties:
             totalCount:
                 description: 'The total number of user preferences.'
-                value: integer
+                type: integer
             items:
                 description: 'List of user preferences.'
-                value: UserPreference[]
+                type: UserPreference[]
     UserPreferenceSetStruct:
         description: 'This class creates user preferences.'
         type: object
         properties:
             name:
                 description: 'Name of user preference e.g. timezone.'
-                value: string
+                type: string
             value:
                 description: 'Value of user preference e.g. America/New_York.'
-                value: string
+                type: string
     UserRoleAssignment:
         description: 'This class represents a user to role assignment.'
         type: object
