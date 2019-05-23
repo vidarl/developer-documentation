@@ -24,6 +24,7 @@ version: 2.5
             200:
                 body:
                     application/vnd.ez.api.BookmarkList+xml:
+                        type: BookmarkList
                         example: |
                             <?xml version="1.0" encoding="UTF-8"?>
                             <BookmarkList media-type="application/vnd.ez.api.BookmarkList+xml">
@@ -135,6 +136,7 @@ version: 2.5
                                 </Bookmark>
                             </BookmarkList>
                     application/vnd.ez.api.BookmarkList+json:
+                        type: BookmarkList
                         example: |
                             {
                                 "BookmarkList": {
@@ -267,6 +269,7 @@ version: 2.5
             200:
                 body:
                     application/vnd.ez.api.Root+xml:
+                        type: Root
                         example: |
                             <?xml version="1.0" encoding="UTF-8"?>
                             <Root media-type="application/vnd.ez.api.Root+xml">
@@ -298,6 +301,7 @@ version: 2.5
                                 <refreshSession media-type="application/vnd.ez.api.UserSession+xml" href="/api/ezp/v2/user/sessions/{sessionId}/refresh"/>
                             </Root>
                     application/vnd.ez.api.Root+json:
+                        type: Root
                         example: |
                             {
                                 "Root": {
@@ -458,6 +462,7 @@ version: 2.5
                           <xsd:element name="ContentCreate" type="contentCreateType"></xsd:element>
                         </xsd:schema>
                 application/vnd.ez.api.Content+xml:
+                    type: ContentCreate
                     example:  |
                         <?xml version="1.0" encoding="UTF-8"?>
                         <ContentCreate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
@@ -499,6 +504,7 @@ version: 2.5
                 201:
                     body:
                         application/vnd.ez.api.Content+xml:
+                            type: Content
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <Content media-type="application/vnd.ez.api.Content+xml" href="/api/ezp/v2/content/objects/83" remoteId="a9c8f00b1dba880df7a5ed3e93fad421" id="83">
@@ -604,6 +610,9 @@ version: 2.5
                                     <alwaysAvailable>true</alwaysAvailable>
                                     <ObjectStates media-type="application/vnd.ez.api.ContentObjectStates+xml" href="/api/ezp/v2/content/objects/83/objectstates"/>
                                 </Content>
+                        application/vnd.ez.api.ContentInfo+xml:
+                            type: ContentInfo
+                            example: #TODO
                 400:
                     description: Error - the Input does not match the input schema definition or the validation on a field fails
                 401:
@@ -642,6 +651,7 @@ version: 2.5
                     200:
                         body:
                             application/vnd.ez.api.Content+xml:
+                                type: Content
                                 example: |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <Content media-type="application/vnd.ez.api.Content+xml" href="/api/ezp/v2/content/objects/54" remoteId="d2b6b7f5d0935c45456a80d3a154f2e7" id="54">
@@ -756,6 +766,9 @@ version: 2.5
                                         <alwaysAvailable>false</alwaysAvailable>
                                         <ObjectStates media-type="application/vnd.ez.api.ContentObjectStates+xml" href="/api/ezp/v2/content/objects/54/objectstates"/>
                                     </Content>
+                            application/vnd.ez.api.ContentInfo+xml:
+                                type: ContentInfo
+                                example: | #TODO
                     401:
                         description: Error - the user is not authorized to read this object. This could also happen if there is no published version yet and another user owns a draft of this content
                     404:
@@ -802,6 +815,7 @@ version: 2.5
                               <xsd:element name="ContentUpdate" type="contentUpdateType"></xsd:element>
                             </xsd:schema>
                     application/vnd.ez.api.ContentInfo+xml:
+                        type: ContentInfo
                         example: |
                             <?xml version="1.0" encoding="UTF-8"?>
                             <ContentUpdate>
@@ -815,7 +829,8 @@ version: 2.5
                 responses:
                     200:
                         body:
-                            application/vnd.ez.api.ContentUpdate+xml:
+                            application/vnd.ez.api.ContentInfo+xml:
+                                type: ContentInfo
                                 example: |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <Content media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/80" remoteId="69848aeb86164c35e5c98202eebe9e05" id="80">
@@ -886,6 +901,7 @@ version: 2.5
                         200:
                             body:
                                 application/vnd.ez.api.Version+xml:
+                                    type: Version
                                     example:  |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <Version media-type="application/vnd.ez.api.Version+xml" href="/api/ezp/v2/content/objects/61/versions/4">
@@ -1000,6 +1016,7 @@ version: 2.5
                             description: Created
                             body:
                                 application/vnd.ez.api.Version+xml:
+                                    type: Version
                                     example:  |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <Version media-type="application/vnd.ez.api.Version+xml" href="/api/ezp/v2/content/objects/61/versions/6">
@@ -1116,6 +1133,7 @@ version: 2.5
                         200:
                             body:
                                 application/vnd.ez.api.VersionList+xml:
+                                    type: VersionList
                                     example:  |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <VersionList media-type="application/vnd.ez.api.VersionList+xml" href="/api/ezp/v2/content/objects/61/versions">
@@ -1236,6 +1254,7 @@ version: 2.5
                             200:
                                 body:
                                     application/vnd.ez.api.Version+xml:
+                                        type: Version
                                         example: |
                                             <?xml version="1.0" encoding="UTF-8"?>
                                             <Version media-type="application/vnd.ez.api.Version+xml" href="/api/ezp/v2/content/objects/61/versions/3">
@@ -1384,6 +1403,7 @@ version: 2.5
                                       <xsd:element name="VersionUpdate" type="versionUpdateType" />
                                     </xsd:schema>
                             application/vnd.ez.api.Version+xml:
+                                type: Version
                                 example:  |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <VersionUpdate xmlns:p="http://ez.no/API/Values"
@@ -1410,6 +1430,7 @@ version: 2.5
                             200:
                                 body:
                                     application/vnd.ez.api.Version+xml:
+                                        type: Version
                                         example:  |
                                             <?xml version="1.0" encoding="UTF-8"?>
                                             <Version href="/content/objects/23/versions/4" media-type="application/vnd.ez.api.Version+xml">
@@ -1482,6 +1503,7 @@ version: 2.5
                                 description: Created
                                 body:
                                     application/vnd.ez.api.Version+xml:
+                                        type: Version
                                         example:  |
                                             <?xml version="1.0" encoding="UTF-8"?>
                                             <Version media-type="application/vnd.ez.api.Version+xml" href="/api/ezp/v2/content/objects/61/versions/6">
@@ -1641,6 +1663,7 @@ version: 2.5
                                 200:
                                     body:
                                         application/vnd.ez.api.RelationList+xml:
+                                            type: RelationList
                                             example:  |
                                                 <?xml version="1.0" encoding="UTF-8"?>
                                                 <Relations media-type="application/vnd.ez.api.RelationList+xml" href="/api/ezp/v2/content/objects/61/versions/6/relations">
@@ -1685,6 +1708,7 @@ version: 2.5
                                           </xsd:complexType>
                                         </xsd:schema>
                                 application/vnd.ez.api.Relation+xml:
+                                    type: Relation
                                     example:  |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <RelationCreate>
@@ -1694,6 +1718,7 @@ version: 2.5
                                 201:
                                     body:
                                         application/vnd.ez.api.Relation+xml:
+                                            type: Relation
                                             example:  |
                                                 <?xml version="1.0" encoding="UTF-8"?>
                                                 <Relation media-type="application/vnd.ez.api.Relation+xml" href="/api/ezp/v2/content/objects/86/versions/1/relations/1">
@@ -1715,6 +1740,7 @@ version: 2.5
                                         description: OK - loads a relation for the given content object
                                         body:
                                             application/vnd.ez.api.Relation+xml:
+                                                type: Relation
                                                 example:  |
                                                     <?xml version="1.0" encoding="UTF-8"?>
                                                     <Relation media-type="application/vnd.ez.api.Relation+xml" href="/api/ezp/v2/content/objects/86/versions/1/relations/1">
@@ -1808,6 +1834,7 @@ version: 2.5
                                       <xsd:element name="LocationCreate" type="vnd.ez.api.LocationCreate" />
                                     </xsd:schema>
                             application/vnd.ez.api.Location+xml:
+                                type: Location
                                 example:  |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <LocationCreate>
@@ -1821,6 +1848,7 @@ version: 2.5
                             201:
                                 body:
                                     application/vnd.ez.api.Location+xml:
+                                        type: Location
                                         example:  |
                                             <?xml version="1.0" encoding="UTF-8"?>
                                             <Location media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2/42/69">
@@ -1876,6 +1904,7 @@ version: 2.5
                             200:
                                 body:
                                     application/vnd.ez.api.LocationList+xml:
+                                        type: LocationList
                                         example:  |
                                             <?xml version="1.0" encoding="UTF-8"?>
                                             <LocationList media-type="application/vnd.ez.api.LocationList+xml" href="/api/ezp/v2/content/objects/61/locations">
@@ -1901,13 +1930,67 @@ version: 2.5
                             description: OK - returns the Object State
                             body:
                                 application/vnd.ez.api.ContentObjectStates+xml:
+                                    type: ObjectStateList
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
-                                        <ContentObjectStates media-type="application/vnd.ez.api.ContentObjectStates+xml">
-                                            <ObjectState media-type="application/vnd.ez.api.ObjectState+xml" href="/api/ezp/v2/content/objectstategroups/2/objectstates/1"/>
-                                            <ObjectState media-type="application/vnd.ez.api.ObjectState+xml" href="/api/ezp/v2/content/objectstategroups/3/objectstates/5"/>
-                                            <ObjectState media-type="application/vnd.ez.api.ObjectState+xml" href="/api/ezp/v2/content/objectstategroups/6/objectstates/6"/>
-                                        </ContentObjectStates>
+                                        <ObjectStateList media-type="application/vnd.ez.api.ObjectStateList+xml" href="/api/ezp/v2/content/objectstategroups/2/objectstates">
+                                            <ObjectState media-type="application/vnd.ez.api.ObjectState+xml" href="/api/ezp/v2/content/objectstategroups/2/objectstates/1">
+                                                <id>1</id>
+                                                <identifier>not_locked</identifier>
+                                                <priority>0</priority>
+                                                <ObjectStateGroup media-type="application/vnd.ez.api.ObjectStateGroup+xml" href="/api/ezp/v2/content/objectstategroups/2"/>
+                                                <defaultLanguageCode>eng-GB</defaultLanguageCode>
+                                                <languageCodes>eng-GB</languageCodes>
+                                                <names>
+                                                    <value languageCode="eng-GB">Not locked</value>
+                                                </names>
+                                                <descriptions>
+                                                    <value languageCode="eng-GB"></value>
+                                                </descriptions>
+                                            </ObjectState>
+                                            <ObjectState media-type="application/vnd.ez.api.ObjectState+xml" href="/api/ezp/v2/content/objectstategroups/2/objectstates/4">
+                                                <id>4</id>
+                                                <identifier>old-state</identifier>
+                                                <priority>1</priority>
+                                                <ObjectStateGroup media-type="application/vnd.ez.api.ObjectStateGroup+xml" href="/api/ezp/v2/content/objectstategroups/2"/>
+                                                <defaultLanguageCode>eng-GB</defaultLanguageCode>
+                                                <languageCodes>eng-GB</languageCodes>
+                                                <names>
+                                                    <value languageCode="eng-GB">New State</value>
+                                                </names>
+                                                <descriptions>
+                                                    <value languageCode="eng-GB">New Object State</value>
+                                                </descriptions>
+                                            </ObjectState>
+                                            <ObjectState media-type="application/vnd.ez.api.ObjectState+xml" href="/api/ezp/v2/content/objectstategroups/2/objectstates/3">
+                                                <id>3</id>
+                                                <identifier>new-state</identifier>
+                                                <priority>2</priority>
+                                                <ObjectStateGroup media-type="application/vnd.ez.api.ObjectStateGroup+xml" href="/api/ezp/v2/content/objectstategroups/2"/>
+                                                <defaultLanguageCode>eng-GB</defaultLanguageCode>
+                                                <languageCodes>eng-GB</languageCodes>
+                                                <names>
+                                                    <value languageCode="eng-GB">New State</value>
+                                                </names>
+                                                <descriptions>
+                                                    <value languageCode="eng-GB">New Object State</value>
+                                                </descriptions>
+                                            </ObjectState>
+                                            <ObjectState media-type="application/vnd.ez.api.ObjectState+xml" href="/api/ezp/v2/content/objectstategroups/2/objectstates/2">
+                                                <id>2</id>
+                                                <identifier>locked</identifier>
+                                                <priority>3</priority>
+                                                <ObjectStateGroup media-type="application/vnd.ez.api.ObjectStateGroup+xml" href="/api/ezp/v2/content/objectstategroups/2"/>
+                                                <defaultLanguageCode>eng-GB</defaultLanguageCode>
+                                                <languageCodes>eng-GB</languageCodes>
+                                                <names>
+                                                    <value languageCode="eng-GB">Locked</value>
+                                                </names>
+                                                <descriptions>
+                                                    <value languageCode="eng-GB"></value>
+                                                </descriptions>
+                                            </ObjectState>
+                                        </ObjectStateList>
                         404:
                             description: Error - The Content item does not exist
                 patch:
@@ -1948,6 +2031,7 @@ version: 2.5
                             description: OK - Object State updated
                             body:
                                 application/vnd.ez.api.ContentObjectStates+xml:
+                                    type: ObjectState
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <ContentObjectStates media-type="application/vnd.ez.api.ContentObjectStates+xml">
@@ -1977,6 +2061,7 @@ version: 2.5
                     description: OK - returns a list of Object State Groups
                     body:
                         application/vnd.ez.api.ObjectStateGroupList+xml:
+                            type: ObjectStateGroupList
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <ObjectStateGroupList media-type="application/vnd.ez.api.ObjectStateGroupList+xml" href="/api/ezp/v2/content/objectstategroups">
@@ -2068,6 +2153,7 @@ version: 2.5
                     description: Object State Group created
                     body:
                         application/vnd.ez.api.ObjectStateGroup+xml:
+                            type: ObjectStateGroup
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <ObjectStateGroup media-type="application/vnd.ez.api.ObjectStateGroup+xml" href="/api/ezp/v2/content/objectstategroups/6">
@@ -2105,6 +2191,7 @@ version: 2.5
                         description: OK - returns the Object State Group
                         body:
                             application/vnd.ez.api.ObjectStateGroup+xml:
+                                type: ObjectStateGroup
                                 example: |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <ObjectStateGroup media-type="application/vnd.ez.api.ObjectStateGroup+xml" href="/api/ezp/v2/content/objectstategroups/6">
@@ -2183,6 +2270,7 @@ version: 2.5
                         description: OK - Object Stated group updated
                         body:
                             application/vnd.ez.api.ObjectStateGroup+xml:
+                                type: ObjectStateGroup
                                 example: |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <ObjectStateGroup media-type="application/vnd.ez.api.ObjectStateGroup+xml" href="/api/ezp/v2/content/objectstategroups/6">
@@ -2231,6 +2319,7 @@ version: 2.5
                             description: OK - returns a list of Object States
                             body:
                                 application/vnd.ez.api.ObjectStateList+xml:
+                                    type: ObjectStateList
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <ObjectStateList media-type="application/vnd.ez.api.ObjectStateList+xml" href="/api/ezp/v2/content/objectstategroups/2/objectstates">
@@ -2327,6 +2416,7 @@ version: 2.5
                             description: Object State created
                             body:
                                 application/vnd.ez.api.ObjectState+xml:
+                                    type: ObjectState
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <ObjectState media-type="application/vnd.ez.api.ObjectState+xml" href="/api/ezp/v2/content/objectstategroups/6/objectstates/6">
@@ -2365,6 +2455,7 @@ version: 2.5
                                 description: OK - returns the Object State
                                 body:
                                     application/vnd.ez.api.ObjectState+xml:
+                                        type: ObjectState
                                         example: |
                                             <?xml version="1.0" encoding="UTF-8"?>
                                             <ObjectState media-type="application/vnd.ez.api.ObjectState+xml" href="/api/ezp/v2/content/objectstategroups/6/objectstates/2">
@@ -2445,6 +2536,7 @@ version: 2.5
                                 description: OK - Object State updated
                                 body:
                                     application/vnd.ez.api.ObjectState+xml:
+                                        type: ObjectState
                                         example: |
                                             <?xml version="1.0" encoding="UTF-8"?>
                                             <ObjectState media-type="application/vnd.ez.api.ObjectState+xml" href="/api/ezp/v2/content/objectstategroups/2/objectstates/2">
@@ -2491,6 +2583,7 @@ version: 2.5
                 200:
                     body:
                          application/vnd.ez.api.ImageVariation+xml:
+                            type: ContentImageVariation
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <ContentImageVariation media-type="application/vnd.ez.api.ContentImageVariation+xml" href="/api/ezp/v2/content/binary/images/61-216-1/variations/large">
@@ -2520,6 +2613,7 @@ version: 2.5
                 200:
                     body:
                         application/vnd.ez.api.Location+xml:
+                            type: Location
                             example:
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <Location media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2/61">
@@ -2572,6 +2666,7 @@ version: 2.5
                     200:
                         body:
                             application/vnd.ez.api.Location+xml:
+                                type: Location
                                 example:
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <Location media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2/61">
@@ -2666,6 +2761,7 @@ version: 2.5
                         200:
                             body:
                                 application/vnd.ez.api.LocationList+xml:
+                                    type: LocationList
                                     example:  |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <LocationList media-type="application/vnd.ez.api.LocationList+xml" href="/api/ezp/v2/content/locations/1/63/children">
@@ -2696,6 +2792,7 @@ version: 2.5
                             description: OK - returns the list of URL aliases
                             body:
                                 application/vnd.ez.api.UrlAliasRefList+xml:
+                                    type: UrlAliasRefList
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <UrlAliasRefList media-type="application/vnd.ez.api.UrlAliasRefList+xml" href="/api/ezp/v2/content/locations/1/2/59/urlaliases">
@@ -2756,6 +2853,7 @@ version: 2.5
                               <xsd:element name="LocationUpdate" type="vnd.ez.api.LocationUpdate" />
                             </xsd:schema>
                     application/vnd.ez.api.Location+xml:
+                        type: LocationUpdateStruct
                         example: |
                             <?xml version="1.0" encoding="UTF-8"?>
                             <LocationUpdate>
@@ -2769,6 +2867,7 @@ version: 2.5
                     200:
                         body:
                             application/vnd.ez.api.Location+xml:
+                                type: Location
                                 example:  |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <Location media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2/59">
@@ -2930,6 +3029,7 @@ version: 2.5
                           </xsd:complexType>
                         </xsd:schema>
                 application/vnd.ez.api.Section+xml:
+                    type: SectionStruct
                     example: |
                         <?xml version="1.0" encoding="UTF-8"?>
                         <SectionInput>
@@ -2940,6 +3040,7 @@ version: 2.5
                 201:
                     body:
                         application/vnd.ez.api.Section+xml:
+                            type: Section
                             example:  |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/7">
@@ -2964,6 +3065,7 @@ version: 2.5
                 200:
                     body:
                         application/vnd.ez.api.SectionList+xml:
+                            type: SectionList
                             example:  |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <SectionList media-type="application/vnd.ez.api.SectionList+xml" href="/api/ezp/v2/content/sections">
@@ -3020,6 +3122,7 @@ version: 2.5
                     200:
                         body:
                             application/vnd.ez.api.Section+xml:
+                                type: Section
                                 example:  |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/5">
@@ -3070,6 +3173,7 @@ version: 2.5
                         description: OK - Section updated
                         body:
                             application/vnd.ez.api.Section+xml:
+                                type: Section
                                 example: |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/7">
@@ -3087,7 +3191,7 @@ version: 2.5
                        description: Error - the current ETag does not match with the provided one in the If-Match header
             delete:
                 description: The given Section is deleted
-                #headers:
+                #headers: TODO
                 # a little obvious?
                     #Accept:
                         #description: If set in the case of an error the error message is returned in XML or JSON format
@@ -3411,7 +3515,43 @@ version: 2.5
                             </TrashItem>
                 responses:
                     200:
-                        description: OK - returns the item in Trash
+                        body:
+                            application/vnd.ez.api.TrashItem+xml:
+                                type: TrashItem
+                                example:  |
+                                    <?xml version="1.0" encoding="UTF-8"?>
+                                    <TrashItem media-type="application/vnd.ez.api.TrashItem+xml" href="/api/ezp/v2/content/trash/81">
+                                        <id>81</id>
+                                        <priority>0</priority>
+                                        <hidden>false</hidden>
+                                        <invisible>false</invisible>
+                                        <ParentLocation media-type="application/vnd.ez.api.Location+xml" href="/api/ezp/v2/content/locations/1/2/42"/>
+                                        <pathString>/1/2/42/81/</pathString>
+                                        <depth>3</depth>
+                                        <childCount>0</childCount>
+                                        <remoteId>135e8a84b61848a67be36e9552d2724d</remoteId>
+                                        <Content media-type="application/vnd.ez.api.Content+xml" href="/api/ezp/v2/content/objects/99"/>
+                                        <sortField>PATH</sortField>
+                                        <sortOrder>ASC</sortOrder>
+                                        <ContentInfo media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/99">
+                                            <Content media-type="application/vnd.ez.api.ContentInfo+xml" href="/api/ezp/v2/content/objects/99" remoteId="ae2b4568c0d2e7a4a9bca9495e73591a" id="99">
+                                                <ContentType media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/1"/>
+                                                <Name>Folder 1</Name>
+                                                <Versions media-type="application/vnd.ez.api.VersionList+xml" href="/api/ezp/v2/content/objects/99/versions"/>
+                                                <CurrentVersion media-type="application/vnd.ez.api.Version+xml" href="/api/ezp/v2/content/objects/99/currentversion"/>
+                                                <Section media-type="application/vnd.ez.api.Section+xml" href="/api/ezp/v2/content/sections/1"/>
+                                                <Locations media-type="application/vnd.ez.api.LocationList+xml" href="/api/ezp/v2/content/objects/99/locations"/>
+                                                <Owner media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
+                                                <lastModificationDate>2019-04-25T12:45:58+02:00</lastModificationDate>
+                                                <publishedDate>2019-04-25T12:45:58+02:00</publishedDate>
+                                                <mainLanguageCode>eng-GB</mainLanguageCode>
+                                                <currentVersionNo>1</currentVersionNo>
+                                                <alwaysAvailable>true</alwaysAvailable>
+                                                <status>TRASHED</status>
+                                                <ObjectStates media-type="application/vnd.ez.api.ContentObjectStates+xml" href="/api/ezp/v2/content/objects/99/objectstates"/>
+                                            </Content>
+                                        </ContentInfo>
+                                    </TrashItem>
                     401:
                         description: Error - The user has no permission to read the item in Trash
                     404:
@@ -3453,6 +3593,7 @@ version: 2.5
                     description: OK - returns the list of URL aliases
                     body:
                         application/vnd.ez.api.UrlAliasRefList+xml:
+                            type: UrlAliasRefList
                             example:
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <UrlAliasRefList media-type="application/vnd.ez.api.UrlAliasRefList+xml" href="/api/ezp/v2/content/urlaliases">
@@ -3511,6 +3652,7 @@ version: 2.5
                     description: URL alias created
                     body:
                         application/vnd.ez.api.UrlAlias+xml:
+                            type: UrlAlias
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <UrlAlias media-type="application/vnd.ez.api.UrlAlias+xml" href="/api/ezp/v2/content/urlaliases/0-deca3dadca45c3dff7861274b8e67ed7" id="0-deca3dadca45c3dff7861274b8e67ed7" type="LOCATION">
@@ -3542,6 +3684,7 @@ version: 2.5
                         description: OK - returns the URL alias
                         body:
                             application/vnd.ez.api.UrlAlias+xml:
+                                type: UrlAlias
                                 example: |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <UrlAlias media-type="application/vnd.ez.api.UrlAlias+xml" href="/api/ezp/v2/content/urlaliases/0-2cecdff5f90b8595d76b68c417b09f36" id="0-2cecdff5f90b8595d76b68c417b09f36" type="RESOURCE">
@@ -3580,6 +3723,7 @@ version: 2.5
                     description: OK - returns a list of URL wildcards
                     body:
                         application/vnd.ez.api.UrlWildcardList+xml:
+                            type: UrlWildcardList
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <UrlWildcardList media-type="application/vnd.ez.api.UrlWildcardList+xml" href="/api/ezp/v2/content/urlwildcards">
@@ -3631,6 +3775,7 @@ version: 2.5
                     description: URL wildcard created
                     body:
                         application/vnd.ez.api.UrlWildcard+xml:
+                            type: UrlWildcard
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <UrlWildcard media-type="application/vnd.ez.api.UrlWildcard+xml" href="/api/ezp/v2/content/urlwildcards/1" id="1">
@@ -3658,6 +3803,7 @@ version: 2.5
                         description: OK - returns the URL wildcard
                         body:
                             application/vnd.ez.api.UrlWildcard+xml:
+                                type: UrlWildcard
                                 example: |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <UrlWildcard media-type="application/vnd.ez.api.UrlWildcard+xml" href="/api/ezp/v2/content/urlwildcards/1" id="1">
@@ -3696,6 +3842,7 @@ version: 2.5
                     description: OK - returns a list of Content Type Groups
                     body:
                         application/vnd.ez.api.ContentTypeGroupList+xml:
+                            type: ContentTypeGroupList
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <ContentTypeGroupList media-type="application/vnd.ez.api.ContentTypeGroupList+xml" href="/api/ezp/v2/content/typegroups">
@@ -3774,6 +3921,7 @@ version: 2.5
                     description: Content Type Group created
                     body:
                         application/vnd.ez.api.ContentTypeGroup+xml:
+                            type: ContentTypeGroup
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <ContentTypeGroup href="/content/typesgroups/7" media-type="application/vnd.ez.api.ContentTypeGroup+xml">
@@ -3807,6 +3955,7 @@ version: 2.5
                         description: OK - returns the Content Type Group
                         body:
                             application/vnd.ez.api.ContentTypeGroup+xml:
+                                type: ContentTypeGroup
                                 example: |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <ContentTypeGroup media-type="application/vnd.ez.api.ContentTypeGroup+xml" href="/api/ezp/v2/content/typegroups/1">
@@ -3849,6 +3998,7 @@ version: 2.5
                         description: Content Type Group updated
                         body:
                             application/vnd.ez.api.ContentTypeGroup+xml:
+                                type: ContentTypeGroup
                                 example: |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <ContentTypeGroup media-type="application/vnd.ez.api.ContentTypeGroup+xml" href="/api/ezp/v2/content/typegroups/1">
@@ -3895,6 +4045,7 @@ version: 2.5
                             description: OK - returns a list on Content Types
                             body:
                                 application/vnd.ez.api.ContentTypeInfoList+xml:
+                                    type: ContentTypeInfoList
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <ContentTypeInfoList media-type="application/vnd.ez.api.ContentTypeInfoList+xml" href="/api/ezp/v2/content/typegroups/1/types">
@@ -3946,6 +4097,7 @@ version: 2.5
                                             </ContentTypeInfo>
                                         </ContentTypeInfoList>
                                 application/vnd.ez.api.ContentTypeList+xml:
+                                    type: ContentTypeList
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <ContentTypeList media-type="application/vnd.ez.api.ContentTypeList+xml" href="/api/ezp/v2/content/typegroups/1/types">
@@ -4326,6 +4478,7 @@ version: 2.5
                             description: Content Type created
                             body:
                                 application/vnd.ez.api.ContentType+xml:
+                                    type: ContentType
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <ContentType media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/20/draft">
@@ -4413,6 +4566,7 @@ version: 2.5
                 200:
                     body:
                         application/vnd.ez.api.ContentTypeInfoList+xml:
+                            type: ContentTypeInfoList
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <ContentTypeInfoList media-type="application/vnd.ez.api.ContentTypeInfoList+xml" href="/api/ezp/v2/content/types">
@@ -4551,6 +4705,7 @@ version: 2.5
                     200:
                         body:
                             application/vnd.ez.api.ContentType+xml:
+                                type: ContentType
                                 example: |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <ContentType media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/2">
@@ -4902,7 +5057,8 @@ version: 2.5
                     201:
                         description: Draft created
                         body:
-                            'application/vnd.ez.api.ContentTypeInfo+xml':
+                            application/vnd.ez.api.ContentTypeInfo+xml:
+                                type: ContentTypeInfo
                                 example: |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <ContentTypeInfo media-type="application/vnd.ez.api.ContentTypeInfo+xml" href="/api/ezp/v2/content/types/3/draft">
@@ -4959,6 +5115,7 @@ version: 2.5
                             description: OK - returns the Field definition
                             body:
                                 application/vnd.ez.api.FieldDefinition+xml:
+                                    type: FieldDefinition
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/15/fieldDefinitions/195">
@@ -5150,6 +5307,7 @@ version: 2.5
                             description: Draft metadata updated
                             body:
                                 application/vnd.ez.api.ContentTypeInfo+xml:
+                                    type: ContentTypeInfo
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <ContentTypeInfo media-type="application/vnd.ez.api.ContentTypeInfo+xml" href="/api/ezp/v2/content/types/14/draft">
@@ -5191,6 +5349,7 @@ version: 2.5
                         200:
                             body:
                                 application/vnd.ez.api.ContentType+xml:
+                                    type: ContentType
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <ContentType media-type="application/vnd.ez.api.ContentType+xml" href="/api/ezp/v2/content/types/14">
@@ -5389,6 +5548,7 @@ version: 2.5
                                 description: Field definition created
                                 body:
                                     application/vnd.ez.api.FieldDefinition+xml:
+                                        type: FieldDefinition
                                         example: |
                                             <?xml version="1.0" encoding="UTF-8"?>
                                             <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/14/draft/fieldDefinitions/221">
@@ -5432,6 +5592,7 @@ version: 2.5
                                     description: OK - returns the Field definition
                                     body:
                                         application/vnd.ez.api.FieldDefinition+xml:
+                                            type: FieldDefinition
                                             example: |
                                                 <?xml version="1.0" encoding="UTF-8"?>
                                                 <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/15/draft/fieldDefinitions/195">
@@ -5572,6 +5733,7 @@ version: 2.5
                                     description: OK - attributes updated
                                     body:
                                         application/vnd.ez.api.FieldDefinition+xml:
+                                            type: FieldDefinition
                                             example: |
                                                 <?xml version="1.0" encoding="UTF-8"?>
                                                 <FieldDefinition media-type="application/vnd.ez.api.FieldDefinition+xml" href="/api/ezp/v2/content/types/15/draft/fieldDefinitions/197">
@@ -5677,6 +5839,7 @@ version: 2.5
                         200:
                             body:
                                 application/vnd.ez.api.ContentTypeGroupRefList+xml:
+                                    type: ContentTypeGroupRefList
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <ContentTypeGroupRefList media-type="application/vnd.ez.api.ContentTypeGroupRefList+xml" href="/api/ezp/v2/content/typegroups/15/types">
@@ -5709,6 +5872,7 @@ version: 2.5
                             200:
                                 body:
                                     application/vnd.ez.api.ContentTypeGroup+xml:
+                                        type: ContentTypeGroup
                                         example: |
                                             <?xml version="1.0" encoding="UTF-8"?>
                                             <ContentTypeGroupRefList media-type="application/vnd.ez.api.ContentTypeGroupRefList+xml" href="/api/ezp/v2/content/typegroups/15/types">
@@ -5725,10 +5889,9 @@ version: 2.5
                                 description: Error - Content Type cannot be unlinked from the only remaining group
                             404:
                                 description: Error - The resource does not exist
-
 /views:
     post:
-    # inspect -> Network  - wyklikac sub-items list
+    #TODO inspect -> Network  - wyklikac sub-items list
         description: Executes a query and returns view including the results the View input reflects the criteria model of the public API
         headers:
             Accept:
@@ -5784,6 +5947,7 @@ version: 2.5
             200:
                 body:
                     application/vnd.ez.api.View+xml; version=1.1:
+                        type: View
                         example:  |
                             <?xml version="1.0" encoding="UTF-8"?>
                             <View href="/views/TitleView" media-type="application/vnd.ez.api.View+xml; version=1.1">
@@ -5877,6 +6041,7 @@ version: 2.5
                 200:
                     body:
                         application/vnd.ez.api.UserGroupList+xml:
+                            type: UserGroupList
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <UserGroupList media-type="application/vnd.ez.api.UserGroupList+xml" href="/api/ezp/v2/user/groups">
@@ -5989,6 +6154,7 @@ version: 2.5
                         description: OK - loads user groups
                         body:
                             application/vnd.ez.api.UserGroup+xml:
+                                type: UserGroup
                                 example: |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <UserGroup media-type="application/vnd.ez.api.UserGroup+xml" href="/api/ezp/v2/user/groups/1/5/14" id="13" remoteId="3c160cca19fb135f83bd02d911f04db2">
@@ -6101,6 +6267,7 @@ version: 2.5
                        description: OK - updated user group
                        body:
                            application/vnd.ez.api.UserGroup+xml:
+                               type: UserGroup
                                example: |
                                    <?xml version="1.0" encoding="UTF-8"?>
                                     <UserGroup media-type="application/vnd.ez.api.UserGroup+xml" href="/api/ezp/v2/user/groups/1/5/65" id="57" remoteId="9819b9739e775b69f8d791cdc6cb4c34">
@@ -6254,9 +6421,10 @@ version: 2.5
                                         </fields>
                                     </UserCreate>
                     responses:
-                        body:
-                            201:
+                        201:
+                            body:
                                 application/vnd.ez.api.User+xml:
+                                    type: User
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <User media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/59" id="59" remoteId="remoteId-qwert426">
@@ -6344,14 +6512,14 @@ version: 2.5
                                         <UserGroups media-type="application/vnd.ez.api.UserGroupList+xml" href="/api/ezp/v2/user/users/59/groups"/>
                                         <Roles media-type="application/vnd.ez.api.RoleAssignmentList+xml" href="/api/ezp/v2/user/users/59/roles"/>
                                         </User>
-                            400:
-                                description: Error - the Input does not match the input schema definition, In this case the response contains an ErrorMessage
-                            401:
-                                description: Error - the user is not authorized to create this user
-                            403:
-                                description: Error - a user with the same login already exists
-                            404:
-                                description: Error - the group with the given ID does not exist
+                        400:
+                            description: Error - the Input does not match the input schema definition, In this case the response contains an ErrorMessage
+                        401:
+                            description: Error - the user is not authorized to create this user
+                        403:
+                            description: Error - a user with the same login already exists
+                        404:
+                            description: Error - the group with the given ID does not exist
             /subgroups:
                 post:
                     description: Creates a new user group under the given parent. To create a top level group use /user/groups/subgroups
@@ -6415,6 +6583,7 @@ version: 2.5
                         201:
                             body:
                                 application/vnd.ez.api.UserGroup+xml:
+                                    type: UserGroup
                                     example:  |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <UserGroup media-type="application/vnd.ez.api.UserGroup+xml" href="/api/ezp/v2/user/groups/1/5/65/68" id="60" remoteId="remoteId-qwert098">
@@ -6489,6 +6658,7 @@ version: 2.5
                         200:
                             body:
                                 application/vnd.ez.api.RoleAssignmentList+xml:
+                                    type: RoleAssignmentList
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <RoleAssignmentList media-type="application/vnd.ez.api.RoleAssignmentList+xml" href="/api/ezp/v2/user/groups/1/5/65/roles">
@@ -6545,6 +6715,7 @@ version: 2.5
                         200:
                             body:
                                 application/vnd.ez.api.RoleAssignmentList+xml:
+                                    type: RoleAssignmentList
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <RoleAssignmentList media-type="application/vnd.ez.api.RoleAssignmentList+xml" href="/api/ezp/v2/user/groups/1/5/65/roles">
@@ -6591,6 +6762,7 @@ version: 2.5
                                 description: OK - returns a roleassignment of the given user group
                                 body:
                                     application/vnd.ez.api.RoleAssignment+xml:
+                                        type: RoleAssignment
                                         example: |
                                             <?xml version="1.0" encoding="UTF-8"?>
                                             <RoleAssignment media-type="application/vnd.ez.api.RoleAssignment+xml" href="/api/ezp/v2/user/groups/1/5/65/roles/10">
@@ -6615,6 +6787,7 @@ version: 2.5
                             200:
                                 body:
                                     application/vnd.ez.api.RoleAssignmentList+xml:
+                                        type: RoleAssignmentList
                                         example: |
                                             <?xml version="1.0" encoding="UTF-8"?>
                                             <RoleAssignmentList media-type="application/vnd.ez.api.RoleAssignmentList+xml" href="/api/ezp/v2/user/groups/1/5/65/roles">
@@ -6650,6 +6823,7 @@ version: 2.5
                         description: OK - the users of the group with the given ID
                         body:
                             application/vnd.ez.api.UserRefList+xml:
+                                type: UserRefList
                                 example: |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <UserRefList media-type="application/vnd.ez.api.UserRefList+xml" href="/api/ezp/v2/user/groups/65/users">
@@ -6681,6 +6855,7 @@ version: 2.5
                         description: OK - list of the sub groups
                         body:
                             application/vnd.ez.api.UserGroupRefList+xml:
+                                type: UserGroupRefList
                                 example: |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <UserGroupRefList media-type="application/vnd.ez.api.UserGroupRefList+xml" href="/api/ezp/v2/user/groups/65/subgroups">
@@ -6715,12 +6890,14 @@ version: 2.5
                     description: OK - Loads users either for a given remoteId or role
                     body:
                         application/vnd.ez.api.UserRefList+xml:
+                            type: UserRefList
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <UserRefList media-type="application/vnd.ez.api.UserRefList+xml" href="/api/ezp/v2/user/users">
                                     <User media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/14"/>
                                 </UserRefList>
                         application/vnd.ez.api.UserList+xml:
+                            type: UserList
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <UserList media-type="application/vnd.ez.api.UserList+xml" href="/api/ezp/v2/user/users">
@@ -6844,6 +7021,7 @@ version: 2.5
                         description: OK - the user with the given ID
                         body:
                             application/vnd.ez.api.User+xml:
+                                type: UserList
                                 example: |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <UserList media-type="application/vnd.ez.api.UserList+xml" href="/api/ezp/v2/user/users">
@@ -6995,6 +7173,7 @@ version: 2.5
                         description: OK - user updated
                         body:
                             application/vnd.ez.api.User+xml:
+                                type: User
                                 example: |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <User media-type="application/vnd.ez.api.User+xml" href="/api/ezp/v2/user/users/55" id="55" remoteId="3c1d660927760cc2b812526735c52539">
@@ -7121,6 +7300,7 @@ version: 2.5
                         200:
                             body:
                                 application/vnd.ez.api.UserGroupRefList:
+                                    type: UserGroupRefList
                                     example:  |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <UserGroupRefList media-type="application/vnd.ez.api.UserGroupRefList+xml" href="/api/ezp/v2/user/users/55/groups">
@@ -7150,6 +7330,7 @@ version: 2.5
                         200:
                             body:
                                 application/vnd.ez.api.UserGroupRefList:
+                                    type: UserGroupRefList
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <UserGroupRefList media-type="application/vnd.ez.api.UserGroupRefList+xml" href="/api/ezp/v2/user/users/55/groups">
@@ -7179,6 +7360,7 @@ version: 2.5
                             200:
                                 body:
                                     application/vnd.ez.api.UserGroupRefList:
+                                        type: UserGroupRefList
                                         example:  |
                                             <?xml version="1.0" encoding="UTF-8"?>
                                             <UserGroupRefList href="/user/users/45/groups"
@@ -7209,6 +7391,7 @@ version: 2.5
                         200:
                             body:
                                 application/vnd.ez.api.RoleAssignmentList+xml:
+                                    type: RoleAssignmentList
                                     example:  |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <RoleAssignmentList href="/user/groups/1/5/65/roles" media-type="application/vnd.ez.api.RoleAssignmentList+xml">
@@ -7270,6 +7453,7 @@ version: 2.5
                         200:
                             body:
                                 application/vnd.ez.api.RoleAssignmentList+xml:
+                                    type: RoleAssignmentList
                                     example:  |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <RoleAssignmentList media-type="application/vnd.ez.api.RoleAssignmentList+xml" href="/api/ezp/v2/user/users/55/roles">
@@ -7311,6 +7495,7 @@ version: 2.5
                                 description: OK - Role assignment to the given user group
                                 body:
                                     application/vnd.ez.api.RoleAssignment+xml:
+                                        type: RoleAssignment
                                         example: |
                                             <?xml version="1.0" encoding="UTF-8"?>
                                             <RoleAssignment media-type="application/vnd.ez.api.RoleAssignment+xml" href="/api/ezp/v2/user/users/55/roles/4">
@@ -7335,6 +7520,7 @@ version: 2.5
                             200:
                                 body:
                                     application/vnd.ez.api.RoleAssignmentList+xml:
+                                        type: RoleAssignmentList
                                         example:  |
                                             <?xml version="1.0" encoding="UTF-8"?>
                                             <RoleAssignmentList href="/user/groups/1/5/65/roles" media-type="application/vnd.ez.api.RoleAssignmentList+xml">
@@ -7376,6 +7562,7 @@ version: 2.5
                     description: OK - list of all roles
                     body:
                         application/vnd.ez.api.RoleList+xml:
+                            type: RoleList
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <RoleList media-type="application/vnd.ez.api.RoleList+xml" href="/api/ezp/v2/user/roles">
@@ -7442,6 +7629,7 @@ version: 2.5
                 201:
                     body:
                         application/vnd.ez.api.Role+xml:
+                            type: Role
                             example:  |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <Role media-type="application/vnd.ez.api.Role+xml" href="/api/ezp/v2/user/roles/5">
@@ -7468,6 +7656,7 @@ version: 2.5
                         description: OK - Role for the given ID
                         body:
                             application/vnd.ez.api.Role+xml:
+                                type: Role
                                 example: |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <Role media-type="application/vnd.ez.api.Role+xml" href="/api/ezp/v2/user/roles/5">
@@ -7495,6 +7684,7 @@ version: 2.5
                     201:
                         body:
                             application/vnd.ez.api.RoleDraft+xml:
+                                type: RoleDraft
                                 example:  |
                                     <?xml version="1.0" encoding="UTF-8"?>
                                     <Role href="/user/roles/11" media-type="application/vnd.ez.api.RoleDraft+xml">
@@ -7547,6 +7737,7 @@ version: 2.5
                             description: OK - role updated
                             body:
                                 application/vnd.ez.api.Role+xml:
+                                    type: Role
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <Role media-type="application/vnd.ez.api.Role+xml" href="/api/ezp/v2/user/roles/5">
@@ -7582,6 +7773,7 @@ version: 2.5
                             description: OK - Role draft by original Role ID
                             body:
                                 application/vnd.ez.api.Role+xml:
+                                    type: Role
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <Role media-type="application/vnd.ez.api.Role+xml" href="/api/ezp/v2/user/roles/9">
@@ -7636,6 +7828,7 @@ version: 2.5
                             description: OK - Role draft updated
                             body:
                                 application/vnd.ez.api.Role+xml:
+                                    type: Role
                                     example: |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <Role media-type="application/vnd.ez.api.Role+xml" href="/api/ezp/v2/user/roles/9">
@@ -7681,6 +7874,7 @@ version: 2.5
                         200:
                             body:
                                 application/vnd.ez.api.PolicyList:
+                                    type: PolicyList
                                     example:  |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <PolicyList href="/user/roles/11/policies" media-type="application/vnd.ez.api.PolicyList">
@@ -7781,6 +7975,7 @@ version: 2.5
                         201:
                             body:
                                 application/vnd.ez.api.Policy+xml:
+                                    type: Policy
                                     example:  |
                                         <Policy href="/user/roles/11/policies/55" media-type="application/vnd.ez.api.Policy+xml">
                                           <id>55</id>
@@ -7857,6 +8052,7 @@ version: 2.5
                             200:
                                 body:
                                     application/vnd.ez.api.Policy+xml:
+                                        type: Policy
                                         example:  |
                                             <Policy href="/user/roles/11/policies/55" media-type="application/vnd.ez.api.Policy+xml">
                                               <id>55</id>
@@ -7897,6 +8093,7 @@ version: 2.5
                             200:
                                 body:
                                     application/vnd.ez.api.Policy+xml:
+                                        type: Policy
                                         example:  |
                                             <Policy href="/user/roles/11/policies/45" media-type="application/vnd.ez.api.Policy+xml">
                                               <id>45</id>
@@ -7947,6 +8144,7 @@ version: 2.5
                     description: OK - policies which are applied to a given user
                     body:
                         application/vnd.ez.api.PolicyList+xml:
+                            type: PolicyList
                             example: |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <PolicyList media-type="application/vnd.ez.api.PolicyList+xml" href="/api/ezp/v2/user/policies">
@@ -8044,6 +8242,7 @@ version: 2.5
                     description: If session already exists
                     body:
                         application/vnd.ez.api.Session+xml:
+                            type: Session
                             example:  |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <Session href="user/sessions/go327ij2cirpo59pb6rrv2a4el2/refresh" media-type="application/vnd.ez.api.Session+xml">
@@ -8053,6 +8252,7 @@ version: 2.5
                                   <User href="/user/users/14" media-type="vnd.ez.api.User+xml"/>
                                 </Session>
                         application/vnd.ez.api.Session+json:
+                            type: Session
                             example:  |
                                 {
                                   "Session": {
@@ -8069,6 +8269,7 @@ version: 2.5
                     description: If session is created
                     body:
                         application/vnd.ez.api.Session+xml:
+                            type: Session
                             example:  |
                                 <?xml version="1.0" encoding="UTF-8"?>
                                 <Session href="/user/sessions/sessionID" media-type="application/vnd.ez.api.Session+xml">
@@ -8078,6 +8279,7 @@ version: 2.5
                                   <User href="/user/users/14" media-type="vnd.ez.api.User+xml"/>
                                 </Session>
                         application/vnd.ez.api.Session+json:
+                            type: Session
                             example:  |
                                 {
                                   "Session": {
@@ -8121,6 +8323,7 @@ version: 2.5
                         200:
                             body:
                                 application/vnd.ez.api.Session+xml:
+                                    type: Session
                                     example:  |
                                         <?xml version="1.0" encoding="UTF-8"?>
                                         <Session href="user/sessions/go327ij2cirpo59pb6rrv2a4el2/refresh" media-type="application/vnd.ez.api.Session+xml">
@@ -8130,6 +8333,7 @@ version: 2.5
                                           <User href="/user/users/14" media-type="vnd.ez.api.User+xml"/>
                                         </Session>
                                 application/vnd.ez.api.Session+json:
+                                    type: Session
                                     example:  |
                                         {
                                           "Session": {
@@ -8157,6 +8361,7 @@ version: 2.5
             200:
                 body:
                     application/vnd.ez.api.CountriesList+xml:
+                        type: CountryList
                         example:  |
                             <?xml version="1.0" encoding="UTF-8"?>
                             <CountryList media-type="application/vnd.ez.api.CountryList+xml">

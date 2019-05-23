@@ -70,8 +70,7 @@ types:
                 type: boolean
             status:
                 description: 'Status of the content. Possible values: const STATUS_DRAFT = 0;const STATUS_PUBLISHED = 1; const STATUS_TRASHED = 2.'
-                type: enum
-                values: ['DRAFT', 'PUBLISHED', 'TRASHED']
+                enum: ['DRAFT', 'PUBLISHED', 'TRASHED']
             ObjectStates:
                 description: 'Object States.'
                 type: BaseObject
@@ -221,7 +220,7 @@ types:
                 type: integer
             status:
                 description: 'The status of the Content Type. Possible values: const STATUS_DEFINED = 0; Status constant for defined (aka published) Type, const STATUS_DRAFT = 1; Status constant for draft (aka temporary) Type; const STATUS_MODIFIED = 2; Status constant for modified (aka deferred for publishing) Type.'
-                type: enum
+                enum: []
             identifier:
                 description: 'String identifier of a Content Type.'
                 type: string
@@ -266,10 +265,10 @@ types:
                 type: boolean
             defaultSortField:
                 descritpion: 'Specifies which property the child Locations should be sorted on by default when created. Map for Location sort fields to their respective SortClauses - class name/identifier and modified subnode. One of the fallowing values: const SORT_FIELD_PATH = 1; const SORT_FIELD_PUBLISHED = 2; const SORT_FIELD_MODIFIED = 3; const SORT_FIELD_SECTION = 4; const SORT_FIELD_DEPTH = 5; const SORT_FIELD_PRIORITY = 8; const SORT_FIELD_NAME = 9; const SORT_FIELD_NODE_ID = 11; const SORT_FIELD_CONTENTOBJECT_ID = 12.'
-                type: enum
+                enum: []
             defaultSortOrder:
                 description: 'Specifies whether the sort order should be ascending or descending by default when created. Map for Location sort order to their respective Query SORT constants. Possible values: const SORT_ORDER_DESC = 0; const SORT_ORDER_ASC = 1.'
-                type: enum
+                enum: []
             FieldDefinitions:
                 description: 'This method returns the Content Type Field definitions from this type.'
                 type: BaseObject
@@ -407,7 +406,7 @@ types:
                 type: integer
             status:
                 description: 'The status of the Content Type. Possible values: const STATUS_DEFINED = 0; Status constant for defined (aka published) Type, const STATUS_DRAFT = 1; Status constant for draft (aka temporary) Type; const STATUS_MODIFIED = 2; Status constant for modified (aka deferred for publishing) Type.'
-                type: enum
+                enum: []
             identifier:
                 description: 'String identifier of a Content Type.'
                 type: string
@@ -455,10 +454,16 @@ types:
                 type: boolean
             defaultSortField:
                 descritpion: 'Specifies which property the child Locations should be sorted on by default when created. Map for Location sort fields to their respective SortClauses - class name/identifier and modified subnode. One of the fallowing values: const SORT_FIELD_PATH = 1; const SORT_FIELD_PUBLISHED = 2; const SORT_FIELD_MODIFIED = 3; const SORT_FIELD_SECTION = 4; const SORT_FIELD_DEPTH = 5; const SORT_FIELD_PRIORITY = 8; const SORT_FIELD_NAME = 9; const SORT_FIELD_NODE_ID = 11; const SORT_FIELD_CONTENTOBJECT_ID = 12.'
-                type: enum
+                enum: []
             defaultSortOrder:
                 description: 'Specifies whether the sort order should be ascending or descending by default when created. Map for Location sort order to their respective Query SORT constants. Possible values: const SORT_ORDER_DESC = 0; const SORT_ORDER_ASC = 1.'
-                type: enum
+                enum: []
+    ContentTypeInfoList:
+        description: 'List of Content Type information.'
+        type: BaseObject
+        properties:
+            ContentType:
+                type: ContentTypeInfo[]
     ContentTypeList:
         description: 'List of Content Types.'
         type: BaseObject
@@ -773,6 +778,7 @@ types:
                 description: 'Indicates if the language is enabled or not.'
                 type: boolean
     LanguageCode:
+        description: 'Language code.'
         type: object
         properties:
             languageCode:
@@ -796,8 +802,7 @@ types:
         properties:
             _identifier:
                 description: 'Returns the limitation identifier (one of the defined constants) or a custom limitation. Constants: CONTENTTYPE = Class; LANGUAGE = Language; LOCATION = Node; OWNER = Owner; PARENTOWNER = ParentOwner; PARENTCONTENTTYPE = ParentClass; PARENTDEPTH = ParentDepth; SECTION = Section; NEWSECTION = NewSection; SITEACCESS = SiteAccess; STATE = State; NEWSTATE = NewState; SUBTREE = Subtree; USERGROUP = Group; PARENTUSERGROUP = ParentGroup; STATUS = Status.'
-                type: enum
-                values: ['CONTENTTYPE', 'LANGUAGE', 'LOCATION', 'OWNER', 'PARENTOWNER', 'PARENTCONTENTTYPE', 'PARENTDEPTH', 'SECTION', 'NEWSECTION','SITEACCESS', 'STATE', 'NEWSTATE', 'SUBTREE', 'USERGROUP', 'PARENTUSERGROUP', 'STATUS']
+                enum: ['CONTENTTYPE', 'LANGUAGE', 'LOCATION', 'OWNER', 'PARENTOWNER', 'PARENTCONTENTTYPE', 'PARENTDEPTH', 'SECTION', 'NEWSECTION','SITEACCESS', 'STATE', 'NEWSTATE', 'SUBTREE', 'USERGROUP', 'PARENTUSERGROUP', 'STATUS']
             Values:
                 description: 'A read-only list of IDs or identifiers for which the limitation should be applied. The value of this property must conform to a hash, which means that it may only consist of array and scalar values, but must not contain objects or resources.'
                 type: Ref[]
@@ -844,12 +849,10 @@ types:
                 type: integer
             sortField:
                 description: 'Specifies which property the child Locations should be sorted on. Map for Location sort fields to their respective SortClauses - class name/identifier and modified subnode. One of the fallowing values: PATH.'
-                type: enum
-                values: ['PATH', 'PUBLISHED', 'MODIFIED', 'SECTION', 'DEPTH', 'CLASS_IDENTIFIER', 'CLASS_NAME', 'PRIORITY', 'NAME', 'MODIFIED_SUBNODE', 'NODE_ID', 'CONTENTOBJECT_ID']
+                enum: ['PATH', 'PUBLISHED', 'MODIFIED', 'SECTION', 'DEPTH', 'CLASS_IDENTIFIER', 'CLASS_NAME', 'PRIORITY', 'NAME', 'MODIFIED_SUBNODE', 'NODE_ID', 'CONTENTOBJECT_ID']
             sortOrder:
                 description: 'Specifies whether the sort order should be ascending or descending. Map for Location sort order to their respective Query SORT constants. One of the fallowing values: const SORT_ORDER_DESC = 0; const SORT_ORDER_ASC = 1.'
-                type: enum
-                values: [ 'ASC', 'DESC' ]
+                enum: ['ASC', 'DESC']
             Content:
                 description: 'Represents a content object in a specific version.'
                 type: Ref
@@ -1210,7 +1213,7 @@ types:
               type: string
     Relation:
         description: 'Class representing a relation between content.'
-        type: object
+        type: BaseObject
         properties:
             id:
                 description: 'ID of the relation.'
@@ -1227,6 +1230,12 @@ types:
             type:
                 description: 'The relation type bitmask. Relations: Relation::COMMON = 1, Relation::EMBED = 2, Relation::LINK = 4, Relation::FIELD = 8, Relation::ASSET = 16'
                 type: integer
+    RelationList:
+        description: 'Class representing a list of relations between content.'
+        type: BaseObject
+        properties:
+            Relation:
+                type: Relation[]
     Role:
         description: 'This class represents a role.'
         type:  BaseObject
@@ -1247,6 +1256,12 @@ types:
             Role:
                 description: 'Returns the role to which the User or User group is assigned to.'
                 type: Ref
+    RoleAssignmentList:
+        description: 'This value object represents a list of assignments of a User or User group to a role including a limitation.'
+        type:  BaseObject
+        properties:
+            RoleAssignment:
+                type: RoleAssignment[]
     RoleCreateStruct:
         description: 'This class is used to create a new role.'
         type:  object
@@ -1266,10 +1281,7 @@ types:
     RoleLimitation:
         description: 'Role limitation extends Limitation.'
         type:  Limitation
-    SectionLimitation:
-        type: RoleLimitation
-    SubtreeLimitation:
-        type: RoleLimitation
+
     RoleUpdateStruct:
         description: 'This class is used to update a role.'
         type:  object
@@ -1283,6 +1295,88 @@ types:
         properties:
             Role:
                 type: Role[]
+    Root:
+        description: 'This class represents a root.'
+        type: BaseObject
+            properties:
+                content:
+                    description: 'Content.'
+                    type: BaseObject
+                contentByRemoteId:
+                    description: 'Content by the given remote ID.'
+                    type: BaseObject
+                contentTypes:
+                    description: 'Content Types.'
+                    type: BaseObject
+                contentTypeByIdentifier:
+                    description: 'Content Type by the given identifier.'
+                    type: BaseObject
+                contentTypeGroups:
+                    description: 'Content Type Groups.'
+                    type: BaseObject
+                contentTypeGroupByIdentifier:
+                    description: 'Content Type Groups by the given identifier.'
+                    type: BaseObject
+                users:
+                    description: 'Users.'
+                    type: BaseObject
+                usersByRoleId:
+                    description: 'Users by Role ID.'
+                    type: BaseObject
+                usersByRemoteId:
+                    description: 'Users by remote ID.'
+                    type: BaseObject
+                usersByEmail:
+                    description: 'Users by e-mail.'
+                    type: BaseObject
+                usersByLogin:
+                    description: 'Users by login.'
+                    type: BaseObject
+                roles:
+                    description: 'Roles.'
+                    type: BaseObject
+                rootLocation:
+                    description: 'Root Location.'
+                    type: BaseObject
+                rootUserGroup:
+                    description: 'Root User Group.'
+                    type: BaseObject
+                rootMediaFolder:
+                    description: 'Root media folder.'
+                    type: BaseObject
+                locationByRemoteId:
+                    description: 'Location by remote ID.'
+                    type: BaseObject
+                locationByPath:
+                    description: 'Location by path.'
+                    type: BaseObject
+                trash:
+                    description: 'Trash.'
+                    type: BaseObject
+                sections:
+                    description: 'Sections.'
+                    type: BaseObject
+                views:
+                    description: 'Views.'
+                    type: BaseObject
+                objectStateGroups:
+                    description: 'Object state groups.'
+                    type: BaseObject
+                objectStates:
+                    description: 'Object states.'
+                    type: BaseObject
+                globalUrlAliases:
+                    description: 'Global URL aliases.'
+                    type: BaseObject
+                urlWildcards:
+                    description: 'URL Wildcards.'
+                    type: BaseObject
+                createSession:
+                    description: 'Creates a new session based on the credentials provided as POST parameters.'
+                    type: BaseObject
+                refreshSession:
+                    description: 'Refresh given session.'
+                    type: BaseObject
     SearchResult:
         description: 'The total number of URLs.'
         type:  object
@@ -1295,9 +1389,9 @@ types:
                 type: URL[]
     Section:
         description: 'This class represents a Section.'
-        type:  object
+        type:  BaseObject
         properties:
-            id:
+            sectionId:
                 description: 'ID of the Section.'
                 type: integer
             identifier:
@@ -1309,6 +1403,14 @@ types:
     SectionCreateStruct:
         description: 'This class represents a Section.'
         type: object
+    SectionLimitation:
+        type: RoleLimitation
+    SectionList:
+        description: 'This class represents a Section list.'
+        type: BaseObject
+        properties:
+            Section:
+                type: Section[]
     SectionStruct:
         description: 'This class is used for updating Section meta data.'
         type: object
@@ -1377,6 +1479,8 @@ types:
             minStringLength:
                 description: 'Minimum length of strings.'
                 type: integer
+    SubtreeLimitation:
+        type: RoleLimitation
     Target:
         description: 'Struct that stores extra target information for a SortClause object.'
         type: object
@@ -1403,7 +1507,7 @@ types:
             _href:
                 type: string
             _method:
-                type: enum
+                enum: []
     URL:
         description: 'This class represents a URL in the Repository.'
         type: object
@@ -1426,7 +1530,7 @@ types:
             modified:
                 description: 'Modified date.'
                 type: DateTime
-    URLAlias:
+    UrlAlias:
         description: 'This class represents a URL alias in the Repository.'
         type: BaseObject
         properties:
@@ -1435,7 +1539,7 @@ types:
                 type: integer
             _type:
                 description: 'The type of the URL Alias i.e. one of URLAlias::LOCATION=0, URLAlias::RESOURCE=1, URLAlias::VIRTUAL=2.'
-                type: enum
+                enum: []
             resource:
                 description: 'If type = URLAlias::LOCATION it is a Location ID otherwise a string (e.g. /content/search).'
                 type: any
@@ -1463,7 +1567,7 @@ types:
         properties:
             URLAlias:
                 type: URLAlias[]
-    URLQuery:
+    UrlQuery:
         description: 'This class is used to perform a URL query.'
         type: object
         properties:
@@ -1630,7 +1734,7 @@ types:
         description: 'This class is used to create a new User group in the Repository, extends ContentCreateStruct.'
         type: object
     UserGroupRefList:
-        description: 'This class represents a use_method group reference list.'
+        description: 'Returns a list of the sub groups.'
         type: BaseObject
         properties:
             UserGroup:
@@ -1689,6 +1793,13 @@ types:
             value:
                 description: 'Value of User preference e.g. America/New_York.'
                 type: string
+    UserRefList:
+        description: 'Returns a list of the users.'
+        type: BaseObject
+        properties:
+            User:
+                description: 'This class represents a User.'
+                type: BaseObject[]
     UserRoleAssignment:
         description: 'This class represents a User to role assignment.'
         type: object
@@ -1773,7 +1884,7 @@ types:
                 type: integer
             status:
                 description: 'One of: VersionInfo::STATUS_DRAFT=0, VersionInfo::STATUS_PUBLISHED=1, VersionInfo::STATUS_ARCHIVED=3.'
-                type: enum
+                enum: []
             modificationDate:
                 description: 'The last modified date of this version.'
                 type: DateTime
@@ -1791,16 +1902,41 @@ types:
                 type: string[]
             VersionTranslationInfo:
                 description: 'Translation information.'
-                type: object
-                properties:
-                    _media-type:
-                        type: string # Always "application/vnd.ez.api.VersionTranslationInfo+json"
-                    Language:
-                        type: LanguageCode[]
+                type: VersionTranslationInfo
             names:
                 description: 'Names.'
                 type: Value
             Content:
                 description: 'Represents a content object in a specific version.'
                 type: BaseObject
-
+    VersionItem:
+        description: 'Version of content.'
+        type: BaseObject
+        properties:
+            Version:
+                description: 'Returns the VersionInfo for this version.'
+                type: BaseObject
+            VersionInfo:
+                type: VersionInfo
+    VersionList:
+        description: 'List of all versions of the content.'
+        type: BaseObject
+        properties:
+            VersionItem:
+                type: VersionItem[]
+    VersionTranslationInfo:
+        description: 'Translation information.'
+        type: object
+        properties:
+            _media-type:
+                type: string # Always "application/vnd.ez.api.VersionTranslationInfo+json"
+            Language:
+                type: LanguageCode[]
+    View: #TODO outdated example
+        description: 'View.'
+        type: BaseObject
+        properties:
+            identifier:
+                description: 'Content identifier.'
+                type: string
+            User:
