@@ -534,7 +534,7 @@ types:
             Alpha3:
                 description: 'Three-letter code that represents a country name.'
                 type: string
-            IDC: #TODO check what it is
+            IDC:
                 description: 'IDC'
                 type: integer
     CountryList:
@@ -668,9 +668,6 @@ types:
             validatorConfiguration:
                 description: 'Validator configuration of this Field definition supported by the field type.'
                 type: StringLengthValidator
-#            mainLanguageCode: TODO not in response
-#                description: 'Based on mainLanguageCode of contentType.'
-#                type: string
     FieldDefinitionCreateStruct:
         description: 'This class is used to create a Field definition.'
         type: object
@@ -775,6 +772,11 @@ types:
             enabled:
                 description: 'Indicates if the language is enabled or not.'
                 type: boolean
+    LanguageCode:
+        type: object
+        properties:
+            languageCode:
+                type: string
     LanguageCreateStruct:
         description: 'This class represents a value for creating a language.'
         type: object
@@ -1229,27 +1231,16 @@ types:
         description: 'This class represents a role.'
         type:  BaseObject
         peoperties:
-#           TODO: check if enum
             identifier:
                 description: 'Readable string identifier of a role.'
                 type: string
             Policies:
                 description: 'Returns the list of policies of this role.'
                 type: BaseObject
-#           TODO: missing objects
-#            status:
-#                description: 'The status of the role. One of Role::STATUS_DEFINED=0; Role::STATUS_DRAFT=1.'
-#                type: integer
-#            id:
-#                description: 'ID of the User role.'
-#                type: integer
     RoleAssignment:
         description: 'This value object represents an assignment of a User or User group to a role including a limitation.'
-        type:  Baseobject
+        type:  BaseObject
         properties:
-#            id: TODO: not included
-#                description: 'The unique ID of the role assignment.'
-#                type: integer
             Limitation:
                 description: 'Returns the limitation of the role assignment.'
                 type: RoleLimitation
@@ -1633,9 +1624,6 @@ types:
         description: 'This class represents a User group.'
         type: BaseObject
         properties:
-#            parentId: TODO: check why not in RS
-#                description: 'The parent ID of the User group.'
-#                type: integer
             Unassign:
                 type: Unlink
     UserGroupCreateStruct:
@@ -1803,28 +1791,16 @@ types:
                 type: string[]
             VersionTranslationInfo:
                 description: 'Translation information.'
-#                type: TODO check with Adam how to describe
-#                        "VersionTranslationInfo": {
-#                            "_media-type": "application/vnd.ez.api.VersionTranslationInfo+json",
-#                            "Language": [
-#                                {
-#                                    "languageCode": "eng-GB"
-#                                }
-#                            ]
+                type: object
+                properties:
+                    _media-type:
+                        type: string # Always "application/vnd.ez.api.VersionTranslationInfo+json"
+                    Language:
+                        type: LanguageCode[]
             names:
                 description: 'Names.'
                 type: Value
             Content:
                 description: 'Represents a content object in a specific version.'
                 type: BaseObject
-#           TODO: not in the response
-#            isDraft:
-#                description: 'Returns true if version is a draft. Returns status self::STATUS_DRAFT.'
-#                type: boolean
-#            isPublished:
-#                description: 'Returns true if version is published. Returns status self::STATUS_PUBLISHED.'
-#                type: boolean
-#            isArchived:
-#                description: 'Returns true if version is archived. Returns status self::STATUS_ARCHIVED.'
-#                type: boolean
 
