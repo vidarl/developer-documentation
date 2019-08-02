@@ -6,7 +6,7 @@
 
 To complete the implementation, you must register the Field Type with Symfony by creating a service for it.
 
-Services are by default declared by bundles in `Resources/config/services.yaml`.
+Services are by default declared by bundles in `config/services.yaml`.
 
 ## Using a dedicated file for the Field Type services
 
@@ -21,18 +21,18 @@ Inside this file, find this line:
 $loader->load('services.yaml');
 ```
 
-This is where the bundle tells Symfony that when parameters are loaded, `services.yaml` should be loaded from `Resources/config/` (defined above).
+This is where the bundle tells Symfony that when parameters are loaded, `services.yaml` should be loaded from `config/` (defined above).
 Add a new line either before or after this one:
 
 ``` php
 $loader->load('fieldtypes.yaml');
 ```
 
-Like most API components, Field Types use the [Symfony service tag mechanism](http://symfony.com/doc/3.4/service_container/tags.html).
+Like most API components, Field Types use the [Symfony service tag mechanism](http://symfony.com/doc/4.3/service_container/tags.html).
 
 A service can be assigned one or several tags, with specific parameters. When the dependency injection container is compiled into a PHP file, tags are read by `CompilerPass` implementations that add extra handling for tagged services. Each service tagged as `ezplatform.field_type` is added to a [registry](http://martinfowler.com/eaaCatalog/registry.html) using the alias argument as its unique identifier (`ezstring`, `ezxmltext`, etc.). Each Field Type must also inherit from the abstract `ezplatform.field_type` service. This ensures that the initialization steps shared by all Field Types are executed.
 
-Now you can create a YAML file dedicated to the bundle: `Resources/config/fieldtypes.yaml`
+Now you can create a YAML file dedicated to the bundle: `config/fieldtypes.yaml`
 
 ``` yaml
 services:

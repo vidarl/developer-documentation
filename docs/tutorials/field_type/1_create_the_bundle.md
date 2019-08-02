@@ -2,13 +2,13 @@
 
 !!! tip
 
-    You can find all files used and modified in this step on [GitHub](https://github.com/ezsystems/TweetFieldTypeBundle/tree/step1_create_the_bundle_v2).
+    You can find all files used and modified in this step on [GitHub](https://github.com/ezsystems/TweetFieldTypeBundle/tree/step1_create_the_bundle_v3).
 
 FieldTypes, like any other eZ Platform extensions, must be provided as Symfony bundles. This chapter covers the creation and organization of this bundle.
 
 Once you have [installed eZ Platform](../../getting_started/install_ez_platform/), including the creation of a database for the tutorial, [configured a server](../../getting_started/requirements/), and [started the web server](../../getting_started/install_ez_platform/#use-phps-built-in-server), you need to create a code base for the tutorial.
 
-The Field Type will be placed in a [Symfony bundle](http://symfony.com/doc/3.4/bundles.html).
+The Field Type will be placed in a [Symfony bundle](http://symfony.com/doc/4.3/bundles.html).
 You can get started with a bundle using the built-in Symfony bundle generator.
 Then you will configure the bundle to be able to write the code you need to create a Field Type.
 
@@ -46,7 +46,7 @@ Tests/
     ```
 
 Feel free to delete the Controller folder, since you won’t use it in this tutorial. It could have been useful, had our Field Type required an interface of its own.
-Also, you can safely delete the `Resources/views/Default` folder and `Resources/config/routing.yaml` file, as they won't be needed. You should remove the `ez_systems_tweet_field_type` entry from the `app/config/routing.yaml` file as well.
+Also, you can safely delete the `Resources/views/Default` folder and `Resources/config/routing.yaml` file, as they won't be needed. You should remove the `ez_systems_tweet_field_type` entry from the `config/routing.yaml` file as well.
 
 ## Structure the bundle
 

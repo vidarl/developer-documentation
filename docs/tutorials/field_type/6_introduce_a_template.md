@@ -97,7 +97,7 @@ class EzSystemsTweetFieldTypeExtension extends Extension implements PrependExten
 }
 ```
 
-Next, provide the template mapping in `Resources/config/ez_field_templates.yaml`:
+Next, provide the template mapping in `config/ez_field_templates.yaml`:
 
 ``` yml
 system:

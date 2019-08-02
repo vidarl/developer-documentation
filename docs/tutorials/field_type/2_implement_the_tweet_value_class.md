@@ -3,8 +3,14 @@
 !!! tip
 
     You can find all files used and modified in this step on [GitHub](https://github.com/ezsystems/TweetFieldTypeBundle/tree/step2_implement_the_tweet_value_class_v2).
+    
+## Get a clean eZ Enterprise installation
 
-### The Value class
+To begin the tutorial, you need a clean installation of eZ Platform Enterprise Edition.
+Get it by following the [Install eZ Platform](../../getting_started/install_ez_platform.md)
+and [Install eZ Enterprise](../../getting_started/install_ez_enterprise.md) guides.
+
+## The Value class
 
 The Value is used to represent an instance of the Field Type within a Content item. Each Field will present its data using an instance of the Type's Value class.
 A Value class must implement the `eZ\Publish\SPI\FieldType\Value` interface. It may also extend the `eZ\Publish\Core\FieldType\Value` abstract class.
