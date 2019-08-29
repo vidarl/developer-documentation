@@ -46,6 +46,7 @@ pages:
             - '5. Creating a UDW tab': 'tutorials/extending_admin_ui/5_creating_a_udw_tab.md'
             - '6. Creating a custom tag': 'tutorials/extending_admin_ui/6_adding_a_custom_tag.md'
     - API:
+        - 'API reference': 'eZ_Platform_Test.md'
         - REST API guide:
             - 'REST API guide': 'api/rest_api_guide.md'
             - 'REST API usage': 'api/general_rest_usage.md'
