@@ -235,7 +235,7 @@ version: 2.5
             /translations/{languageCode}:
                 delete:
                     displayName: Delete (permanently) Translation from all Versions of a Content
-                    description: Permanently delete a Translation from all Versions of a Content
+                    description: Permanently delete a Translation from all Versions of a Content.
                     responses:
                         204:
                             description: No Content.
@@ -931,7 +931,7 @@ version: 2.5
         /{path}:
             get:
                 displayName: Load location
-                description: Loads the Location for the given path e.g. '/content/locations/1/2/61'.
+                description: Loads the Location for the given path e.g. 'content/locations/1/2/61'.
                 headers:
                     Accept:
                         description: If set the new Location is returned in XML or JSON format.
@@ -952,15 +952,15 @@ version: 2.5
                         description: Error - the Location with the given path does not exist.
             move:
                 displayName: Move Subtree
-                description: Moves the Location to another parent. The destination can also be /content/trash where the Location is put into the trash. (NOTE - Be aware that the user might not have access to the item any longer after it has been moved, for example when read access is limited by subtree). MOVE or POST with header X-HTTP-Method-Override MOVE.
+                description: Moves the Location to another parent. The destination can also be 'content/trash' where the Location is put into the trash. (NOTE - Be aware that the user might not have access to the item any longer after it has been moved, for example when read access is limited by subtree). MOVE or POST with header X-HTTP-Method-Override MOVE.
                 headers:
                     Destination:
-                        description: A parent Location resource to which the Location is moved e.g. '/api/ezp/v2/content/locations/1/63'.
+                        description: A parent Location resource to which the Location is moved e.g. 'api/ezp/v2/content/locations/1/63'.
                 responses:
                     201:
-                        description: Created. If destination is /api/ezp/v2/content/trash and content only has one Location (NOTE Like on normal subtree moves, be aware that the user might not have access to the item any longer after it has been moved to trash).
+                        description: Created. If destination is `api/ezp/v2/content/trash` and content only has one Location (NOTE Like on normal subtree moves, be aware that the user might not have access to the item any longer after it has been moved to trash).
                     204:
-                        description: No Content. If destination is /api/ezp/v2/content/trash and content still has other locations (no trash item is created).
+                        description: No Content. If destination is 'api/ezp/v2/content/trash' and content still has other locations (no trash item is created).
                     401:
                         description: Error - the user is not authorized to move this location.
                     404:
@@ -970,7 +970,7 @@ version: 2.5
                 description: Copies the subtree to another parent. COPY or POST with header X-HTTP-Method-Override COPY.
                 headers:
                     Destination:
-                        description: A parent Location resource to which the Location is moved e.g. '/api/ezp/v2/content/locations/1/63'.
+                        description: A parent Location resource to which the Location is moved e.g. 'api/ezp/v2/content/locations/1/63'.
                 responses:
                     201:
                         description: Created. Copied the subtree to another parent.
@@ -1076,7 +1076,7 @@ version: 2.5
                 description: Swaps the content of the Location with the content of the given location. SWAP or POST with header X-HTTP-Method-Override SWAP.
                 headers:
                     Destination:
-                        description: A parent Location resource to which the Location is moved e.g. '/api/ezp/v2/content/locations/1/63'.
+                        description: A parent Location resource to which the Location is moved e.g. 'api/ezp/v2/content/locations/1/63'.
                 responses:
                     204:
                         description: No Content. Swapped the content of the Location with the content of the given location.
@@ -1315,7 +1315,7 @@ version: 2.5
                     description: Error - The user is not authorized to empty all items from Trash.
         /{trashItemid}:
             get:
-                displayName: Get TrashItem
+                displayName: GET TrashItem
                 description: Returns the item in Trash with the provided ID.
                 headers:
                     Accept:
@@ -1703,7 +1703,7 @@ version: 2.5
                                     type: ContentType
                                     example: !include examples/content/typegroups/content_type_group_id/types/POST/ContentType.xml.example
                         400:
-                            description: Error - The input does not match the input schema definition. Validation on a field definition fails. Validation of the Content Type fails, e.g. multiple Fields of a same singular Field Type are provided. publish is set to true and the input is not complete e.g. no field definitions are provided.
+                            description: Error - The input does not match the input schema definition. Validation on a field definition fails. Validation of the Content Type fails, e.g. multiple Fields of a same singular Field Type are provided. Publish is set to true and the input is not complete e.g. no field definitions are provided.
                         401:
                             description: Error - The user is not authorized to create this Content Type.
                         403:
@@ -1719,13 +1719,13 @@ version: 2.5
                 remoteId:
                     description: Retrieves the Content Type for the given remoteId.
                 limit:
-                    description: Only &lt;limit&gt; items will be returned, starting with the offset.
+                    description: Only limit; items will be returned, starting with the offset.
                 offset:
                     description: Offset of the result set.
                 orderby:
-                    description: One of (name|lastmodified).
+                    description: One of '(name|lastmodified)'.
                 sort:
-                    description: One of (asc|desc).
+                    description: One of '(asc|desc)'.
             headers:
                 Accept:
                     description: If set the list of Content Type info objects or Content Types (including Field definitions) is returned in XML or JSON format.
@@ -1768,7 +1768,7 @@ version: 2.5
                         description: Error - The Content Type does not exist.
             copy:
                 displayName: Copy Content Type
-                description: Copies a Content Type. A new remoteId is generated, and the identifier of the copy is set to copy_of_%lt;originalBaseIdentifier&gt;_&lt;newTypeId&gt; (or another random string). COPY or POST with header X-HTTP-Method-Override COPY.
+                description: Copies a Content Type. A new remoteId is generated, and the identifier of the copy is set to 'copy_of_%lt;originalBaseIdentifier&gt;_&lt;newTypeId&gt;' (or another random string). COPY or POST with header X-HTTP-Method-Override COPY.
                 responses:
                     201:
                         description: Copy of the Content Type created.
@@ -1933,7 +1933,7 @@ version: 2.5
                                 description: Error - A Field definition with same identifier already exists in the given Content Type. The Field definition is of singular type, already existing in the given Content Type. The Field definition ti add is of a type that can't be added to a Content Type that already has content instances.
                     /{fieldDefinitionId}:
                         get:
-                            displayName: Get Field Definition
+                            displayName: GET Field Definition
                             description: Returns the Field definition given by ID.
                             headers:
                                 Accept:
@@ -2018,7 +2018,7 @@ version: 2.5
                     description: Links a Content Type Group to the Content Type and returns the updated group list.
                     queryParameters:
                         group:
-                            description: The uri of the group to which the Content Type should be linked.
+                            description: The URI of the group to which the Content Type should be linked.
                             type: string
                     headers:
                         Accept:
@@ -2132,7 +2132,7 @@ version: 2.5
         /{path}:
             get:
                 displayName: Load User Group
-                description: Loads user groups for the given {path}.
+                description: Loads user groups for the given '{path}'.
                 headers:
                     Accept:
                         description: If set the new user group is returned in XML or JSON format.
@@ -2247,7 +2247,7 @@ version: 2.5
             /subgroups:
                 post:
                     displayName: Create User Group
-                    description: Creates a new user group under the given parent. To create a top level group use /user/groups/subgroups.
+                    description: Creates a new user group under the given parent. To create a top level group use 'user/groups/subgroups'.
                     headers:
                         Accept:
                             description: If set the new user group is returned in XML or JSON format.
@@ -2417,13 +2417,13 @@ version: 2.5
             description: Load users either for a given remoteId or role.
             queryParameters:
                 roleId:
-                    description: Lists users assigned to the given Role (e.g. GET /user/users?roleId=/user/roles/1).
+                    description: Lists users assigned to the given Role (e.g. GET user/users?roleId=/user/roles/1).
                 remoteId:
-                    description: Retrieves the user for the given remoteId (e.g. GET /user/users?remoteId=55dd9713db75145f374bbd0b4f60ad29).
+                    description: Retrieves the user for the given remoteId (e.g. GET user/users?remoteId=55dd9713db75145f374bbd0b4f60ad29).
                 login:
-                    description: Retrieves the user for the given login (e.g. GET /user/users?login=editor).
+                    description: Retrieves the user for the given login (e.g. GET user/users?login=editor).
                 email:
-                    description: Lists users with the given email (e.g. GET /user/users?email=editor@example.com).
+                    description: Lists users with the given email (e.g. GET user/users?email=editor@example.com).
             headers:
                 Accept:
                     description: UserList - if set the user list returned in XML or JSON format. UserRefList - if set the link list of users returned in XML or JSON format.
@@ -2449,13 +2449,13 @@ version: 2.5
             description: Verifies if there are users matching the given filter.
             queryParameters:
                 roleId:
-                    description: Lists users assigned to the given Role (e.g. GET /user/users?roleId=/user/roles/1).
+                    description: Lists users assigned to the given Role (e.g. GET user/users?roleId=/user/roles/1).
                 remoteId:
-                    description: Retrieves the user for the given remoteId (e.g. GET /user/users?remoteId=55dd9713db75145f374bbd0b4f60ad29).
+                    description: Retrieves the user for the given remoteId (e.g. GET user/users?remoteId=55dd9713db75145f374bbd0b4f60ad29).
                 login:
-                    description: Retrieves the user for the given login (e.g. GET /user/users?login=editor).
+                    description: Retrieves the user for the given login (e.g. GET user/users?login=editor).
                 email:
-                    description: Lists users with the given email (e.g. GET /user/users?email=editor@example.com).
+                    description: Lists users with the given email (e.g. GET user/users?email=editor@example.com).
             responses:
                 200:
                     description: OK - verifies if there are users matching the given filter.
@@ -3080,9 +3080,9 @@ version: 2.5
                         application/vnd.ez.api.SessionInput+xml
                         application/vnd.ez.api.SessionInput+json
                 Cookie:
-                    description: Only needed for session's checking {sessionName}={sessionID}.
+                    description: Only needed for session's checking '{sessionName}={sessionID}'.
                 X-CSRF-Token:
-                    description: Only needed for session's checking. The {csrfToken} needed on all unsafe http methods with session.
+                    description: Only needed for session's checking. The '{csrfToken}' needed on all unsafe http methods with session.
             body:
                 application/vnd.ez.api.SessionInput+xml:
                     type: SessionInput
@@ -3121,9 +3121,9 @@ version: 2.5
                 description: The user session is removed i.e. the user is logged out.
                 headers:
                     Cookie:
-                        description: '{sessionName}={essionID}'.
+                        description: Cookie '{sessionName}={essionID}'.
                     X-CSRF-Token:
-                        description: The {csrfToken} needed on all unsafe http methods with session.
+                        description: The '{csrfToken}' needed on all unsafe http methods with session.
                 responses:
                     204:
                         description: OK - Session deleted.
@@ -3135,9 +3135,9 @@ version: 2.5
                     description: Give the session's User information.
                     headers:
                         Cookie:
-                            description: '{sessionName}={sessionID}'.
+                            description: Cookie '{sessionName}={sessionID}'.
                         X-CSRF-Token:
-                            description: The {csrfToken} needed on all unsafe http methods with session.
+                            description: The '{csrfToken}' needed on all unsafe http methods with session.
                     responses:
                         200:
                             body:
