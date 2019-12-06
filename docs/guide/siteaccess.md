@@ -312,6 +312,44 @@ class MyService implements SiteAccessAware
 }
 ```
 
+## Chain SiteAccess Provider
+
+Now we have possibility of having more than one source of available SiteAccesses. 
+
+By default, we have `StaticSiteAccessProvider` which contains SiteAccesses fetched from configuration files.
+All available providers are gathered by `ChainSiteAccessProvider` which implements `SiteAccessProviderInterface`.  
+
+The chain is used instead of Strategy because the order of loaded SiteAccesses is important.
+SiteAccesses coming from configuration files should be matched first. 
+
+To create your own SiteAccess Provider you must create new service class which implements `SiteAccessProviderInterface`.  
+
+```php
+interface SiteAccessProviderInterface 
+{ 
+  public function isDefined(string $name): bool; 
+ 
+     public function getSiteAccess(string $name): SiteAccess; 
+ 
+     public function getSiteAccesses(): Traversable; 
+} 
+```
+
+Next tag it by `ezplatform.siteaccess.provider` and set its priority. 
+
+This will allow you to have new provider that will fetch  Site Accesses, for example from the database. 
+ 
+The signature of the `eZ\Publish\API\Repository\Values\ValueObject\SiteAccess::__construct` method was changed to make `name` property required 
+
+```php
+public function __construct( 
+     string $name, 
+     string $matchingType = self::DEFAULT_MATCHING_TYPE, 
+     $matcher = null, 
+    ?string $provider = null 
+) 
+```
+
 ## Exposing SiteAccess-aware configuration for your bundle
 
 The [Symfony Config component](https://symfony.com/doc/4.3/components/config.html) makes it possible to define *semantic configuration*, exposed to the end developer.
