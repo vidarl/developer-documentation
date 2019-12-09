@@ -586,6 +586,29 @@ types:
             ValueTypeCheckCallback:
                 description: 'Returns a callback that checks the values types depending on the operator specifications.'
                 type: integer
+    Cursor:
+        description: 'Represents pagination cursor.'
+        type: object
+        properties:
+            dateTime:
+                description: 'Representation of date and time.'
+                type: DateTime
+            type:
+                description: 'Type of event.'
+                type: string
+            id:
+                description: 'Event ID.'
+                type: string
+    DateRange:
+        description: 'Date range.'
+        type: object
+        properties:
+            start:
+                description: 'Start date.'
+                type: object
+            end:
+                description: 'End date.'
+                type: object
     DateTime:
         description: 'Representation of date and time.'
         type: object
@@ -608,6 +631,68 @@ types:
             minCount:
                 description: 'Specifies the minimum count. Only facet groups with more or equal results are returned.'
                 type: integer
+    Event:
+        description: 'Event.'
+        type: object
+        properties:
+              id:
+                description: 'Event ID.'
+                type: string
+              dateTime:
+                description: 'Representation of date and time.'
+                type: DateTime
+              type:
+                description: 'Type of an event. Returns event type identifier, human readable label for event type, the name of the event, actions supported by event type.'
+                type: string
+    EventCollection:
+        description: 'Collection of sorted events by timestamp.'
+        type: object
+        properties:
+            events:
+                description: 'List of events.'
+                type: Event[]
+    EventGroup:
+          description: 'Event group.'
+          type: EventList
+    EventGroupList:
+        description: 'A list of calendar events grouped by day for the given timeframe.'
+        type: object
+        properties:
+            groups:
+                description: 'Event group.'
+                type: EventGroup[]
+    EventList:
+        description: 'A list of calendar events.'
+        type: object
+        properties:
+            query:
+                description: 'Event query.'
+                type: EventQuery
+            events:
+                description: 'Collection of sorted events by timestamp.'
+                type: EventCollection
+            totalCount:
+                description: 'Number of events.'
+                type: integer
+    EventQuery:
+        description: 'Event query.'
+        type: object
+        properties:
+            dateRange:
+                description: 'Date range.'
+                type: DateRange
+            count:
+                description: 'Number of query events.'
+                type: integer
+            cursor:
+                description: 'Represents pagination cursor.'
+                type: object
+            types:
+                description: 'List of event types.'
+                type: string[]
+            languages:
+                description:  'List of languages.'
+                type: Language[]
     Field:
         description: 'This class represents a field of a content object.'
         type: object

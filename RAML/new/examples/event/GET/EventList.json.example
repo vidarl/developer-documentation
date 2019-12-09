@@ -1,0 +1,34 @@
+{
+  "EventList": {
+    "_media-type": "application\/vnd.ez.api.EventList+json",
+    "_current-page": "\/api\/ezp\/v2\/event?start=1560168000&end=1561939199&count=10",
+    "_next-page": "\/api\/ezp\/v2\/event?start=1561075200&end=1561939199&count=10&cursor=MTU2MTA3NTIwMDpwcml2YXRlOlVybG9wIFY%3D",
+    "totalCount": 3,
+    "events": [
+      {
+        "_media-type": "application\/vnd.ez.api.PrivateEvent+json",
+        "id": "Symfony Live 2019",
+        "dateTime": "1560384000",
+        "type": "private",
+        "name": "Symfony Live 2019",
+        "attributes": {}
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.PrivateEvent+json",
+        "id": "Symfony Live 2019",
+        "dateTime": "1560470400",
+        "type": "private",
+        "name": "Symfony Live 2019",
+        "attributes": {}
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.PrivateEvent+json",
+        "id": "Urlop V",
+        "dateTime": "1561075200",
+        "type": "private",
+        "name": "Urlop V",
+        "attributes": {}
+      }
+    ]
+  }
+}

@@ -1,0 +1,268 @@
+{
+  "EventGroupList": {
+    "_media-type": "application\/vnd.ez.api.EventGroupList+json",
+    "groups": [
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1560168000&end=1560254400&count=10",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1560168000",
+          "endDate": "1560254400"
+        },
+        "totalCount": 0,
+        "events": []
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1560254400&end=1560340800&count=10",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1560254400",
+          "endDate": "1560340800"
+        },
+        "totalCount": 0,
+        "events": []
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1560340800&end=1560427200&count=10",
+        "_next-page": "\/api\/ezp\/v2\/event?start=1560384000&end=1560427200&count=10&cursor=MTU2MDM4NDAwMDpwcml2YXRlOlN5bWZvbnkgTGl2ZSAyMDE5",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1560340800",
+          "endDate": "1560427200"
+        },
+        "totalCount": 1,
+        "events": [
+          {
+            "_media-type": "application\/vnd.ez.api.PrivateEvent+json",
+            "id": "Symfony Live 2019",
+            "dateTime": "1560384000",
+            "type": "private",
+            "name": "Symfony Live 2019",
+            "attributes": {}
+          }
+        ]
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1560427200&end=1560513600&count=10",
+        "_next-page": "\/api\/ezp\/v2\/event?start=1560470400&end=1560513600&count=10&cursor=MTU2MDQ3MDQwMDpwcml2YXRlOlN5bWZvbnkgTGl2ZSAyMDE5",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1560427200",
+          "endDate": "1560513600"
+        },
+        "totalCount": 1,
+        "events": [
+          {
+            "_media-type": "application\/vnd.ez.api.PrivateEvent+json",
+            "id": "Symfony Live 2019",
+            "dateTime": "1560470400",
+            "type": "private",
+            "name": "Symfony Live 2019",
+            "attributes": {}
+          }
+        ]
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1560513600&end=1560600000&count=10",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1560513600",
+          "endDate": "1560600000"
+        },
+        "totalCount": 0,
+        "events": []
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1560600000&end=1560686400&count=10",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1560600000",
+          "endDate": "1560686400"
+        },
+        "totalCount": 0,
+        "events": []
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1560686400&end=1560772800&count=10",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1560686400",
+          "endDate": "1560772800"
+        },
+        "totalCount": 0,
+        "events": []
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1560772800&end=1560859200&count=10",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1560772800",
+          "endDate": "1560859200"
+        },
+        "totalCount": 0,
+        "events": []
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1560859200&end=1560945600&count=10",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1560859200",
+          "endDate": "1560945600"
+        },
+        "totalCount": 0,
+        "events": []
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1560945600&end=1561032000&count=10",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1560945600",
+          "endDate": "1561032000"
+        },
+        "totalCount": 0,
+        "events": []
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1561032000&end=1561118400&count=10",
+        "_next-page": "\/api\/ezp\/v2\/event?start=1561075200&end=1561118400&count=10&cursor=MTU2MTA3NTIwMDpwcml2YXRlOlVybG9wIFY%3D",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1561032000",
+          "endDate": "1561118400"
+        },
+        "totalCount": 1,
+        "events": [
+          {
+            "_media-type": "application\/vnd.ez.api.PrivateEvent+json",
+            "id": "Urlop V",
+            "dateTime": "1561075200",
+            "type": "private",
+            "name": "Urlop V",
+            "attributes": {}
+          }
+        ]
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1561118400&end=1561204800&count=10",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1561118400",
+          "endDate": "1561204800"
+        },
+        "totalCount": 0,
+        "events": []
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1561204800&end=1561291200&count=10",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1561204800",
+          "endDate": "1561291200"
+        },
+        "totalCount": 0,
+        "events": []
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1561291200&end=1561377600&count=10",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1561291200",
+          "endDate": "1561377600"
+        },
+        "totalCount": 0,
+        "events": []
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1561377600&end=1561464000&count=10",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1561377600",
+          "endDate": "1561464000"
+        },
+        "totalCount": 0,
+        "events": []
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1561464000&end=1561550400&count=10",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1561464000",
+          "endDate": "1561550400"
+        },
+        "totalCount": 0,
+        "events": []
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1561550400&end=1561636800&count=10",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1561550400",
+          "endDate": "1561636800"
+        },
+        "totalCount": 0,
+        "events": []
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1561636800&end=1561723200&count=10",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1561636800",
+          "endDate": "1561723200"
+        },
+        "totalCount": 0,
+        "events": []
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1561723200&end=1561809600&count=10",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1561723200",
+          "endDate": "1561809600"
+        },
+        "totalCount": 0,
+        "events": []
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1561809600&end=1561896000&count=10",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1561809600",
+          "endDate": "1561896000"
+        },
+        "totalCount": 0,
+        "events": []
+      },
+      {
+        "_media-type": "application\/vnd.ez.api.EventGroup+json",
+        "_current-page": "\/api\/ezp\/v2\/event?start=1561896000&end=1561982400&count=10",
+        "DateRange": {
+          "_media-type": "application\/vnd.ez.api.DateRange+json",
+          "startDate": "1561896000",
+          "endDate": "1561982400"
+        },
+        "totalCount": 0,
+        "events": []
+      }
+    ]
+  }
+}

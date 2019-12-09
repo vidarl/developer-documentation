@@ -2060,6 +2060,78 @@ version: 2.5
                                 description: Error - Content Type cannot be unlinked from the only remaining group.
                             404:
                                 description: Error - The resource does not exist.
+/event:
+    displayName: Event
+    get:
+        displayName: EventList
+        description: Executes a query and returns a list of calendar events.
+        queryParameters:
+            start:
+                description: Beginning of requested time frame (as a timestamp, e.g. 1560168000).
+                required: true
+            end:
+                description: End of requested time frame (as a timestamp, e.g. 1561939199).
+                required: true
+            count:
+                description: Maximum number of the returned events, e.g. 3. The default value is 10.
+                required: false
+            cursor:
+                description: Cursor pointing on the last event on the previous requested data chunk, e.g. MTU2MTA3NTIwMDpwcml2YXRlOlVybG9wIFY%3D.
+                required: false
+            types:
+                description: Comma-separated list of type identifiers, e.g. holiday,private. Non-existing types will be ignored.
+                required: false
+            languages:
+                description: Comma-separated list of language codes, e.g. eng-GB,ger-DE,fre-FR. Non-existing language codes will be ignored.
+                required: false
+        headers:
+            Accept:
+                description: Event - if set the calendar event list is returned in XML or JSON format.
+                example: |
+                    application/vnd.ez.api.EventList+xml
+                    application/vnd.ez.api.EventList+json
+        responses:
+            200:
+                body:
+                    application/vnd.ez.api.EventList+json:
+                        type: EventList
+                        example: !include examples/event/GET/EventList.json.example
+    /grouped-by-day:
+        displayName: EventGroupList
+        get:
+            displayName: EventGroupList
+            description: Executes a query and returns a list of calendar events grouped by day for the given timeframe.
+            queryParameters:
+                start:
+                    description: Beginning of requested time frame (as a timestamp, e.g. 1560168000).
+                    required: true
+                end:
+                    description: End of requested time frame (as a timestamp, e.g. 1561939199).
+                    required: true
+                count:
+                    description: Maximum number of the returned events, e.g. 3. The default value is 10.
+                    required: false
+                cursor:
+                    description: Cursor pointing on the last event on the previous requested data chunk, e.g. MTU2MTA3NTIwMDpwcml2YXRlOlVybG9wIFY%3D.
+                    required: false
+                types:
+                    description: Comma-separated list of type identifiers, e.g. holiday,private. Non-existing types will be ignored.
+                    required: false
+                languages:
+                    description: Comma-separated list of language codes, e.g. eng-GB,ger-DE,fre-FR. Non-existing language codes will be ignored.
+                    required: false
+            headers:
+                Accept:
+                    description: Events grouped by day - if set the calendar event list is returned in XML or JSON format.
+                    example: |
+                        application/vnd.ez.api.EventGroupList+xml
+                        application/vnd.ez.api.EventGroupList+json
+            responses:
+                200:
+                    body:
+                        application/vnd.ez.api.EventList+json:
+                            type: EventList
+                            example: !include examples/event/grouped-by-day/EventGroupList.json.example
 /views:
     displayName: Views
     post:
