@@ -25,7 +25,6 @@ version: 2.5
                     application/vnd.ez.api.Root+json:
                         type: Root
                         example: !include examples/GET/Root.json.example
-
 /bookmark:
     displayName: Managing bookmarks
     get:
@@ -90,7 +89,25 @@ version: 2.5
                     description: Error - the user is not authorized to given location.
                 404:
                     description: Error - a given Location not exists / is not bookmarked.
-
+/calendar/event/{eventType}:
+        post:
+            displayName: FuturePublicationEvent
+            description: Executes event action.
+            headers:
+                Content-Type:
+                    description: UnscheduleAction - if set usnschedules event. RescheduleAction - if set reschedules event and returns result in XML or JSON format.
+                    example:  |
+                        application/vnd.ez.api.calendar.future_publication.UnscheduleAction+xml
+                        application/vnd.ez.api.calendar.future_publication.UnscheduleAction+json
+                        application/vnd.ez.api.calendar.future_publication.RescheduleAction+xml
+                        application/vnd.ez.api.calendar.future_publication.RescheduleAction+json
+            body:
+                application/vnd.ez.api.calendar.future_publication.UnscheduleAction+json:
+                    type: UnscheduleAction
+                    example: !include examples/calendar/event/eventType/EventTypeInput.json.example
+            responses:
+                204:
+                    description: No Content
 /content:
     displayName: Managing content
     /objects:
